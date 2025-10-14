@@ -1,0 +1,39 @@
+・同じファイルを同時に編集するとバグるからやめておこうね
+・メインのPHPはそのままでそれ以外はそれぞれファイルにフォルダリングしていこうね
+
+下の拡張機能を入れると便利だよ
+
+Better Folding
+→かっこをたたむのがきれいになるよ
+
+Color Highlight
+→色を指定したときに色見本が見えるようになるよ
+
+HTML End Tag Labels
+→閉じタグのところがどのタグかわかるようになるよ
+
+indent-rainbow
+→インデントに色がつくようになるよ
+　Pythonで開発する機会があるならあるととんでもなく便利(体験談)
+
+Japanese Language Pack for Visual Studio Code
+→日本語翻訳()
+
+Output Colorizer
+→卒業個人製作でつかう...かも...
+
+Path Intellisense
+→相対パスを入力するのがとても簡単になります。
+
+Prettier - Code formatter
+→設定すると指定したフォーマット規定に基づいてフォーマットしてくれる拡張機能
+ PHP非対応
+
+Trailing Spaces
+→;のあととかの無駄なスペースを赤く表示してくれる
+
+zenkaku
+→全角スペースを見やすくしてくれるやつ
+
+Catppuccin Icons for VSCode
+→ファイルアイコンを設定できるやつ。何かしら設定するとすごい見やすい

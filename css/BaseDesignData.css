@@ -1,0 +1,111 @@
+body {
+    /*
+    デフォルトフォントの指定
+    背景色の指定
+    フォントカラーの指定
+    */
+    font-family: PlemolJP;
+    background-color: #ffffff;
+    color: black;
+}
+
+.main {
+    display: flex;
+    float: right;
+    min-height: 100vh;
+}
+
+nav {
+    position: fixed;
+    top: 24px;
+    width: 100%;
+    z-index: 10;
+}
+ /* ul {
+    background-color: rgb(54, 181, 54); */
+    /* height: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    list-style: none; */
+ 
+li a {
+    padding: 8px;
+    font-size: 16px;
+    color: #464646;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ffffff;
+}
+
+#link {
+    text-align: right;
+    position: relative;
+    top: 20px;
+    right: 125px;
+    cursor: pointer;
+    width: 38px;
+    height: 50px;
+    z-index: 10;
+}
+
+.footerlinks {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+}
+
+.footerlinks a {
+    color: #a2a0a0;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.footerlinks a:hover {
+    text-decoration: underline;
+}
+
+#login {
+    float: right;
+    text-align: right;
+    position: absolute;
+    top: 20px;
+    right: 125px;
+    width: 20px;
+    height: 20px;
+}
+
+.main-content {
+    flex-grow: 1; /* 残りのスペースを全て使用 */
+    padding: 20px; /* 見栄えのためのパディング */
+}
+
+li{
+    background-color:#808080;
+}
+
+#nav-link {
+    background-color: black;
+}
+
+#nav-pills {
+    background-color: black;
+}
+
+
+/* #d-flex {
+    background-color: aquamarine;
+} */
+
+header{
+    display: flex;
+}
+
+#flex{
+    display: flex;
+}
+
+a{
+    float: left;
+}
