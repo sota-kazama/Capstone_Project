@@ -7,9 +7,9 @@
     <header>
         <div id="flex">
             <a href="index.php">
-            <img src="images/icon1.png" alt="">
+            <img src="images/icon2.png" alt="">
             </a>
-        <h1>タイトル＆ロゴ</h1>
+ 
         </div>
     </header>
     <hr />
