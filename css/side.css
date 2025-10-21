@@ -1,0 +1,67 @@
+/*
+ * 基本的なカラースキームをCSS変数として定義
+ * これらを変更するだけで、サイトのテーマを簡単に切り替えられます
+ */
+:root {
+    /* サイドバーの背景色 */
+    --sidebar-bg-color: #91acd1;
+    /* サイドバー内のテキスト/リンクのデフォルト色 */
+    --link-color: #495057; /* 例: ダークグレー */
+    /* サイドバー内のホバー時のリンク色 */
+    --link-hover-color: #0d6efd; /* 例: ブルー */
+    /* アクティブなリンクの背景色 */
+    --active-link-bg-color: #0d6efd; /* 例: ブルー */
+    /* アクティブなリンクのテキスト色 */
+    --active-link-text-color: #ffffff; /* 例: ホワイト */
+    /* アイコンの色 */
+    --icon-color: #495057; /* デフォルトのリンク色と同じ */
+    /* 境界線の色（必要であれば） */
+    --border-color: #dee2e6;
+}
+
+/* ユーザーのHTMLから参照されているカスタムクラス */
+.custom-sidebar-color {
+    /* HTMLのインラインスタイルを上書きまたは拡張 */
+    background-color: var(--sidebar-bg-color) !important; /* CSS変数を使用 */
+    color: var(--link-color); /* サイドバー全体のデフォルトテキスト色 */
+}
+
+/* ナビゲーションリンクのスタイル */
+.nav-link {
+    color: var(--link-color);
+}
+
+/* ナビゲーションリンクのホバー時とフォーカス時 */
+.nav-link:hover,
+.nav-link:focus {
+    /*color: var(--link-hover-color);*/
+    background-color: #ffffff; /* ホバー時の軽い背景 */
+}
+
+/* アクティブなリンクのスタイル */
+.nav-link.active {
+    background-color: var(--active-link-bg-color) !important;
+    color: var(--active-link-text-color) !important;
+}
+
+/* アクティブなリンク内のアイコンの色 */
+.nav-link.active i {
+    color: var(--active-link-text-color);
+}
+
+/* デフォルトのリンク内のアイコンの色 */
+.nav-link:not(.active) i {
+    color: var(--icon-color);
+}
+
+/* その他の要素のスタイル（必要に応じて） */
+.link-body-emphasis {
+    color: var(--link-color) !important;
+}
+
+.bg-body-tertiary {
+    /* !important を使用すると、Bootstrapのデフォルトスタイルよりも優先されます。 */
+    /* ただし、できる限り詳細度を上げて上書きすることが推奨されます。 */
+    /* 今回は簡単な上書きとして使用します。 */
+    background-color: #86a0c488 !important;
+}

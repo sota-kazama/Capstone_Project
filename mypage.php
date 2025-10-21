@@ -1,3 +1,17 @@
+<?php
+require_once './helpers/MemberDAO.php';
+
+
+//セッションを開始する
+session_start();
+
+//未ログインの場合
+
+
+//ログイン中の会員データを取得
+$member = $_SESSION['member'];
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,29 +21,30 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icosns@1.11.3/font/bootstrap-icons.min.css"
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="css/side.css" rel="stylesheet" />
         <?php include 'template/header.php'; ?>
+
     </head>
 
     <head>
         <!--こっちのheadを変更する-->
-        <title>メインページ</title>
+        <title>マイページ</title>
     </head>
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'template/side.php';?>
+            <?php include 'mypage/side.php';?>
 
             <main class="main-content">
                 <!--ここに記載する-->
-                <h1>トップページ</h1>
-                <p>ここに、メインとなるページの内容が生成されます。</p>
+                <h1>マイページ</h1>
 
-                変更テストその3
-                <div style="height: 1500px; background-color: #f8f9fa">長いコンテンツの例</div>
+                <!--正誤表-->
+                <!--途中から回答する-->
+                <!--目標日-->
             </main>
         </div>
 
