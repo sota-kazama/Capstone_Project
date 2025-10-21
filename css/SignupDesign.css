@@ -12,7 +12,7 @@
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 410px;
+      width: 450px;
     }
 
     .signup-container h2 {
@@ -24,7 +24,7 @@
     .signup-container input[type="email"],
     .signup-container input[type="password"] {
       width: 100%;
-      padding: 10px;
+      padding: 20px;
       margin: 8px 0 20px;
       border: 1px solid #ccc;
       border-radius: 5px;

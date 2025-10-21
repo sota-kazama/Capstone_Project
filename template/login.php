@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link href="../css/BaseDesignData.css" rel="stylesheet">
+    <link href="../css/LoginDesign.css" rel="stylesheet">
     <title>ログイン</title>
 </head>
 <body>
@@ -10,6 +11,7 @@
 
     <form action="" method="POST">
         <table id="../css/BaseDesignData.css">
+             <!-- <div class="login-container"> -->
             <tr>
                 <th colspan="2">ログイン</th>
             </tr>
@@ -39,7 +41,9 @@
                     <?php endforeach; ?>
                 </td>
             </tr>
+          
         </table>
+
     </form>
 
     <table class="box">
