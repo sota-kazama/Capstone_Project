@@ -1,18 +1,18 @@
-body {
+/* body {
       font-family: Arial, sans-serif;
       background-color: #f7f7f7;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-    }
+    } */
 
     .signup-container {
       background-color: #fff;
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 320px;
+      width: 410px;
     }
 
     .signup-container h2 {
@@ -57,3 +57,29 @@ body {
     .signup-container .link a:hover {
       text-decoration: underline;
     }
+
+
+.signup-wrapper {
+    display: flex;
+    justify-content: center; /* 横方向の中央寄せ */
+    align-items: center;     /* 縦方向の中央寄せ */
+    height: 100vh;           /* 画面の高さいっぱいに */
+    background-color: #f7f7f7; /* お好みで背景色 */
+} 
+
+
+.page-container {
+  display: flex;
+  align-items: flex-start; /* 上揃え */
+  gap: 20px; /* サイドバーとフォームの間の隙間 */
+}
+
+/* サイドバーの幅固定（例） */
+.page-container > .side {
+  width: 250px;
+}
+
+/* フォームの横幅を残りに */
+.signup-wrapper {
+  flex: 1;
+}
