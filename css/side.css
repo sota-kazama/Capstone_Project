@@ -4,7 +4,7 @@
  */
 :root {
     /* サイドバーの背景色 */
-    --sidebar-bg-color: #ffffff;
+    --sidebar-bg-color: #91acd1;
     /* サイドバー内のテキスト/リンクのデフォルト色 */
     --link-color: #495057; /* 例: ダークグレー */
     /* サイドバー内のホバー時のリンク色 */
@@ -34,8 +34,8 @@
 /* ナビゲーションリンクのホバー時とフォーカス時 */
 .nav-link:hover,
 .nav-link:focus {
-    color: var(--link-hover-color);
-    background-color: rgba(13, 110, 253, 0.1); /* ホバー時の軽い背景 */
+    /*color: var(--link-hover-color);*/
+    background-color: #ffffff; /* ホバー時の軽い背景 */
 }
 
 /* アクティブなリンクのスタイル */
@@ -57,4 +57,11 @@
 /* その他の要素のスタイル（必要に応じて） */
 .link-body-emphasis {
     color: var(--link-color) !important;
+}
+
+.bg-body-tertiary {
+    /* !important を使用すると、Bootstrapのデフォルトスタイルよりも優先されます。 */
+    /* ただし、できる限り詳細度を上げて上書きすることが推奨されます。 */
+    /* 今回は簡単な上書きとして使用します。 */
+    background-color: #86a0c488 !important;
 }

@@ -21,13 +21,7 @@ nav {
     width: 100%;
     z-index: 10;
 }
- /* ul {
-    background-color: rgb(54, 181, 54); */
-    /* height: 0;
-    overflow: hidden;
-    transition: 0.3s;
-    list-style: none; */
- 
+
 li a {
     padding: 8px;
     font-size: 16px;
@@ -81,10 +75,6 @@ li a {
     padding: 20px; /* 見栄えのためのパディング */
 }
 
-li{
-    background-color:#808080;
-}
-
 #nav-link {
     background-color: black;
 }
@@ -92,14 +82,3 @@ li{
 #nav-pills {
     background-color: black;
 }
-
-
-/* #d-flex {
-    background-color: aquamarine;
-} */
-
-/* header{
-    display: flex;
-} */
-
-
