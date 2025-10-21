@@ -17,7 +17,7 @@
 
     <head>
         <!--こっちのheadを変更する-->
-        <title>メインページ</title>
+        <title>マイページ</title>
     </head>
 
     <body>
