@@ -54,18 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-    <!-- <div class="login-container">
-    <h2>ログイン</h2>
-    <form action="" method="post">
-      <input type="text" name="username" placeholder="ユーザー名" required>
-      <input type="password" name="password" placeholder="パスワード" required>
-      <input type="submit" value="ログイン">
-    </form>
-    <div class="link">
-      <a href="#">パスワードをお忘れですか？</a>
-    </div>
-  </div> -->
-
+ 
 
 <form action="" method="POST">
     <table id="LoginTable" class="box">
