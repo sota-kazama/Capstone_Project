@@ -24,7 +24,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($user_name === ""){
         $errs['user_name'] = 'ユーザー名を入力してください。';
     }
-    
 
     if(empty($errs)) {
         $member = new Member();
@@ -36,7 +35,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         header('Location:signupEnd.php');
         exit;
     }
-    
 }
 ?>
 
@@ -45,24 +43,22 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <head>
     <meta charset="utf-8">
     <title>新規会員登録</title>
-     <!-- <link href="css/BaseDesignData.css" rel="stylesheet" /> -->
+    <!-- <link href="css/BaseDesignData.css" rel="stylesheet" /> -->
     <link rel="stylesheet" href="css/SignupDesign.css">
 </head>
 <body>
 
 <?php include 'template/header2.php'; ?>
 
- <div class="signup-container">
-    <h2>新規会員登録</h2> 
+<div class="signup-container">
+    <h2>新規会員登録</h2>
 
     <h1>会員登録</h1>
     <p>以下の項目を入力し、登録ボタンをクリックしてください(*は必須)</p>
-
-   
     <form action="signup.php" method="POST">
         <table>
 
-         <tr>
+        <tr>
                 <td>ユーザー名*</td>
                 <td><input type="text" placeholder="例)電子 太郎" name="user_name">
                 <span style="color: red"><?= @$errs['user_name'] ?></span>
@@ -71,8 +67,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             <tr>
                 <td>メールアドレス</td>
                 <td><input type="email" placeholder="例)aaa@aaa" name="mail_address">
-                 <span style="color: red"><?=@ $errs['mail_address'] ?></span>
-                 </td>
+                <span style="color: red"><?=@ $errs['mail_address'] ?></span>
+                </td>
             </tr>
             <tr>
                 <td>パスワード(4文字以上)*</td>
