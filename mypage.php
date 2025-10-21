@@ -26,7 +26,6 @@ $member = $_SESSION['member'];
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="css/side.css" rel="stylesheet" />
         <?php include 'template/header.php'; ?>
-
     </head>
 
     <head>

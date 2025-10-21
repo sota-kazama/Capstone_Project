@@ -42,18 +42,6 @@ session_regenerate_id(true); $_SESSION['member'] = $member; header('Location: in
     </head>
 
     <body>
-        <!-- <div class="login-container">
-    <h2>ログイン</h2>
-    <form action="" method="post">
-      <input type="text" name="username" placeholder="ユーザー名" required>
-      <input type="password" name="password" placeholder="パスワード" required>
-      <input type="submit" value="ログイン">
-    </form>
-    <div class="link">
-      <a href="#">パスワードをお忘れですか？</a>
-    </div>
-  </div> -->
-
         <form action="" method="POST">
             <table id="LoginTable" class="box">
                 <tr>
@@ -99,25 +87,3 @@ session_regenerate_id(true); $_SESSION['member'] = $member; header('Location: in
         </table>
     </body>
 </html>
-
-<?php
-// if($_SERVER['REQUEST_METHOD'] === 'POST') {
-//         $mail_address = $_POST['mail_address'];
-//         $pass_word = $_POST['pass_word'];
-
-// //     if($mail_address === '') {
-// //         $errs[] = 'メールアドレスを入力してください。';
-// //     }
-// //     else if(!filter_var($mail_address, FILTER_VALIDATE_EMAIL)) {
-// //         $errs[] = 'メールアドレスの形式に誤りがあります。';
-// //     }
-// //     if($pass_word === '') {
-// //         $errs[] = 'パスワードを入力してください。';  
-// //     }
-// //      if(empty($errs)) {
-
-//     $memberDAO = new MemberDAO();
-
-//     $member = $memberDAO->get_member($mail_address, $pass_word); // if($member !== false) { //
-session_regenerate_id(true); // $_SESSION['member'] = $member; // header('Location: index.php'); // exit; // } // else {
-// $errs[] = 'メールアドレスまたはパスワードに誤りがあります。'; // } // } ?>
