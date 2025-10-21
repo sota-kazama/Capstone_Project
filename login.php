@@ -27,34 +27,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errs)) {
         $memberDAO = new MemberDAO();
-        $member = $memberDAO->get_member($mail_address, $pass_word);
-
-        if ($member !== false) {
-            session_regenerate_id(true);
-            $_SESSION['member'] = $member;
-            header('Location: index.php');
-            exit;
-        } else {
-            $errs[] = 'メールアドレスまたはパスワードに誤りがあります。';
-        }
-    }
-}
-?>
+        $member = $memberDAO->get_member($mail_address, $pass_word); if ($member !== false) {
+session_regenerate_id(true); $_SESSION['member'] = $member; header('Location: index.php'); exit; } else { $errs[] =
+'メールアドレスまたはパスワードに誤りがあります。'; } } } ?>
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="css/BaseDesignData.css" rel="stylesheet" />
+        <link rel="stylesheet" href="css/LoginDesign.css" />
+        <title>ログイン</title>
+        <?php include 'template/header2.php'; ?>
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <link href="css/BaseDesignData.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/LoginDesign.css">
-    <title>ログイン</title>
-    <?php include 'template/header2.php'; ?>
-</head>
-
-<body>
-
-    <!-- <div class="login-container">
+    <body>
+        <!-- <div class="login-container">
     <h2>ログイン</h2>
     <form action="" method="post">
       <input type="text" name="username" placeholder="ユーザー名" required>
@@ -66,50 +54,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div> -->
 
+        <form action="" method="POST">
+            <table id="LoginTable" class="box">
+                <tr>
+                    <th colspan="2">ログイン</th>
+                </tr>
+                <tr>
+                    <td>メールアドレス</td>
+                    <td>
+                        <input
+                            type="email"
+                            name="mail_address"
+                            value="<?= htmlspecialchars($mail_address, ENT_QUOTES, 'UTF-8') ?>"
+                            required
+                        />
+                        <span style="color: red"><?= @$errs['mail_address'] ?></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>パスワード</td>
+                    <td>
+                        <input type="password" name="pass_word" required />
+                        <span style="color: red"><?= @$errs['pass_word'] ?></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <input type="submit" value="ログイン" />
+                    </td>
+                </tr>
+            </table>
+        </form>
 
-<form action="" method="POST">
-    <table id="LoginTable" class="box">
-        <tr>
-            <th colspan="2">ログイン</th>
-        </tr>
-        <tr>
-            <td>メールアドレス</td>
-            <td>
-                <input type="email" name="mail_address" 
-                       value="<?= htmlspecialchars($mail_address, ENT_QUOTES, 'UTF-8') ?>" required />
-                       <span style="color: red"><?= @$errs['mail_address'] ?></span>
-            </td>
-        </tr>
-        <tr>
-            <td>パスワード</td>
-            <td>
-                <input type="password" name="pass_word" required />
-                <span style="color: red"><?= @$errs['pass_word'] ?></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align:center;">
-                <input type="submit" value="ログイン" />
-            </td>
-        </tr>
-
-    </table>
-</form>
-
-
-    <table class="box">
-        <tr>
-            <th>初めての利用の方</th>
-        </tr>
-        <tr>
-            <td>ログインするには会員登録が必要です。</td>
-        </tr>
-        <tr>
-            <td><a href="signup.php">新規会員登録はこちら</a></td>
-        </tr>
-    </table>
-</body>
-
+        <table class="box">
+            <tr>
+                <th>初めての利用の方</th>
+            </tr>
+            <tr>
+                <td>ログインするには会員登録が必要です。</td>
+            </tr>
+            <tr>
+                <td><a href="signup.php">新規会員登録はこちら</a></td>
+            </tr>
+        </table>
+    </body>
 </html>
 
 <?php
@@ -130,21 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 //     $memberDAO = new MemberDAO();
 
-//     $member = $memberDAO->get_member($mail_address, $pass_word);
-
-
-
-//     if($member !== false) {
-//         session_regenerate_id(true);
-//         $_SESSION['member'] = $member;
-
-//         header('Location: index.php');
-//         exit;
-//      }
-
-//     else {
-//         $errs[] = 'メールアドレスまたはパスワードに誤りがあります。';
-//     }
-//      }
-
-?>
+//     $member = $memberDAO->get_member($mail_address, $pass_word); // if($member !== false) { //
+session_regenerate_id(true); // $_SESSION['member'] = $member; // header('Location: index.php'); // exit; // } // else {
+// $errs[] = 'メールアドレスまたはパスワードに誤りがあります。'; // } // } ?>
