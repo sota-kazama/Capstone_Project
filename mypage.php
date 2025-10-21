@@ -1,3 +1,17 @@
+<?php
+require_once './helpers/MemberDAO.php';
+
+
+//セッションを開始する
+session_start();
+
+//未ログインの場合
+
+
+//ログイン中の会員データを取得
+$member = $_SESSION['member'];
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,7 +26,7 @@
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <?php include 'template/header.php'; ?>
-        <?php include 'template/hamburger.html';?>
+
     </head>
 
     <head>

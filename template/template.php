@@ -12,7 +12,6 @@
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <?php include 'template/header.php'; ?>
-        <?php include 'template/hamburger.html';?>
     </head>
 
     <head>
