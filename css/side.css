@@ -1,29 +1,34 @@
 /*
- * 基本的なカラースキームをCSS変数として定義
+ * 基本的なカラースキームを CSS 変数として定義
  * これらを変更するだけで、サイトのテーマを簡単に切り替えられます
  */
 :root {
     /* サイドバーの背景色 */
     --sidebar-bg-color: #91acd1;
+
     /* サイドバー内のテキスト/リンクのデフォルト色 */
-    --link-color: #495057; /* 例: ダークグレー */
+    --link-color: #2f3438; /* 例: ダークグレー */
+
     /* サイドバー内のホバー時のリンク色 */
     --link-hover-color: #0d6efd; /* 例: ブルー */
+
     /* アクティブなリンクの背景色 */
-    --active-link-bg-color: #0d6efd; /* 例: ブルー */
+    --active-link-bg-color: #7287a5;
+
     /* アクティブなリンクのテキスト色 */
-    --active-link-text-color: #ffffff; /* 例: ホワイト */
-    /* アイコンの色 */
-    --icon-color: #495057; /* デフォルトのリンク色と同じ */
+    --active-link-text-color: #ffffff;
+
+    /* アイコンの色（デフォルトのリンク色と同じ） */
+    --icon-color: #3a4046;
+
     /* 境界線の色（必要であれば） */
     --border-color: #dee2e6;
 }
 
-/* ユーザーのHTMLから参照されているカスタムクラス */
+/* サイドバーのカスタムカラー設定 */
 .custom-sidebar-color {
-    /* HTMLのインラインスタイルを上書きまたは拡張 */
-    background-color: var(--sidebar-bg-color) !important; /* CSS変数を使用 */
-    color: var(--link-color); /* サイドバー全体のデフォルトテキスト色 */
+    background-color: var(--sidebar-bg-color) !important;
+    color: var(--link-color);
 }
 
 /* ナビゲーションリンクのスタイル */
@@ -31,37 +36,48 @@
     color: var(--link-color);
 }
 
-/* ナビゲーションリンクのホバー時とフォーカス時 */
+/* ホバー・フォーカス時のナビゲーションリンク */
 .nav-link:hover,
 .nav-link:focus {
-    /*color: var(--link-hover-color);*/
+    /* color: var(--link-hover-color); */
     background-color: #ffffff; /* ホバー時の軽い背景 */
 }
 
-/* アクティブなリンクのスタイル */
+/* アクティブなナビゲーションリンクのスタイル */
 .nav-link.active {
     background-color: var(--active-link-bg-color) !important;
     color: var(--active-link-text-color) !important;
 }
 
-/* アクティブなリンク内のアイコンの色 */
+/* アクティブなリンク内のアイコンカラー */
 .nav-link.active i {
     color: var(--active-link-text-color);
 }
 
-/* デフォルトのリンク内のアイコンの色 */
+/* 非アクティブリンクのアイコンカラー */
 .nav-link:not(.active) i {
     color: var(--icon-color);
 }
 
-/* その他の要素のスタイル（必要に応じて） */
+/* その他のリンクテキスト強調表示 */
 .link-body-emphasis {
     color: var(--link-color) !important;
 }
 
+/* 背景色のカスタム設定 */
 .bg-body-tertiary {
-    /* !important を使用すると、Bootstrapのデフォルトスタイルよりも優先されます。 */
-    /* ただし、できる限り詳細度を上げて上書きすることが推奨されます。 */
-    /* 今回は簡単な上書きとして使用します。 */
     background-color: #86a0c488 !important;
+}
+
+/*
+ * .nav-pills スタイルの調整
+ * アクティブでない .nav-link に対して文字色を設定
+ */
+.nav-pills .nav-link:not(.active) {
+    color: #333; /* 非アクティブ時の文字色（例：濃いグレー） */
+}
+
+/* アクティブな .nav-pills のリンクに確実に適用させるため詳細度を上げる */
+.nav-pills .nav-link.active {
+    color: white !important;
 }
