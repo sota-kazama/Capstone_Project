@@ -1,4 +1,4 @@
-#LoginTable {
+/* #LoginTable {
     float: left;
 }
 
@@ -14,67 +14,71 @@ th {
     background-color: gray;
     color: white;
     text-align: center;
+} */
+/* 画面全体の背景設定 */
+.login-body {
+  background-color: #f8f9fa;
+  height: 100vh;             /* 画面全体の高さ */
+  margin: 0;                 /* 余白リセット */
+  display: flex;             /* フレックスボックスで配置制御 */
+  justify-content: center;   /* 横方向の中央寄せ */
+  align-items: center;       /* 縦方向の中央寄せ */
+  flex-direction: column;    /* 上下に積む（ログインフォーム＋登録ボックス） */
+}
+
+/* ログイン全体の枠 */
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto; /* ← これを追加 */
 }
 
 
+/* ログインフォーム */
+.login-box {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
 
+/* タイトル */
+.login-title {
+  text-align: center;
+  margin-bottom: 25px;
+}
 
-/* 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    } */
+/* 各項目の間隔 */
+.form-group {
+  margin-bottom: 15px;
+}
 
-    /* .login-container {
-      background-color: #fff;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
-    }
+/* エラーメッセージ */
+.error-text {
+  color: red;
+  font-size: 0.9em;
+}
 
-    .login-container h2 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+/* ボタン中央寄せ */
+.button-area {
+  text-align: center;
+  margin-top: 15px;
+}
 
-    .login-container input[type="text"],
-    .login-container input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
+/* ボタンの幅 */
+.login-btn {
+  width: 150px;
+}
 
-    .login-container input[type="submit"] {
-      width: 100%;
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+/* 新規登録の案内枠 */
+.signup-box {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+}
 
-    .login-container input[type="submit"]:hover {
-      background-color: #45a049;
-    }
-
-    .login-container .link {
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    .login-container .link a {
-      color: #007BFF;
-      text-decoration: none;
-    }
-
-    .login-container .link a:hover {
-      text-decoration: underline;
-    } */
