@@ -1,7 +1,7 @@
-
- <?php
+<?php
 require_once './helpers/MemberDAO.php';
 
+$mail_address = '';
 $errs = [];
 
 session_start();
@@ -39,61 +39,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="ja">
     <head>
         <meta charset="utf-8" />
+        <title>ログイン</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link rel="stylesheet" href="css/LoginDesign.css" />
-        <title>ログイン</title>
+        <?php include 'template/header2.php'; ?>
     </head>
 
-    <body>
-        <?php include 'template/header2.php'; ?>
-        <form action="" method="POST">
-            <table id="LoginTable" class="box">
-                <tr>
-                    <th colspan="2">ログイン</th>
-                </tr>
-                <tr>
-                    <td>メールアドレス</td>
-                    <td>
-                        <input type="email" name="mail_address" required autofocus />
-                    </td>
-                </tr>
-                <tr>
-                    <td>パスワード</td>
-                    <td>
-                        <input type="password" name="pass_word" required autofocus />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="submit" value="ログイン" />
-                    </td>
-                </tr>
-                <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($errs)): ?>
-                <tr>
-                    <td colspan="2">
-                        <?php foreach ($errs as $e): ?>
-                        <span style="color: red"><?= htmlspecialchars($e, ENT_QUOTES, 'UTF-8') ?></span><br />
-                        <?php endforeach; ?>
-                    </td>
-                </tr>
-                <?php endif; ?>
-            </table>
-        </form>
+    <body class="login-body">
+        <div class="login-container">
+            <form action="" method="POST" class="login-box">
+                <h3 class="login-title">ログイン</h3>
 
-        <table class="box">
-            <tr>
-                <th>初めての利用の方</th>
-            </tr>
-            <tr>
-                <td>ログインするには会員登録が必要です。</td>
-            </tr>
-            <tr>
-                <td><a href="signup.php">新規会員登録はこちら</a></td>
-            </tr>
-        </table>
+                <?php if (!empty($errs) && isset($errs[0])): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($errs[0], ENT_QUOTES, 'UTF-8') ?></div>
+                <?php endif; ?>
+
+                <div class="form-group">
+                    <label>メールアドレス</label>
+                    <input
+                        type="email"
+                        name="mail_address"
+                        class="form-control"
+                        value="<?= htmlspecialchars($mail_address, ENT_QUOTES, 'UTF-8') ?>"
+                        required
+                    />
+                    <div class="error-text"><?= @$errs['mail_address'] ?></div>
+                </div>
+
+                <div class="form-group">
+                    <label>パスワード</label>
+                    <input type="password" name="pass_word" class="form-control" required />
+                    <div class="error-text"><?= @$errs['pass_word'] ?></div>
+                </div>
+
+                <div class="button-area">
+                    <input type="submit" value="ログイン" class="btn btn-primary login-btn" />
+                </div>
+            </form>
+
+            <div class="signup-box">
+                <h5>初めての利用の方</h5>
+                <p>ログインするには会員登録が必要です。</p>
+                <a href="signup.php" class="btn btn-outline-secondary">新規会員登録はこちら</a>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
+
