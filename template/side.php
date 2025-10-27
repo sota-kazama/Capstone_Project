@@ -18,5 +18,13 @@ $current = basename($_SERVER['PHP_SELF']);
                 書籍検索
             </a>
         </li>
+        <li>
+            <?php if(isset($member)) : ?>
+                <a href="board.php" class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>">
+                    <i class="bi bi-book"></i>
+                    書籍検索
+                </a>                
+            <?php endif; ?>
+        </li>
     </ul>
 </div>
