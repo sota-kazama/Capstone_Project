@@ -1,11 +1,13 @@
-<?php
+
+ <?php
 require_once './helpers/MemberDAO.php';
 
+$mail_address = '';
 $errs = [];
 
 session_start();
 
-if(!empty($_SESSION['member'])) {
+if (!empty($_SESSION['member'])) {
     header('Location:index.php');
     exit;
 }
@@ -14,20 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mail_address = $_POST['mail_address'] ?? '';
     $pass_word = $_POST['pass_word'] ?? '';
 
-    if($mail_address === ''){
-        $errs[] = 'メールアドレスを入力してください。';
-    } else if(!filter_var($mail_address,FILTER_VALIDATE_EMAIL)){
-        $errs[] = 'メールアドレスの形式に誤りがあります。';
+    if ($mail_address === '') {
+        $errs['mail_address'] = 'メールアドレスを入力してください。';
+    } elseif (!filter_var($mail_address, FILTER_VALIDATE_EMAIL)) {
+        $errs['mail_address'] = 'メールアドレスの形式に誤りがあります。';
     }
 
-    if($pass_word === ''){
-        $errs[] = 'パスワードを入力してください。';
+    if ($pass_word === '') {
+        $errs['pass_word'] = 'パスワードを入力してください。';
     }
 
     if (empty($errs)) {
         $memberDAO = new MemberDAO();
         $member = $memberDAO->get_member($mail_address, $pass_word);
-
         if ($member !== false) {
             session_regenerate_id(true);
             $_SESSION['member'] = $member;

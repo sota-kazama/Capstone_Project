@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                 <h2>新規会員登録</h2>
-                <p>以下の項目を入力し、登録ボタンをクリックしてください(*は必須)</p>
+                <!-- <p>以下の項目を入力し、登録ボタンをクリックしてください(*は必須)</p> -->
 
 
                 <form action="signup.php" method="POST">
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </td>
                         </tr>
                         <tr>
-                            <td>メールアドレス</td>
+                            <td>メールアドレス*</td>
                             <td><input type="email" placeholder="例)aaa@aaa" name="mail_address">
                                 <span style="color: red"><?= @$errs['mail_address'] ?></span>
 
