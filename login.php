@@ -1,6 +1,6 @@
 <?php
 require_once './helpers/MemberDAO.php';
-
+$email='';
 $errs = [];
 
 session_start();
@@ -14,14 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mail_address = $_POST['mail_address'] ?? '';
     $pass_word = $_POST['pass_word'] ?? '';
 
-    if($mail_address === ''){
-        $errs[] = 'メールアドレスを入力してください。';
-    } else if(!filter_var($mail_address,FILTER_VALIDATE_EMAIL)){
+    if(!filter_var($mail_address,FILTER_VALIDATE_EMAIL)){
         $errs[] = 'メールアドレスの形式に誤りがあります。';
-    }
-
-    if($pass_word === ''){
-        $errs[] = 'パスワードを入力してください。';
     }
 
     if (empty($errs)) {
@@ -67,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tr>
             <td>パスワード</td>
             <td>
-                <input type="password" name="pass_word" required autofocus/>
+                <input type="password" name="pass_word" required/>
             </td>
         </tr>
         <tr>
@@ -78,8 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($errs)): ?>
         <tr>
             <td colspan="2">
-                <?php foreach ($errs as $e): ?>
-                    <span style="color:red"><?= htmlspecialchars($e, ENT_QUOTES, 'UTF-8') ?></span><br>
+                <?php foreach ($errs as $e) : ?>
+                    <span style="color:red"><?= $e ?></span><br>
                 <?php endforeach; ?>
             </td>
         </tr>

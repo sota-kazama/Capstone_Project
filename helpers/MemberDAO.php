@@ -31,7 +31,7 @@ class MemberDAO {
 
         $stmt->execute();
 
-        $member = $stmt->fetchObject('master_user');
+        $member = $stmt->fetchObject('Member');
 
         if($member !== false) {
             if(password_verify($pass_word, $member->pass_word)) {
