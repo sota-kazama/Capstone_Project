@@ -21,8 +21,8 @@ $current = basename($_SERVER['PHP_SELF']);
         <li>
             <?php if(isset($member)) : ?>
                 <a href="board.php" class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>">
-                    <i class="bi bi-book"></i>
-                    書籍検索
+                    <i class="bi bi-person-fill"></i>
+                掲示板
                 </a>                
             <?php endif; ?>
         </li>
