@@ -31,14 +31,22 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $user_id = (int)$_POST['user_id'];
-        $user_name = $_POST['user_name'];
-        $mail_address = $_POST['mail_address'];
+        $user_name = $_POST['user_name'] ?? null;
+        $mail_address = $_POST['mail_address'] ?? null;
         $pass_word = $_POST['pass_word'] ?? null;
-        $u_admin = (int)$_POST['u_admin'];
+        $u_admin = (int)($_POST['u_admin'] ?? 0);
+        $member_type = isset($_POST['member_type']) ? (int)$_POST['member_type'] : 0;
 
+        // パスワードハッシュ作成
         $password_hashed = !empty($pass_word) ? password_hash($pass_word, PASSWORD_DEFAULT) : null;
 
-        if ($dao->updateMemberAccount($user_id, $user_name, $mail_address, $password_hashed, $u_admin)) {
+        // アカウント情報更新
+        $success = $dao->updateMemberAccount($user_id, $user_name, $mail_address, $password_hashed, $u_admin);
+
+        // 会員種別（有効/無効）更新
+        $success &= $dao->setMemberType($user_id, $member_type);
+
+        if ($success) {
             $message = '更新成功';
         } else {
             $error = '更新に失敗しました';
@@ -66,23 +74,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <title>アカウント情報編集</title>
         <script>
             function loadMemberData() {
-                const selectElement = document.getElementById("user_id_select");
-                const selectedOption = selectElement.options[selectElement.selectedIndex];
-
-                if (selectedOption.value) {
-                    document.getElementById("user_name").value = selectedOption.getAttribute("data-user-name");
-                    document.getElementById("mail_address").value = selectedOption.getAttribute("data-mail-address");
-                    document.getElementById("pass_word").value = "";
-                    const uAdminValue = selectedOption.getAttribute("data-u-admin");
-                    document.getElementById("u_admin_0").checked = uAdminValue == "0";
-                    document.getElementById("u_admin_1").checked = uAdminValue == "1";
-                } else {
+                const select = document.getElementById("user_id_select");
+                const opt = select.options[select.selectedIndex];
+                if (!opt.value) {
                     document.getElementById("user_name").value = "";
                     document.getElementById("mail_address").value = "";
                     document.getElementById("pass_word").value = "";
                     document.getElementById("u_admin_0").checked = false;
                     document.getElementById("u_admin_1").checked = false;
+                    document.getElementById("member_type_0").checked = false;
+                    document.getElementById("member_type_1").checked = false;
+                    return;
                 }
+
+                document.getElementById("user_name").value = opt.getAttribute("data-user-name");
+                document.getElementById("mail_address").value = opt.getAttribute("data-mail-address");
+                document.getElementById("pass_word").value = "";
+                document.getElementById("u_admin_0").checked = opt.getAttribute("data-u-admin") == "0";
+                document.getElementById("u_admin_1").checked = opt.getAttribute("data-u-admin") == "1";
+                document.getElementById("member_type_0").checked = opt.getAttribute("data-member-type") == "0";
+                document.getElementById("member_type_1").checked = opt.getAttribute("data-member-type") == "1";
             }
         </script>
     </head>
@@ -91,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php include 'side.php'; ?>
             <main class="main-content p-4">
                 <h1>アカウント情報編集 (管理者用)</h1>
+
                 <?php if ($message): ?>
                 <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
                 <?php endif; ?>
@@ -117,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     data-user-name="<?= htmlspecialchars($m['user_name']) ?>"
                                     data-mail-address="<?= htmlspecialchars($m['mail_address']) ?>"
                                     data-u-admin="<?= htmlspecialchars($m['u_admin']) ?>"
+                                    data-member-type="<?= htmlspecialchars($m['member_type'] ?? 0) ?>"
                                 >
                                     ID:
                                     <?= $m['user_id'] ?>
@@ -139,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label class="form-label">パスワード（変更する場合のみ）</label>
                             <input type="password" class="form-control" id="pass_word" name="pass_word" />
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">管理者フラグ</label><br />
                             <div class="form-check form-check-inline">
@@ -164,10 +178,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label class="form-check-label" for="u_admin_1">管理者</label>
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">アカウント状態</label><br />
+                            <div class="form-check form-check-inline">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="member_type"
+                                    id="member_type_0"
+                                    value="0"
+                                    required
+                                />
+                                <label class="form-check-label" for="member_type_0">有効</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="member_type"
+                                    id="member_type_1"
+                                    value="1"
+                                    required
+                                />
+                                <label class="form-check-label" for="member_type_1">無効</label>
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">更新</button>
                     </form>
 
-                    <!-- ページネーション -->
                     <?php if ($totalPages >
                     1): ?>
                     <nav>
@@ -191,4 +231,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </body>
 </html>
-
