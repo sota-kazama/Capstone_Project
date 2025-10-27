@@ -28,19 +28,19 @@ if (!empty($_SESSION['member'])) {
             <img src="images/icon2.png" alt="サイトのロゴ" />
         </a>
 
-        <?php if (isset($member)) : ?>
-            <?= $member->user_name ?>さん
-
-            <a href="logout.php">ログアウト</a>
-        <?php else : ?>
-            <form action="login.php" method="post">
-                <p id="login">
-                    <input type="submit" value="ログイン" />
-                </p>
-            </form>
-        <?php endif; ?>
-
-    </header>
+       <?php if (isset($member)) : ?>
+    <div class="user-info">
+      <?= htmlspecialchars($member->user_name) ?>さん
+      <a href="logout.php" class="logout-btn">ログアウト</a>
+    </div>
+  <?php else : ?>
+    <form action="login.php" method="post">
+      <p id="login">
+        <input type="submit" value="ログイン" />
+      </p>
+    </form>
+  <?php endif; ?>
+</header>
     <hr />
 </body>
 

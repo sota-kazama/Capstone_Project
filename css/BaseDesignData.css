@@ -82,3 +82,60 @@ li a {
 #nav-pills {
     background-color: black;
 }
+
+
+/* BaseDesignData.css */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: #fafafa;
+  border-bottom: 2px solid #ddd;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 16px;
+}
+
+.logout-btn {
+  background-color: #cfcfd2;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #787575;
+}
+
+
+/* ログアウトを右上に配置（ログインと同じ位置） */
+#logout {
+  float: right;
+  text-align: right;
+  position: absolute;
+  top: 20px;
+  right: 125px;
+  height: 20px;
+}
+
+/* ログアウトボタンのデザイン */
+.logout-btn {
+  background-color: #cfcfd2;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: 0.3s;
+  margin-left: 5px;
+}
+
+.logout-btn:hover {
+  background-color: #787575;
+}
