@@ -1,5 +1,6 @@
 <?php
 $current = basename($_SERVER['PHP_SELF']);
+$member = $_SESSION['member'] ?? null;
 ?>
 
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; height: 1617px;">
@@ -30,5 +31,13 @@ $current = basename($_SERVER['PHP_SELF']);
                 成果登録
             </a>
         </li>
-    </ul>
+        <?php if ($member !== null && $member->u_admin == 1) : ?>
+    <li>
+        <a href="admin.php" class="nav-link <?= $current === 'admin.php' ? 'active' : 'link-body-emphasis' ?>">
+            <i class="bi bi-gear"></i>
+            管理者ページ
+        </a>
+    </li>
+<?php endif; ?>
+
 </div>
