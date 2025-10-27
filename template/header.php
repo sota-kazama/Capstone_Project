@@ -1,6 +1,6 @@
 <?php
 
-require_once './helpers/MemberDAO.php';
+require_once __DIR__ . '/../helpers/MemberDAO.php';
 
 
 if (session_status() === PHP_SESSION_NONE) {

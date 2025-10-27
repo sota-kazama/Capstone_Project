@@ -33,7 +33,7 @@ $member = $_SESSION['member'] ?? null;
         </li>
         <?php if ($member !== null && $member->u_admin == 1) : ?>
     <li>
-        <a href="admin.php" class="nav-link <?= $current === 'admin.php' ? 'active' : 'link-body-emphasis' ?>">
+        <a href="./add/admin_main.php" class="nav-link <?= $current === 'admin.php' ? 'active' : 'link-body-emphasis' ?>">
             <i class="bi bi-gear"></i>
             管理者ページ
         </a>
