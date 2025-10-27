@@ -24,10 +24,10 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
-            <a href="goal.php"
-                class="nav-link <?= $current === 'goal.php' ? 'active' : 'link-body-emphasis' ?>">
+            <a href="edit_account.php"
+                class="nav-link <?= $current === 'edit_account.php' ? 'active' : 'link-body-emphasis' ?>">
                 <i class="bi bi-book"></i>
-                目標設定
+                アカウント情報編集
             </a>
         </li>
     </ul>
