@@ -19,19 +19,21 @@ if (!empty($_SESSION['member'])) {
 <head>
     <meta charset="UTF-8" />
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <?php include "template/hamburger.html"; ?>
+    
 </head>
 
 <body>
     <header>
+        <?php include "template/hamburger.html"; ?>
         <a href="./index.php">
             <img src="images/icon2.png" alt="サイトのロゴ" />
         </a>
 
-        <?php if (isset($member)) : ?>
-            <?= $member->user_name ?>さん
-
-            <a href="logout.php">ログアウト</a>
+       <?php if (isset($member)) : ?>
+            <p id="logout">
+                <?= htmlspecialchars($member->user_name) ?> さん
+                <a href="logout.php" class="logout-btn">ログアウト</a>
+            </p>
         <?php else : ?>
             <form action="login.php" method="post">
                 <p id="login">
@@ -39,9 +41,11 @@ if (!empty($_SESSION['member'])) {
                 </p>
             </form>
         <?php endif; ?>
-
     </header>
+</header>
     <hr />
 </body>
 
 </html>
+
+ 

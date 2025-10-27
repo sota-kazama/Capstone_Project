@@ -16,7 +16,7 @@
 
     <head>
         <!--こっちのheadを変更しない-->
-        <title>メインページ</title>
+        <title>問題</title>
     </head>
 
     <body>
@@ -25,9 +25,13 @@
 
             <main class="main-content">
                 <!--ここに記載する-->
-                <h1>問題</h1>
-                <p>ここに、メインとなるページの内容が生成されます。</p>
-                <div style="height: 1500px; background-color: #f8f9fa">長いコンテンツの例</div>
+                <h1>a</h1>
+                <div style="height: 1500px; background-color: #f8f9fa">
+                    <form action="question_response.php" method="post">
+                        <input type="submit" value="出題開始">
+                    </form>
+                </div>
+
             </main>
         </div>
 
