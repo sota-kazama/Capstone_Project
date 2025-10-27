@@ -29,19 +29,22 @@ if (!empty($_SESSION['member'])) {
         </a>
 
        <?php if (isset($member)) : ?>
-    <div class="user-info">
-      <?= htmlspecialchars($member->user_name) ?>さん
-      <a href="logout.php" class="logout-btn">ログアウト</a>
-    </div>
-  <?php else : ?>
-    <form action="login.php" method="post">
-      <p id="login">
-        <input type="submit" value="ログイン" />
-      </p>
-    </form>
-  <?php endif; ?>
+            <p id="logout">
+                <?= htmlspecialchars($member->user_name) ?> さん
+                <a href="logout.php" class="logout-btn">ログアウト</a>
+            </p>
+        <?php else : ?>
+            <form action="login.php" method="post">
+                <p id="login">
+                    <input type="submit" value="ログイン" />
+                </p>
+            </form>
+        <?php endif; ?>
+    </header>
 </header>
     <hr />
 </body>
 
 </html>
+
+ 
