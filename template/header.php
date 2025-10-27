@@ -19,11 +19,12 @@ if (!empty($_SESSION['member'])) {
 <head>
     <meta charset="UTF-8" />
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <?php include "template/hamburger.html"; ?>
+    
 </head>
 
 <body>
     <header>
+        <?php include "template/hamburger.html"; ?>
         <a href="./index.php">
             <img src="images/icon2.png" alt="サイトのロゴ" />
         </a>
