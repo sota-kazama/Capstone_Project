@@ -1,0 +1,7 @@
+テストユーザー
+mail : test04@jec.ac.jp
+pass : test
+
+管理者ユーザー
+mail : admin@jec.ac.jp
+pass : admin
