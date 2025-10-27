@@ -107,13 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="link">
                     <a href="login.php">すでにアカウントをお持ちの方はこちら</a>
                 </div>
-                
-
-               
             </div>
-              
         </div>
-        
     </div>
 
 
