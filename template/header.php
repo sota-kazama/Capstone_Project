@@ -24,7 +24,7 @@ if (!empty($_SESSION['member'])) {
 
 <body>
     <header>
-        <?php include "template/hamburger.html"; ?>
+        <?php include "template/hamburger.php"; ?>
         <a href="./index.php">
             <img src="images/icon2.png" alt="サイトのロゴ" />
         </a>
