@@ -27,5 +27,19 @@ $current = basename($_SERVER['PHP_SELF']);
                 アカウント情報編集
             </a>
         </li>
+
+        <li>
+            <a href="shikaku_manage.php"
+                class="nav-link <?= $current === 'shikaku_manage.php' ? 'active' : 'link-body-emphasis' ?>">
+                資格管理ページ
+            </a>
+        </li>
+
+        <li>
+            <a href="../logout.php"
+                class="nav-link <?= $current === '../logout.php' ? 'active' : 'link-body-emphasis' ?>">
+                ログアウト
+            </a>
+        </li>
     </ul>
 </div>

@@ -1,3 +1,49 @@
+<?php
+require_once '../helpers/MemberDAO.php';
+require_once '../helpers/ShikakuDAO.php';
+
+session_start();
+
+if (!isset($_SESSION['member'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$member = $_SESSION['member'];
+$dao = new ShikakuDAO();
+$message = "";
+
+// --- POST処理 ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add'])) {
+        $s_name = trim($_POST['s_name']);
+        if ($s_name !== '') {
+            $dao->insert($s_name);
+            $message = "資格を追加しました。";
+        }
+    } elseif (isset($_POST['update'])) {
+        $dao->update((int)$_POST['s_number'], $_POST['s_name']);
+        $message = "資格を更新しました。";
+    } elseif (isset($_POST['delete'])) {
+        $dao->delete((int)$_POST['s_number']);
+        $message = "資格を削除しました。";
+    }
+
+    // --- ここがポイント ---
+    // POSTが完了したらリダイレクトしてGETに切り替える
+    header("Location: shikaku_manage.php?msg=" . urlencode($message));
+    exit;
+}
+
+// --- GETでページ表示 ---
+if (isset($_GET['msg'])) {
+    $message = $_GET['msg'];
+}
+
+$list = $dao->getAll();
+?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
     <head>
