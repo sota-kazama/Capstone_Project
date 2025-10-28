@@ -10,7 +10,6 @@ $current = basename($_SERVER['PHP_SELF']);
         <li>
             <a href="../mypage.php"
                 class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-square"></i>
                 マイページトップ
             </a>
         </li>
@@ -18,7 +17,6 @@ $current = basename($_SERVER['PHP_SELF']);
         <li>
             <a href="admin_main.php"
                 class="nav-link <?= $current === 'admin_main.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-square"></i>
                 管理者トップ
             </a>
         </li>
@@ -26,8 +24,21 @@ $current = basename($_SERVER['PHP_SELF']);
         <li>
             <a href="edit_account.php"
                 class="nav-link <?= $current === 'edit_account.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-book"></i>
                 アカウント情報編集
+            </a>
+        </li>
+
+        <li>
+            <a href="shikaku_manage.php"
+                class="nav-link <?= $current === 'shikaku_manage.php' ? 'active' : 'link-body-emphasis' ?>">
+                資格管理ページ
+            </a>
+        </li>
+
+        <li>
+            <a href="../logout.php"
+                class="nav-link <?= $current === '../logout.php' ? 'active' : 'link-body-emphasis' ?>">
+                ログアウト
             </a>
         </li>
     </ul>
