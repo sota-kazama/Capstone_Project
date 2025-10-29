@@ -35,15 +35,15 @@
                     </form>
                     <div class="question_review">
                         <div class="green">
-                            <div class="green_review">復習</div>
+                            <a href="question_response" class="green_review">復習</a>
                             <p>〇問</p>
                         </div>
                         <div class="yellow">
-                            <div class="yellow_review">復習</div>
+                            <a href="question_response" class="yellow_review">復習</a>
                             <p>〇問</p>
                         </div>
                         <div class="red">
-                            <div class="red_review">復習</div>
+                            <a href="question_response" class="red_review">復習</a>
                             <p>〇問</p>
                         </div>
                     </div>
