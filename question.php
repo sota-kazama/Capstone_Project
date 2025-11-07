@@ -11,6 +11,7 @@
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="css/side.css" rel="stylesheet" />
+        <link rel="stylesheet" href="css/questionDesign.css">
         <?php include 'template/header.php'; ?>
     </head>
 
@@ -22,16 +23,33 @@
     <body>
         <div class="d-flex w-100 min-vh-100">
             <?php include 'template/side.php';?>
+            
 
             <main class="main-content">
                 <!--ここに記載する-->
-                <h1>a</h1>
+                <h1>問題</h1>
                 <div style="height: 1500px; background-color: #f8f9fa">
-                    <form action="question_response.php" method="post">
-                        <input type="submit" value="出題開始">
+                    <form action="question_response.php" method="post" class="question_request">
+                        <a href="question_response.php" class="question_start">出題開始</a>
+                        <a href="question_response.php" class="question_restart">続きから(〇問目から再開)</a>
                     </form>
+                    <div class="question_review">
+                        <div class="green">
+                            <a href="question_review.php" class="green_review">復習</a>
+                            <p>〇問</p>
+                        </div>
+                        <div class="yellow">
+                            <a href="question_review.php" class="yellow_review">復習</a>
+                            <p>〇問</p>
+                        </div>
+                        <div class="red">
+                            <a href="question_review.php" class="red_review">復習</a>
+                            <p>〇問</p>
+                        </div>
+                    </div>
                 </div>
 
+                
             </main>
         </div>
 

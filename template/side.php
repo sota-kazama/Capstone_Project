@@ -8,7 +8,7 @@ $current = basename($_SERVER['PHP_SELF']);
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
             <a href="question.php" class="nav-link <?= $current === 'question.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-square"></i>
+                <i class="bi bi-check2-square"></i>
                 問題
             </a>
         </li>
@@ -23,7 +23,11 @@ $current = basename($_SERVER['PHP_SELF']);
                 <a href="board.php" class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>">
                     <i class="bi bi-person-fill"></i>
                 掲示板
-                </a>                
+                </a>
+                <a href="mypage.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+                    <i class="bi bi-card-list"></i>
+                マイページ
+                </a>                                  
             <?php endif; ?>
         </li>
     </ul>
