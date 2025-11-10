@@ -22,7 +22,7 @@
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'template/side.php';?>
+            <?php include 'problem/problem_side.php';?>
             
 
             <main class="main-content">
