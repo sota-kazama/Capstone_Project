@@ -27,7 +27,13 @@ $current = basename($_SERVER['PHP_SELF']);
                 <a href="mypage.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
                     <i class="bi bi-card-list"></i>
                 マイページ
-                </a>                                  
+                </a>      
+                 <a href="mypage.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+                    <i class="bi bi-card-list"></i>
+                質問箱
+                </a>          
+                
+                
             <?php endif; ?>
         </li>
     </ul>
