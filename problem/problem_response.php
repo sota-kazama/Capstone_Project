@@ -32,9 +32,9 @@ $member = $_SESSION['member'];
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
-        <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <link href="css/side.css" rel="stylesheet" />
-        <?php include 'template/header.php'; ?>
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
+        <?php include '../template/header.php'; ?>
     </head>
 
     <head>
@@ -44,7 +44,7 @@ $member = $_SESSION['member'];
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'template/side.php';?>
+            <?php include 'problem_side.php';?>
 
             <main class="main-content">
                 <!--ここに記載する-->
@@ -86,6 +86,6 @@ $member = $_SESSION['member'];
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     <footer>
-        <?php include 'template/footer.php'; ?>
+        <?php include '../template/footer.php'; ?>
     </footer>
 </html>
