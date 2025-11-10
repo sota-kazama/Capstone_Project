@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>トップページ</title>
-        <link href="../css/hamburger.css" rel="stylesheet" />
+        <link href="css/hamburger.css" rel="stylesheet" />
     </head>
     <body>
         <div class="hamburger" id="hamburger">
