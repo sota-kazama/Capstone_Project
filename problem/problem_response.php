@@ -9,9 +9,9 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
-        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
-        <?php include '../template/header.php'; ?>
+        <?php include 'problem_header.php'; ?>
     </head>
 
     <head>

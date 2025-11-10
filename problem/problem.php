@@ -9,10 +9,10 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
-        <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <link href="css/side.css" rel="stylesheet" />
-        <link rel="stylesheet" href="css/problemDesign.css">
-        <?php include 'template/header.php'; ?>
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
+        <link rel="stylesheet" href="../css/problemDesign.css">
+        <?php include 'problem_header.php'; ?>
     </head>
 
     <head>
@@ -22,15 +22,15 @@
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'problem/problem_side.php';?>
+            <?php include 'problem_side.php';?>
             
 
             <main class="main-content">
                 <!--ここに記載する-->
-                <h1>問題</h1>
+                <h1>問題トップページ</h1>
                 <div style="height: 1500px; background-color: #f8f9fa">
-                    <form action="problem/problem_response.php" method="post" class="problem_request">
-                        <a href="problem/problem_response.php" class="problem_start">出題開始</a>
+                    <form action="problem_response.php" method="post" class="problem_request">
+                        <a href="problem_response.php" class="problem_start">出題開始</a>
                         <a href="problem_response.php" class="problem_restart">続きから(〇問目から再開)</a>
                     </form>
                     <div class="problem_review">

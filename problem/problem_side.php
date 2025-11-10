@@ -8,7 +8,7 @@ $member = $_SESSION['member'] ?? null;
     </a>
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
-            <a href="./problem.php" class="nav-link <?= $current === 'problem.php' ? 'active' : 'link-body-emphasis' ?>">
+            <a href="problem.php" class="nav-link <?= $current === 'problem.php' ? 'active' : 'link-body-emphasis' ?>">
                 問題トップ
             </a>
         </li>
