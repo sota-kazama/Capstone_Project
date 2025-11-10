@@ -25,7 +25,7 @@
 
             <main class="main-content">
                 <!--ここに記載する-->
-                <h1>問題復習</h1>
+                <h1>問題回答</h1>
                 <p>ここに、メインとなるページの内容が生成されます。</p>
                 <div style="height: 1500px; background-color: #f8f9fa">長いコンテンツの例</div>
             </main>
