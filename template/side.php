@@ -7,7 +7,7 @@ $current = basename($_SERVER['PHP_SELF']);
     </a>
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
-            <a href="question.php" class="nav-link <?= $current === 'question.php' ? 'active' : 'link-body-emphasis' ?>">
+            <a href="problem.php" class="nav-link <?= $current === 'problem.php' ? 'active' : 'link-body-emphasis' ?>">
                 <i class="bi bi-check2-square"></i>
                 問題
             </a>
