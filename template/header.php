@@ -24,18 +24,18 @@ if (!empty($_SESSION['member'])) {
 
 <body>
     <header>
-        <?php include "template/hamburger.php"; ?>
-        <a href="./index.php">
-            <img src="images/icon2.png" alt="サイトのロゴ" />
+        <?php include "hamburger.php"; ?>
+        <a href="../index.php">
+            <img src="../images/icon2.png" alt="サイトのロゴ" />
         </a>
 
        <?php if (isset($member)) : ?>
             <p id="logout">
                 <?= htmlspecialchars($member->user_name) ?> さん
-                <a href="logout.php" class="logout-btn">ログアウト</a>
+                <a href="../logout.php" class="logout-btn">ログアウト</a>
             </p>
         <?php else : ?>
-            <form action="login.php" method="post">
+            <form action="../login.php" method="post">
                 <p id="login">
                     <input type="submit" value="ログイン" />
                 </p>

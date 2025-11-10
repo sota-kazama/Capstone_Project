@@ -29,8 +29,8 @@
                 <!--ここに記載する-->
                 <h1>問題</h1>
                 <div style="height: 1500px; background-color: #f8f9fa">
-                    <form action="problem_response.php" method="post" class="problem_request">
-                        <a href="problem_response.php" class="problem_start">出題開始</a>
+                    <form action="problem/problem_response.php" method="post" class="problem_request">
+                        <a href="problem/problem_response.php" class="problem_start">出題開始</a>
                         <a href="problem_response.php" class="problem_restart">続きから(〇問目から再開)</a>
                     </form>
                     <div class="problem_review">
