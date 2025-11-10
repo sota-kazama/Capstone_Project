@@ -10,8 +10,8 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <link href="css/side.css" rel="stylesheet" />
-        <?php include 'template/header.php'; ?>
+        <link href="../css/side.css" rel="stylesheet" />
+        <?php include 'problem_header.php'; ?>
     </head>
 
     <head>
@@ -21,11 +21,11 @@
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'template/side.php';?>
+            <?php include 'problem_side.php';?>
 
             <main class="main-content">
                 <!--ここに記載する-->
-                <h1>問題回答</h1>
+                <h1>問題復習</h1>
                 <p>ここに、メインとなるページの内容が生成されます。</p>
                 <div style="height: 1500px; background-color: #f8f9fa">長いコンテンツの例</div>
             </main>
@@ -34,6 +34,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     <footer>
-        <?php include 'template/footer.php'; ?>
+        <?php include '../template/footer.php'; ?>
     </footer>
 </html>

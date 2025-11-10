@@ -95,6 +95,8 @@ $questions = $questionDAO->getAll();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
     <title>問題登録・管理</title>
     <script>
     function confirmDelete(id) {
@@ -166,7 +168,7 @@ $questions = $questionDAO->getAll();
                 <label class="form-label">分野（複数選択可）</label><br>
                 <?php foreach ($categories as $cat): ?>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="area_numbers[]" 
+                        <input class="form-check-input" type="checkbox" name="area_numbers[]"
                             value="<?= htmlspecialchars($cat->area_number) ?>">
                         <label class="form-check-label"><?= htmlspecialchars($cat->area_name) ?></label>
                     </div>
