@@ -36,8 +36,23 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
+            <a href="s_problem_register.php"
+                class="nav-link <?= $current === 's_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
+                問題分野管理ページ
+            </a>
+        </li>
+
+        <li>
+            <a href="m_problem_register.php"
+                class="nav-link <?= $current === 'm_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
+                問題管理ページ
+            </a>
+        </li>
+
+        <li>
             <a href="../logout.php"
-                class="nav-link <?= $current === '../logout.php' ? 'active' : 'link-body-emphasis' ?>">
+                class="nav-link <?= $current === 'logout.php' ? 'active' : 'link-body-emphasis' ?>"
+                onclick="return confirm('本当にログアウトしますか？');">
                 ログアウト
             </a>
         </li>
