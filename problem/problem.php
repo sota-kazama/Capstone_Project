@@ -28,7 +28,7 @@
             <main class="main-content">
                 <!--ここに記載する-->
                 <h1>問題トップページ</h1>
-                <div style="height: 1500px; background-color: #f8f9fa">
+                <!-- <div style="height: 1500px; background-color: #f8f9fa">
                     <form action="problem_response.php" method="post" class="problem_request">
                         <a href="problem_response.php" class="problem_start">出題開始</a>
                         <a href="problem_response.php" class="problem_restart">続きから(〇問目から再開)</a>
@@ -47,7 +47,16 @@
                             <p>〇問</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
+                <div class="d-flex flex-wrap justify-content-center gap-4">
+                    <div class="card shadow-sm" style="width: 13rem;">
+                        <div class="card-body">
+                            <div class="green_review"></div>
+                            <h5 class="card-title fw-semibold">〇問</h5>
+                            <a href="#" class="btn btn-primary w-100">復習</a>
+                        </div>
+                    </div>
+                </div> 
 
                 
             </main>
