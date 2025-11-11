@@ -51,9 +51,23 @@
                 <div class="d-flex flex-wrap justify-content-center gap-4">
                     <div class="card shadow-sm" style="width: 13rem;">
                         <div class="card-body">
-                            <div class="green_review"></div>
+                            <h5 class="card-title fw-semibold">復習不要</h5>
                             <h5 class="card-title fw-semibold">〇問</h5>
-                            <a href="#" class="btn btn-primary w-100">復習</a>
+                            <a href="problem_review.php" class="btn btn-outline-success w-100">復習</a>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm" style="width: 13rem;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">復習要</h5>
+                            <h5 class="card-title fw-semibold">〇問</h5>
+                            <a href="problem_review.php" class="btn btn-outline-warning w-100">復習</a>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm" style="width: 13rem;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">復習必要</h5>
+                            <h5 class="card-title fw-semibold">〇問</h5>
+                            <a href="problem_review.php" class="btn btn-outline-danger w-100">復習</a>
                         </div>
                     </div>
                 </div> 
