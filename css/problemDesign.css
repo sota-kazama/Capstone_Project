@@ -48,14 +48,9 @@
 }
 .green_review{
   width: 80px;
-  height: 40px;
-  background: greenyellow;/*背景色*/
-  color: black;
-  padding: 6px 12px;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: 0.3s;
-  margin-left: 5px;
+  height: 80px;
+  border-radius: 50%;
+  background: skyblue;/*背景色*/
 }
 .yellow_review{
   width: 80px;
