@@ -31,36 +31,3 @@
 .problem_restart:hover {
   background-color: #787575;
 }
-.problem_review{
-  position: absolute;
-  top: 600px;
-  left: 700px;
-  display: flex;
-}
-.green{
-    display: flex;
-}
-.yellow{
-    display: flex;
-}
-.red{
-    display: flex;
-}
-.green_review{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background:green;/*背景色*/
-}
-.yellow_review{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background:yellow;/*背景色*/
-}
-.red_review{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background:red;/*背景色*/
-}

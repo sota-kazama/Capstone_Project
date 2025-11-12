@@ -11,6 +11,7 @@
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
+        <title>問題復習</title>
         <?php include 'problem_header.php'; ?>
     </head>
 

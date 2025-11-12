@@ -23,8 +23,6 @@
     <body>
         <div class="d-flex w-100 min-vh-100">
             <?php include 'problem_side.php';?>
-            
-
             <main class="main-content">
                 <!--ここに記載する-->
                 <h1>問題トップページ</h1>
@@ -33,20 +31,6 @@
                         <a href="problem_response.php" class="problem_start">出題開始</a>
                         <a href="problem_response.php" class="problem_restart">続きから(〇問目から再開)</a>
                     </form>
-                    <div class="problem_review">
-                        <div class="green">
-                            <a href="problem_review.php" class="green_review">復習</a>
-                            <p>〇問</p>
-                        </div>
-                        <div class="yellow">
-                            <a href="problem_review.php" class="yellow_review">復習</a>
-                            <p>〇問</p>
-                        </div>
-                        <div class="red">
-                            <a href="problem_review.php" class="red_review">復習</a>
-                            <p>〇問</p>
-                        </div>
-                    </div>
                 </div> -->
                 <div class="d-flex flex-wrap justify-content-center gap-4">
                     <div class="card shadow-sm" style="width: 13rem;">
@@ -70,9 +54,7 @@
                             <a href="problem_review.php" class="btn btn-outline-danger w-100">復習</a>
                         </div>
                     </div>
-                </div> 
-
-                
+                </div>  
             </main>
         </div>
 
