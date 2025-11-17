@@ -66,5 +66,23 @@ public function insert($shitu_content, $s_number = null, $reception_status = 1) 
         $stmt->bindValue(':num', $shitu_number, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+
+public function getAnswers($shitu_number) {
+    $sql = "SELECT * FROM shitu_answer WHERE shitu_number = :num ORDER BY ans_number ASC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindValue(':num', $shitu_number, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+// 回答を追加
+public function addAnswer($shitu_number, $ans_content) {
+    $sql = "INSERT INTO shitu_answer (shitu_number, ans_content) VALUES (:num, :content)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindValue(':num', $shitu_number, PDO::PARAM_INT);
+    $stmt->bindValue(':content', $ans_content, PDO::PARAM_STR);
+    return $stmt->execute();
+}
 }
 ?>
