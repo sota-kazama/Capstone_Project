@@ -1,6 +1,5 @@
 <?php
 $current = basename($_SERVER['PHP_SELF']);
-$member = $_SESSION['member'] ?? null;
 ?>
 
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; height: 1617px;">
@@ -9,18 +8,32 @@ $member = $_SESSION['member'] ?? null;
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
             <a href="problem.php" class="nav-link <?= $current === 'problem.php' ? 'active' : 'link-body-emphasis' ?>">
-                問題トップ
+                <i class="bi bi-check2-square"></i>
+                問題
             </a>
         </li>
         <li>
-            <a href="problem_response.php" class="nav-link <?= $current === 'problem_response.php' ? 'active' : 'link-body-emphasis' ?>">
-                問題回答
+            <a href="../book.php" class="nav-link <?= $current === 'book.php' ? 'active' : 'link-body-emphasis' ?>">
+                <i class="bi bi-book"></i>
+                書籍検索
             </a>
         </li>
         <li>
-            <a href="problem_review.php" class="nav-link <?= $current === 'problem_review.php' ? 'active' : 'link-body-emphasis' ?>">
-                問題復習
-            </a>
-        </li>
+            <?php if(isset($member)) : ?>
+                <a href="../board.php" class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>">
+                    <i class="bi bi-person-fill"></i>
+                掲示板
+                </a>
+                <a href="../mypage.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+                    <i class="bi bi-card-list"></i>
+                マイページ
 
+                 <a href="../question_list.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+
+                    <i class="bi bi-chat-left"></i>
+                質問箱
+                </a>          
+            <?php endif; ?>
+        </li>
+    </ul>
 </div>

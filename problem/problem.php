@@ -26,41 +26,47 @@
             <main class="main-content">
                 <!--ここに記載する-->
                 <h1>問題トップページ</h1>
-                <!-- <div style="height: 1500px; background-color: #f8f9fa">
-                    <form action="problem_response.php" method="post" class="problem_request">
-                        <a href="problem_response.php" class="problem_start">出題開始</a>
-                        <a href="problem_response.php" class="problem_restart">続きから(〇問目から再開)</a>
-                    </form>
-                </div> -->
-                <div class="d-flex flex-wrap justify-content-center gap-4">
-                    <div class="card shadow-sm" style="width: 13rem;">
-                        <div class="card-body">
-                            <h5 class="card-title fw-semibold">復習不要</h5>
-                            <h5 class="card-title fw-semibold">〇問</h5>
-                            <a href="problem_review.php" class="btn btn-outline-success w-100">復習</a>
+            <div class="grid gap-3">
+                <div class="d-flex flex-wrap justify-content-center p-2 g-col-6 gap-4">
+                    <div style="width: 20rem;">
+                        <a href="problem_response.php" class="btn btn-outline-primary w-100">問題開始</a>
+                    </div>
+                    <div style="width: 20rem;">
+                        <a href="problem_response.php" class="btn btn-outline-primary w-100">続きから(〇問目)</a>                        
+                    </div>
+                </div>
+                <?php if(isset($member)) : ?>
+                    <div class="d-flex flex-wrap justify-content-center p-2 g-col-6 gap-4">
+                        <div class="card shadow-sm" style="width: 13rem;">
+                            <div class="card-body">
+                                <h5 class="card-title fw-semibold">レベル1(復習不要)</h5>
+                                <h5 class="card-title fw-semibold">〇問</h5>
+                                <a href="problem_review.php" class="btn btn-outline-success w-100">復習</a>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm" style="width: 13rem;">
+                            <div class="card-body">
+                                <h5 class="card-title fw-semibold">レベル2(復習要)</h5>
+                                <h5 class="card-title fw-semibold">〇問</h5>
+                                <a href="problem_review.php" class="btn btn-outline-warning w-100">復習</a>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm" style="width: 13rem;">
+                            <div class="card-body">
+                                <h5 class="card-title fw-semibold">レベル3(復習必要)</h5>
+                                <h5 class="card-title fw-semibold">〇問</h5>
+                                <a href="problem_review.php" class="btn btn-outline-danger w-100">復習</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="card shadow-sm" style="width: 13rem;">
-                        <div class="card-body">
-                            <h5 class="card-title fw-semibold">復習要</h5>
-                            <h5 class="card-title fw-semibold">〇問</h5>
-                            <a href="problem_review.php" class="btn btn-outline-warning w-100">復習</a>
-                        </div>
-                    </div>
-                    <div class="card shadow-sm" style="width: 13rem;">
-                        <div class="card-body">
-                            <h5 class="card-title fw-semibold">復習必要</h5>
-                            <h5 class="card-title fw-semibold">〇問</h5>
-                            <a href="problem_review.php" class="btn btn-outline-danger w-100">復習</a>
-                        </div>
-                    </div>
-                </div>  
+                <?php endif; ?>
+            </div> 
             </main>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     <footer>
-        <?php include 'template/footer.php'; ?>
+        <?php include 'problem_footer.php'; ?>
     </footer>
 </html>
