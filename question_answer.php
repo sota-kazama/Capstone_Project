@@ -1,68 +1,85 @@
 <?php
 require_once __DIR__ . '/helpers/ShitumonDAO.php';
-require_once __DIR__ . '/helpers/AnswerDAO.php';
 
-// GETで質問番号を取得
-$shitu_number = $_GET['id'] ?? null;
+$dao = new ShitumonDAO();
+
+// GETパラメータ取得
+$shitu_number = $_GET['shitu_number'] ?? null;
 
 if (!$shitu_number) {
-    header('Location: question_list.php');
-    exit();
+    die("質問番号が指定されていません。");
 }
 
-// DAO生成
-$questionDAO = new ShitumonDAO();
-$answerDAO = new AnswerDAO();
+// DBから質問取得
+$q = $dao->getByNumber($shitu_number);
 
-// 質問詳細取得
-$question = $questionDAO->getByNumber($shitu_number);
+if (!$q) {
+    die("指定された質問が見つかりません。");
+}
 
-// 回答一覧取得
-$answers = $answerDAO->getByQuestionNumber($shitu_number);
+// 回答一覧を取得
+$answers = $dao->getAnswers($shitu_number);
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="css/BaseDesignData.css" rel="stylesheet" />
+    <link href="css/side.css" rel="stylesheet" />
+    <?php include 'template/header.php'; ?>
     <title>質問詳細</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="p-4">
 
-<h2>質問内容</h2>
-<div class="card mb-3">
-    <div class="card-body">
-        <h5 class="card-title"><?= htmlspecialchars($question['shitu_content']) ?></h5>
-        <p class="card-text">分野: <?= htmlspecialchars($question['s_number']) ?></p>
-    </div>
-</div>
+<body>
+<di class="d-flex w-100 min-vh-100">
+    <?php include 'template/side.php'; ?>
+    <main class="main-content p-4">
+        <h1><i class="bi bi-chat-dots"></i> 質問詳細</h1>
 
-<h3>回答一覧</h3>
-<?php if (count($answers) > 0): ?>
-    <?php foreach($answers as $a): ?>
-        <div class="card mb-2">
+        <!-- 質問内容 -->
+        <div class="card mt-4">
             <div class="card-body">
-                <?= nl2br(htmlspecialchars($a['answer_content'])) ?>
-                <p class="text-muted small">投稿日時: <?= $a['created_at'] ?></p>
+                <h3 class="card-title"><?= nl2br(htmlspecialchars($q['shitu_content'])) ?></h3>
+                <p class="text-muted mt-3">投稿日：<?= $q['update_at'] ?? $q['asked_date'] ?></p>
             </div>
         </div>
-    <?php endforeach; ?>
-<?php else: ?>
-    <p>まだ回答はありません。</p>
-<?php endif; ?>
 
-<h3>回答する</h3>
-<form action="answer_post_process.php" method="post" class="mb-5">
-    <input type="hidden" name="shitu_number" value="<?= $shitu_number ?>">
-    <div class="mb-3">
-        <textarea name="answer_content" class="form-control" rows="5" placeholder="回答内容を入力" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">回答する</button>
-</form>
+        <!-- 回答一覧 -->
+        <div class="mt-4">
+            <h4>回答</h4>
+            <?php if (empty($answers)): ?>
+                <p>まだ回答はありません。</p>
+            <?php else: ?>
+                <?php foreach ($answers as $a): ?>
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <p><?= nl2br(htmlspecialchars($a['ans_content'])) ?></p>
+                            <small class="text-muted">投稿日: <?= $a['update_at'] ?? $a['answer_date'] ?></small>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
 
-<a href="question_list.php" class="btn btn-secondary">質問一覧に戻る</a>
+        <!-- 回答フォーム -->
+        <div class="mt-4">
+            <h5>回答する</h5>
+            <form action="question_answer_process.php" method="post">
+                <input type="hidden" name="shitu_number" value="<?= $shitu_number ?>">
+                <div class="mb-3">
+                    <textarea class="form-control" name="ans_content" rows="4" placeholder="回答内容を入力してください" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> 回答する</button>
+            </form>
+        </div>
 
+        <a href="question_list.php" class="btn btn-secondary mt-3">一覧に戻る</a>
+    </main>
+</di
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
