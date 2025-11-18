@@ -1,3 +1,6 @@
+<?php
+    require_once 'QuestionDAO.php';
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,7 +14,6 @@
         />
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
-        <link rel="stylesheet" href="../css/problemDesign.css">
         <?php include 'problem_header.php'; ?>
     </head>
 
@@ -31,9 +33,11 @@
                     <div style="width: 20rem;">
                         <a href="problem_response.php" class="btn btn-outline-primary w-100">問題開始</a>
                     </div>
-                    <div style="width: 20rem;">
-                        <a href="problem_response.php" class="btn btn-outline-primary w-100">続きから(〇問目)</a>                        
-                    </div>
+                    <?php if(isset($member)) : ?>
+                        <div style="width: 20rem;">
+                            <a href="problem_response.php" class="btn btn-outline-primary w-100">続きから(〇問目)</a>                        
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <?php if(isset($member)) : ?>
                     <div class="d-flex flex-wrap justify-content-center p-2 g-col-6 gap-4">
