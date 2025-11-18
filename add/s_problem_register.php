@@ -77,6 +77,7 @@ $fields = $fieldDAO->getAll();
         />
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
+        <?php include '../template/header2.php'; ?>
         <title>問題分野管理</title>
     </head>
     <body>

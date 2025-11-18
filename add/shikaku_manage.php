@@ -57,6 +57,7 @@ $list = $dao->getAll();
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <?php include '../template/header2.php'; ?>
         <title>資格管理</title>
     </head>
 

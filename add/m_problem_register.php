@@ -6,6 +6,7 @@ require_once '../helpers/MemberDAO.php';
 
 session_start();
 
+// ログインチェック
 if (!isset($_SESSION['member'])) {
     header('Location: login.php');
     exit;
@@ -28,9 +29,14 @@ if (isset($_GET['delete'])) {
 
 // 編集対象取得
 $editQuestion = null;
+$editCategories = [];
 if (isset($_GET['edit'])) {
     $id = intval($_GET['edit']);
     $editQuestion = $questionDAO->findById($id);
+    if ($editQuestion) {
+        // 編集対象の問題に紐づく分野を取得
+        $editCategories = $categoryDAO->getCategoriesByQuestion($editQuestion->q_number);
+    }
 }
 
 // 登録・更新処理
@@ -76,10 +82,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         if ($questionDAO->insert($q_data)) {
+            // 新規登録後に ID を取得
+            $q_number = $questionDAO->getLastInsertId();
             $message = "問題を登録しました。";
         } else {
             $message = "登録に失敗しました。";
         }
+    }
+
+    // カテゴリー登録処理（多対多）
+    $selectedCategories = $_POST['area_numbers'] ?? [];
+    // まず既存の関連付けを削除
+    $categoryDAO->deleteCategoriesByQuestion($q_number);
+    // 選択されたカテゴリーを再登録
+    foreach ($selectedCategories as $area_number) {
+        $categoryDAO->insertCategoryAssociation($q_number, $area_number);
     }
 }
 
@@ -98,6 +115,7 @@ $questions = $questionDAO->getAll();
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
     <title>問題登録・管理</title>
+    <?php include '../template/header2.php'; ?>
     <script>
     function confirmDelete(id) {
         if (confirm(`問題 #${id} を削除しますか？`)) {
@@ -169,7 +187,8 @@ $questions = $questionDAO->getAll();
                 <?php foreach ($categories as $cat): ?>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" name="area_numbers[]"
-                            value="<?= htmlspecialchars($cat->area_number) ?>">
+                            value="<?= htmlspecialchars($cat->area_number) ?>"
+                            <?= in_array($cat->area_number, $editCategories) ? 'checked' : '' ?>>
                         <label class="form-check-label"><?= htmlspecialchars($cat->area_name) ?></label>
                     </div>
                 <?php endforeach; ?>
@@ -182,7 +201,6 @@ $questions = $questionDAO->getAll();
                 <button type="submit" class="btn btn-primary"><?= $editQuestion ? '更新' : '登録' ?></button>
             </div>
         </form>
-
 
         <hr id="question-list">
         <h2>登録済み問題一覧</h2>
@@ -197,7 +215,9 @@ $questions = $questionDAO->getAll();
                             <?php if (!empty($q->image_path)): ?>
                                 <br><img src="../uploads/<?= htmlspecialchars($q->image_path) ?>" alt="問題画像" style="max-width:100px;">
                             <?php endif; ?>
-                            <span class="text-muted small">(更新: <?= htmlspecialchars($q->update_at) ?>)</span>
+                            <span class="text-muted small">
+                                (更新: <?= htmlspecialchars($q->update_ad ?? '') ?>)
+                            </span>
                         </div>
                         <div>
                             <a href="?edit=<?= $q->q_number ?>" class="btn btn-sm btn-outline-primary">編集</a>

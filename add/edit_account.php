@@ -66,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
+    <?php include '../template/header2.php'; ?>
     <title>アカウント情報編集</title>
     <script>
         function loadMemberData() {
