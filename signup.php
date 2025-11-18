@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link href="css/BaseDesignData.css" rel="stylesheet" />
     <?php include 'template/header2.php'; ?>
-    <?php include 'template/hamburger.html'; ?>
+    <?php include 'template/hamburger.php'; ?>
 </head>
 
 <body>

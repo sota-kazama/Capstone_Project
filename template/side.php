@@ -7,7 +7,7 @@ $current = basename($_SERVER['PHP_SELF']);
     </a>
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
-            <a href="question.php" class="nav-link <?= $current === 'question.php' ? 'active' : 'link-body-emphasis' ?>">
+            <a href="problem/problem.php" class="nav-link <?= $current === 'problem.php' ? 'active' : 'link-body-emphasis' ?>">
                 <i class="bi bi-check2-square"></i>
                 問題
             </a>
@@ -27,7 +27,12 @@ $current = basename($_SERVER['PHP_SELF']);
                 <a href="mypage.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
                     <i class="bi bi-card-list"></i>
                 マイページ
-                </a>                                  
+
+                 <a href="question_list.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+
+                    <i class="bi bi-chat-left"></i>
+                質問箱
+                </a>          
             <?php endif; ?>
         </li>
     </ul>
