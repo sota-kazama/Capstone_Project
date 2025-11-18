@@ -1,6 +1,3 @@
-
-
-
 <?php
 require_once 'helpers/ShitumonDAO.php';
 
@@ -21,38 +18,50 @@ $questions = $dao->getAll();
     <link href="css/side.css" rel="stylesheet" />
     <?php include 'template/header.php'; ?>
     
-    
     <title>質問一覧</title>
 </head>
 <body>
-    <div class="d-flex w-100 min-vh-100">
-        <?php include 'template/side.php'; ?>
-        <main class="main-content p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1><i class="bi bi-chat-square-text"></i> 質問一覧</h1>
-                <a href="question_post.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 新しい質問</a>
-            </div>
+<div class="d-flex w-100 min-vh-100">
+    <?php include 'template/side.php'; ?>
+    <main class="main-content p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="bi bi-chat-square-text"></i> 質問一覧</h1>
+            <a href="question_post.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> 新しい質問</a>
+        </div>
 
-            <div class="list-group">
-                <?php if (empty($questions)): ?>
-                    <p>まだ質問はありません。</p>
-                <?php else: ?>
-                    <?php foreach ($questions as $q): ?>
-                        <a href="question_answer.php?shitu_number=<?= $q['shitu_number'] ?>" class="list-group-item list-group-item-action">
-                            <h5 class="mb-1"><?= htmlspecialchars($q['shitu_content']) ?></h5>
-                            <small class="text-muted">投稿日: <?= $q['update_at'] ?? '不明' ?></small>
-                        </a>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
-        </main>
-    </div>
+        <div class="list-group">
+            <?php if (empty($questions)): ?>
+                <p>まだ質問はありません。</p>
+            <?php else: ?>
+                <?php foreach ($questions as $q): ?>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
 
-   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+                            <!-- 質問内容（クリックで回答画面へ） -->
+                            <a href="question_answer.php?shitu_number=<?= $q['shitu_number'] ?>" class="text-decoration-none">
+                                <h5 class="mb-1"><?= htmlspecialchars($q['shitu_content']) ?></h5>
+                                <small class="text-muted">
+                                    投稿日: <?= isset($q['update_at']) ? date("Y-m-d H:i:s", strtotime($q['update_at'])) : '不明' ?>
+                                </small>
+                            </a>
 
+                            <!-- <a href="question_delete.php?shitu_number=<?= $q['shitu_number'] ?>"
+                               class="btn btn-danger btn-sm ms-3"
+                               onclick="return confirm('本当に削除しますか？');">
+                                <i class="bi bi-trash"></i>
+                            </a> -->
+
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 <footer>
     <?php include 'template/footer.php'; ?>
 </footer>
+</body>
 </html>
