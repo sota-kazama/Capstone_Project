@@ -1,5 +1,5 @@
 <?php
-    require_once 'QuestionDAO.php';
+    require_once '../helpers/QuestionDAO.php';
 ?>
 <!DOCTYPE html>
 <html>

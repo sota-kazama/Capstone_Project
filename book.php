@@ -1,5 +1,6 @@
 <?php
 require_once './helpers/BookDAO.php';
+require_once './helpers/MemberDAO.php';
 
 // セッションの開始
 if (session_status() === PHP_SESSION_NONE) {
@@ -16,6 +17,9 @@ if (!empty($keyword)) {
     $BookDAO = new BookDAO();
     $books = $BookDAO->searchBooks($keyword);
 }
+
+//ログイン中の会員データを取得
+$member = $_SESSION['member'];
 ?>
 
 

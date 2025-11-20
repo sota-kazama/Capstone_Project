@@ -64,7 +64,6 @@ if (isset($_GET['msg'])) {
 $fields = $fieldDAO->getAll();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
     <head>
@@ -144,7 +143,8 @@ $fields = $fieldDAO->getAll();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($fields as $index => $field): ?>
+                        <?php foreach ($fields as $index =>
+                        $field): ?>
                         <tr>
                             <form method="post">
                                 <td><?= $index + 1 ?></td>
@@ -168,8 +168,8 @@ $fields = $fieldDAO->getAll();
                                 <td>
                                     <select name="s_name" class="form-control" required>
                                         <?php foreach ($shikakuList as $s): ?>
-                                        <option value="<?= htmlspecialchars($s->s_name) ?>"
-                                            <?= ($field->s_number === $s->s_number) ? 'selected' : '' ?>>
+                                        <option value="<?= htmlspecialchars($s->s_name) ?>" <?="($field-">
+                                            s_number === $s->s_number) ? 'selected' : '' ?>>
                                             <?= htmlspecialchars($s->s_name) ?>
                                         </option>
                                         <?php endforeach; ?>

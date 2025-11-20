@@ -18,13 +18,13 @@
                 <li><a href="problem.php">問題</a></li>
                 <li><a href="../book.php">書籍検索</a></li>
                 <?php if (isset($member)) : ?>
-                    <li><a href="../board.php">掲示板</a></li>
-                    <li><a href="../mypage.php">マイページ</a></li>
-                    <li><a href="../question_list.php">質問箱</a></li>
+                <li><a href="../board.php">掲示板</a></li>
+                <li><a href="../mypage.php">マイページ</a></li>
+                <li><a href="../question_list.php">質問箱</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
-        
+
         <script>
             const hamburger = document.getElementById("hamburger");
             const menu = document.getElementById("menu");

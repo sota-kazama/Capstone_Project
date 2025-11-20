@@ -31,20 +31,35 @@
 
                 <table class="table">
                     <thead>
-                        <tr><th style="width: 10%;">選択肢</th><th>説明</th></tr>
+                        <tr>
+                            <th style="width: 10%">選択肢</th>
+                            <th>説明</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td><a class="btn btn-outline-primary" role="button">A</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" role="button">B</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" role="button">C</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" role="button">D</a></td><td></td></tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" role="button">A</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" role="button">B</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" role="button">C</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" role="button">D</a></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="d-flex flex-wrap justify-content-center">
-                    <div style="width: 13rem;">
+                    <div style="width: 13rem">
                         <a href="problem_response.php" class="btn btn-outline-primary w-100">次の問題</a>
-                    </div>   
-                </div>                
+                    </div>
+                </div>
             </main>
         </div>
 
@@ -54,4 +69,3 @@
         <?php include 'problem_footer.php'; ?>
     </footer>
 </html>
-

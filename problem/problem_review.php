@@ -32,13 +32,28 @@
 
                 <table class="table">
                     <thead>
-                        <tr><th style="width: 10%;">選択肢</th><th>説明</th></tr>
+                        <tr>
+                            <th style="width: 10%">選択肢</th>
+                            <th>説明</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td><a class="btn btn-outline-primary " href="problem_answer.php" role="button">A</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">B</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">C</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">D</a></td><td></td></tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">A</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">B</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">C</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">D</a></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </main>
@@ -50,4 +65,3 @@
         <?php include 'problem_footer.php'; ?>
     </footer>
 </html>
-

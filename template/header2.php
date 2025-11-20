@@ -7,9 +7,8 @@
     <header>
         <div id="flex">
             <a href="index.php">
-            <img src="../images/icon2.png" alt="">
+                <img src="../images/icon2.png" alt="" />
             </a>
- 
         </div>
     </header>
     <hr />
