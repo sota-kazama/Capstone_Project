@@ -36,7 +36,9 @@ $answers = $dao->getAnswers($shitu_number);
 
 <body>
     <di class="d-flex w-100 min-vh-100">
-        <?php include 'template/side.php'; ?>
+        <div class="d-none d-md-block">
+                <?php include 'template/side.php'; ?>
+            </div>
         <main class="main-content p-4">
             <h1><i class="bi bi-chat-dots"></i> 質問詳細</h1>
 

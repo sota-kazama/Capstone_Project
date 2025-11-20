@@ -17,7 +17,7 @@ $questions = $dao->getAll();
     <link href="css/BaseDesignData.css" rel="stylesheet" />
     <link href="css/side.css" rel="stylesheet" />
     <?php include 'template/header.php'; ?>
-    
+
     <title>質問一覧</title>
 </head>
 <body>
