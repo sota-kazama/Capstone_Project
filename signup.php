@@ -60,9 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </head>
 
     <body>
-        <div class="page-container">
-            <?php include 'template/side.php'; ?>
-
             <div class="signup-wrapper">
                 <div class="signup-container">
                     <h2>新規会員登録</h2>
