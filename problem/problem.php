@@ -1,6 +1,9 @@
+<<<<<<< HEAD
+=======
 <?php
     require_once '../helpers/QuestionDAO.php';
 ?>
+>>>>>>> a6b6452779ba2a83539497c5e96ffe0355718123
 <!DOCTYPE html>
 <html>
     <head>
