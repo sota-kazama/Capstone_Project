@@ -24,7 +24,7 @@
                 <?php endif; ?>
             </ul>
         </nav>
-        
+
         <script>
             const hamburger = document.getElementById("hamburger");
             const menu = document.getElementById("menu");

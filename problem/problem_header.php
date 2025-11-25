@@ -19,7 +19,6 @@ if (!empty($_SESSION['member'])) {
 <head>
     <meta charset="UTF-8" />
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    
 </head>
 
 <body>
@@ -29,7 +28,7 @@ if (!empty($_SESSION['member'])) {
             <img src="../images/icon2.png" alt="サイトのロゴ" />
         </a>
 
-       <?php if (isset($member)) : ?>
+        <?php if (isset($member)) : ?>
             <p id="logout">
                 <?= htmlspecialchars($member->user_name) ?> さん
                 <a href="../logout.php" class="logout-btn">ログアウト</a>
@@ -43,9 +42,6 @@ if (!empty($_SESSION['member'])) {
         <?php endif; ?>
     </header>
 </header>
-    <hr />
+
 </body>
-
 </html>
-
- 

@@ -38,7 +38,9 @@ $member = $_SESSION['member'];
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'mypage/side.php';?>
+            <div class="d-none d-md-block">
+                <?php include 'mypage/side.php';?>
+            </div>
 
             <main class="main-content">
                 <!--ここに記載する-->

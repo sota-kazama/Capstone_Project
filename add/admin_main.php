@@ -16,30 +16,33 @@ $member = $_SESSION['member'];
 
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <title>管理者ページ</title>
-</head>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            rel="stylesheet"
+        />
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
+        <?php include '../template/header2.php'; ?>
+        <title>管理者ページ</title>
+    </head>
 
-<body>
-    <div class="d-flex w-100 min-vh-100">
-        <?php include 'side.php'; ?>
-        <main class="main-content">
-            <h1>管理者ページトップ</h1>
-            <h3>サイドバーより項目を選択して管理してください</h3>
-        </main>
-    </div>
+    <body>
+        <div class="d-flex w-100 min-vh-100">
+            <?php include 'side.php'; ?>
+            <main class="main-content">
+                <h1>管理者ページトップ</h1>
+                <h3>サイドバーより項目を選択して管理してください</h3>
+            </main>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 
-<footer>
-    <?php include '../template/footer.php'; ?>
-</footer>
-
+    <footer>
+        <?php include '../template/footer.php'; ?>
+    </footer>
 </html>
