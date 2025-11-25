@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'side.php'; ?>
 
     <main class="main-content flex-grow-1 p-4">
-        <h1>書籍登録（管理者用）</h1>
+        <h1>書籍登録</h1>
 
         <?php if ($message): ?>
         <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
