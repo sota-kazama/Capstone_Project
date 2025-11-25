@@ -32,14 +32,7 @@
 
                 <table class="table">
                     <thead>
-<<<<<<< HEAD
                         <tr><th style="width: 10%;">選択肢</th><th></th></tr>
-=======
-                        <tr>
-                            <th style="width: 10%">選択肢</th>
-                            <th>説明</th>
-                        </tr>
->>>>>>> a6b6452779ba2a83539497c5e96ffe0355718123
                     </thead>
                     <tbody>
                         <tr>

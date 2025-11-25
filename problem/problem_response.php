@@ -63,7 +63,6 @@ if (!empty($questions)) {
 
                 <table class="table">
                     <thead>
-<<<<<<< HEAD
                         <tr><th style="width: 10%;">選択肢</th><th></th></tr>
                     </thead>
                     <tbody>
@@ -71,7 +70,6 @@ if (!empty($questions)) {
                         <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">B</a></td><td></td></tr>
                         <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">C</a></td><td></td></tr>
                         <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">D</a></td><td></td></tr>
-=======
                         <tr>
                             <th style="width: 10%">選択肢</th>
                             <th>説明</th>
@@ -94,7 +92,6 @@ if (!empty($questions)) {
                             <td>D</td>
                             <td><?php echo $question->wrong_answer3; ?></td>
                         </tr>
->>>>>>> a6b6452779ba2a83539497c5e96ffe0355718123
                     </tbody>
                 </table>
 
