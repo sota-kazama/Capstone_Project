@@ -91,10 +91,6 @@ if (!empty($questions)) {
                             <td></td>
                         </tr>
 
-                        <tr>
-                            <th style="width: 10%">選択肢</th>
-                            <th>説明</th>
-                        </tr>
                     </tbody>
 
                     <!-- <tbody>
