@@ -19,9 +19,10 @@ if (!empty($keyword)) {
 }
 
 //ログイン中の会員データを取得
-$member = $_SESSION['member'];
+if (!empty($_SESSION['member'])) {
+    $member = $_SESSION['member'];
+}
 ?>
-
 
 <!DOCTYPE html>
 <html>
