@@ -42,19 +42,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a class="btn btn-outline-primary" role="button">A</a></td>
+                            <td><a class="btn btn-primary" role="button">A</a></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-outline-primary" role="button">B</a></td>
+                            <td><a class="btn btn-primary" role="button">B</a></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-outline-primary" role="button">C</a></td>
+                            <td><a class="btn btn-primary" role="button">C</a></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-outline-primary" role="button">D</a></td>
+                            <td><a class="btn btn-primary" role="button">D</a></td>
                             <td></td>
                         </tr>
                     </tbody>

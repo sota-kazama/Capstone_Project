@@ -114,7 +114,7 @@ if (!empty($questions)) {
                             <td>D</td>
                             <td><?php echo $question->wrong_answer3; ?></td>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
 
                 <?php if (isset($member)) : ?>
