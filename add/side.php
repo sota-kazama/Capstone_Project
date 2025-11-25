@@ -30,6 +30,13 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
+            <a href="shikaku_manage.php"
+                class="nav-link <?= $current === 'shikaku_manage.php' ? 'active' : 'link-body-emphasis' ?>">
+                資格登録ページ
+            </a>
+        </li>
+
+        <li>
             <a href="m_problem_register.php"
                 class="nav-link <?= $current === 'm_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
                 問題管理ページ
