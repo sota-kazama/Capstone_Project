@@ -1,6 +1,3 @@
-<?php
-    require_once 'QuestionDAO.php';
-?>
 <!DOCTYPE html>
 <html>
     <head>
