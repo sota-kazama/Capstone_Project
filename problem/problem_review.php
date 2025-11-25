@@ -63,7 +63,10 @@ if (!empty($questions)) {
 
                 <table class="table">
                     <thead>
-                        <tr><th style="width: 10%;">選択肢</th><th></th></tr>
+                        <tr>
+                            <th style="width: 10%">選択肢</th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr><td><a class="btn btn-outline-primary " href="problem_answer.php" role="button">A</a></td><td></td></tr>

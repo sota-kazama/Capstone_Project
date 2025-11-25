@@ -18,6 +18,7 @@ if (!empty($questions)) {
         <!--こっちのheadは変更しない-->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link
             rel="stylesheet"
@@ -25,6 +26,7 @@ if (!empty($questions)) {
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
+
         <?php include 'problem_header.php'; ?>
     </head>
 
@@ -35,13 +37,14 @@ if (!empty($questions)) {
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'problem_side.php';?>
+            <?php include 'problem_side.php'; ?>
 
             <main class="main-content">
                 <!--ここに記載する-->
                 <div class="d-flex flex-wrap">
                     <h1>問題回答</h1>
-                    <?php if(isset($member)) : ?>
+
+                    <?php if (isset($member)) : ?>
                     <button type="button" class="btn btn-primary ms-auto">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -58,23 +61,42 @@ if (!empty($questions)) {
                     </button>
                     <?php endif; ?>
                 </div>
-                <h2>第<?php echo $question->q_number;?>問</h2>
+
+                <h2>第<?php echo $question->q_number; ?>問</h2>
                 <h3><?php echo $question->q_content; ?></h3>
 
                 <table class="table">
                     <thead>
-                        <tr><th style="width: 10%;">選択肢</th><th></th></tr>
+                        <tr>
+                            <th style="width: 10%">選択肢</th>
+                            <th></th>
+                        </tr>
                     </thead>
+
                     <tbody>
-                        <tr><td><a class="btn btn-outline-primary " href="problem_answer.php" role="button">A</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">B</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">C</a></td><td></td></tr>
-                        <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">D</a></td><td></td></tr>
-                        <!-- <tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">A</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">B</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">C</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">D</a></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
                             <th style="width: 10%">選択肢</th>
                             <th>説明</th>
                         </tr>
-                    </thead>
+                    </tbody>
+
                     <tbody>
                         <tr>
                             <td>A</td>
@@ -95,7 +117,7 @@ if (!empty($questions)) {
                     </tbody> -->
                 </table>
 
-                <?php if(isset($member)) : ?>
+                <?php if (isset($member)) : ?>
                 <div class="d-flex flex-wrap gap-2">
                     <button type="button" class="btn btn-success ms-auto">1</button>
                     <button type="button" class="btn btn-warning">2</button>
@@ -107,6 +129,7 @@ if (!empty($questions)) {
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
+
     <footer>
         <?php include 'problem_footer.php'; ?>
     </footer>

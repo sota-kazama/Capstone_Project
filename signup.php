@@ -42,81 +42,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <title>新規会員登録</title>
 
-<head>
-    <meta charset="utf-8">
-    <title>新規会員登録</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../css/sidebar.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/SignupDesign.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    <link href="css/BaseDesignData.css" rel="stylesheet" />
-    <?php include 'template/header2.php'; ?>
-    <?php include 'template/hamburger.php'; ?>
-</head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="../css/sidebar.css" rel="stylesheet" />
+        <link rel="stylesheet" href="css/SignupDesign.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link href="css/BaseDesignData.css" rel="stylesheet" />
 
-<body>
-    <div class="page-container">
-        <?php include 'template/side.php'; ?>
+        <?php include 'template/header2.php'; ?>
+        <?php include 'template/hamburger.php'; ?>
+    </head>
 
-        <div class="signup-wrapper">
+    <body>
+            <div class="signup-wrapper">
+                <div class="signup-container">
+                    <h2>新規会員登録</h2>
 
-            <div class="signup-container">
+                    <form action="signup.php" method="POST">
+                        <table>
+                            <tr>
+                                <td>ユーザー名*</td>
+                                <td>
+                                    <input type="text" placeholder="例)電子 太郎" name="user_name" />
+                                    <span style="color: red"><?= @$errs['user_name'] ?></span>
+                                </td>
+                            </tr>
 
+                            <tr>
+                                <td>メールアドレス*</td>
+                                <td>
+                                    <input type="email" placeholder="例)aaa@aaa" name="mail_address" />
+                                    <span style="color: red"><?= @$errs['mail_address'] ?></span>
+                                </td>
+                            </tr>
 
-                <h2>新規会員登録</h2>
-                <!-- <p>以下の項目を入力し、登録ボタンをクリックしてください(*は必須)</p> -->
+                            <tr>
+                                <td>パスワード(4文字以上)*</td>
+                                <td>
+                                    <input type="password" minlength="4" name="pass_word" />
+                                    <span style="color: red"><?= @$errs['pass_word'] ?></span>
+                                </td>
+                            </tr>
 
+                            <tr>
+                                <td>パスワード(再入力)*</td>
+                                <td>
+                                    <input type="password" name="pass_word2" />
+                                </td>
+                            </tr>
+                        </table>
 
-                <form action="signup.php" method="POST">
-                    <table>
+                        <input type="submit" value="登録" class="btn btn-primary mt-3" />
+                    </form>
 
-                        <tr>
-                            <td>ユーザー名*</td>
-                            <td><input type="text" placeholder="例)電子 太郎" name="user_name">
-                                <span style="color: red"><?= @$errs['user_name'] ?></span>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>メールアドレス*</td>
-                            <td><input type="email" placeholder="例)aaa@aaa" name="mail_address">
-                                <span style="color: red"><?= @$errs['mail_address'] ?></span>
-
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>パスワード(4文字以上)*</td>
-                            <td><input type="password" minlength="4" name="pass_word">
-                                <span style="color: red"><?= @$errs['pass_word'] ?></span>
-
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>パスワード(再入力)*</td>
-                            <td><input type="password" name="pass_word2"></td>
-                        </tr>
-
-                        </tr>
-                    </table>
-                    <input type="submit" value="登録">
-                </form>
-
-                <div class="link">
-                    <a href="login.php">すでにアカウントをお持ちの方はこちら</a>
+                    <div class="link mt-3">
+                        <a href="login.php">すでにアカウントをお持ちの方はこちら</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </body>
 
-
-
-</body>
-
-<footer>
-    <?php include 'template/footer.php'; ?>
-</footer>
-
+    <footer>
+        <?php include 'template/footer.php'; ?>
+    </footer>
 </html>

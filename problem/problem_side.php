@@ -28,11 +28,11 @@ $current = basename($_SERVER['PHP_SELF']);
                     <i class="bi bi-card-list"></i>
                 マイページ
 
-                 <a href="../question_list.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+                <a href="../question_list.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
 
                     <i class="bi bi-chat-left"></i>
                 質問箱
-                </a>          
+                </a>
             <?php endif; ?>
         </li>
     </ul>
