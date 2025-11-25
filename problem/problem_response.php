@@ -97,7 +97,7 @@ if (!empty($questions)) {
                         </tr>
                     </tbody>
 
-                    <tbody>
+                    <!-- <tbody>
                         <tr>
                             <td>A</td>
                             <td><?php echo $question->answer_content; ?></td>
