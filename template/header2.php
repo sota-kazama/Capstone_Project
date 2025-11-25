@@ -6,7 +6,7 @@
     </head>
     <header>
         <div id="flex">
-            <a href="index.php">
+            <a href="../index.php">
                 <img src="../images/icon2.png" alt="" />
             </a>
         </div>

@@ -40,5 +40,22 @@ class BookDAO{
     // 取得した結果を返す
     return $data;
 
-}}
+}
+    public function insertBook(string $book_code, string $book_name, string $sakusya, string $syuppan)
+{
+    $dbh = DAO::get_db_connect();
+
+    $sql = "INSERT INTO books (book_code, book_name, sakusya, syuppan, created_ad, update_at)
+            VALUES (?, ?, ?, ?, CAST(GETDATE() AS DATE), CAST(GETDATE() AS DATE))";
+
+    $stmt = $dbh->prepare($sql);
+
+    return $stmt->execute([
+        $book_code,
+        $book_name,
+        $sakusya,
+        $syuppan
+    ]);
+}
+}
 ?>
