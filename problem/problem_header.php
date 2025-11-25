@@ -40,6 +40,7 @@ if (!empty($_SESSION['member'])) {
                 </p>
             </form>
         <?php endif; ?>
+        <hr>
     </header>
 </header>
 

@@ -70,7 +70,7 @@ if (!empty($questions)) {
                         <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">B</a></td><td></td></tr>
                         <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">C</a></td><td></td></tr>
                         <tr><td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">D</a></td><td></td></tr>
-                        <tr>
+                        <!-- <tr>
                             <th style="width: 10%">選択肢</th>
                             <th>説明</th>
                         </tr>
@@ -92,7 +92,7 @@ if (!empty($questions)) {
                             <td>D</td>
                             <td><?php echo $question->wrong_answer3; ?></td>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
 
                 <?php if(isset($member)) : ?>
@@ -111,18 +111,3 @@ if (!empty($questions)) {
         <?php include 'problem_footer.php'; ?>
     </footer>
 </html>
-
-<!-- <h2>第<?php echo $question->q_number; ?>問</h2>
-<h3><?php echo $question->q_content; ?></h3>
-
-<table class="table">
-    <thead>
-        <tr><th style="width: 10%;">選択肢</th><th>説明</th></tr>
-    </thead>
-    <tbody>
-        <tr><td>A</td><td><?php echo $question->answer_content; ?></td></tr>
-        <tr><td>B</td><td><?php echo $question->wrong_answer1; ?></td></tr>
-        <tr><td>C</td><td><?php echo $question->wrong_answer2; ?></td></tr>
-        <tr><td>D</td><td><?php echo $question->wrong_answer3; ?></td></tr>
-    </tbody>
-</table> -->
