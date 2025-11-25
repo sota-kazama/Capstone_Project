@@ -7,12 +7,6 @@ $current = basename($_SERVER['PHP_SELF']);
     style="width: 280px; height: 1617px;">
 
     <ul class="nav nav-pills flex-column mb-auto">
-        <li>
-            <a href="../mypage.php"
-                class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
-                マイページトップ
-            </a>
-        </li>
 
         <li>
             <a href="admin_main.php"
@@ -48,6 +42,14 @@ $current = basename($_SERVER['PHP_SELF']);
                 問題分野管理ページ
             </a>
         </li>
+
+        <li>
+            <a href="../mypage.php"
+                class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+                マイページトップ
+            </a>
+        </li>
+
         <li>
             <a href="../logout.php"
                 class="nav-link <?= $current === 'logout.php' ? 'active' : 'link-body-emphasis' ?>"
