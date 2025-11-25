@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-<?php
-    require_once '../helpers/QuestionDAO.php';
-?>
->>>>>>> a6b6452779ba2a83539497c5e96ffe0355718123
 <!DOCTYPE html>
 <html>
     <head>
@@ -38,7 +32,7 @@
                     </div>
                     <?php if(isset($member)) : ?>
                         <div style="width: 20rem;">
-                            <a href="problem_response.php" class="btn btn-outline-primary w-100">続きから(〇問目)</a>                        
+                            <a href="problem_response.php" class="btn btn-outline-primary w-100">続きから(〇問目)</a>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -67,7 +61,7 @@
                         </div>
                     </div>
                 <?php endif; ?>
-            </div> 
+            </div>
             </main>
         </div>
 

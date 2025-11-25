@@ -15,33 +15,28 @@ if (!empty($_SESSION['member'])) {
 
 <!DOCTYPE html>
 <html lang="jp">
+    <head>
+        <meta charset="UTF-8" />
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-</head>
-
-<body>
-    <header>
+    <body>
         <?php include "problem_hamburger.php"; ?>
         <a href="../index.php">
             <img src="../images/icon2.png" alt="サイトのロゴ" />
         </a>
 
         <?php if (isset($member)) : ?>
-            <p id="logout">
-                <?= htmlspecialchars($member->user_name) ?> さん
-                <a href="../logout.php" class="logout-btn">ログアウト</a>
-            </p>
+        <p id="logout">
+            <?= htmlspecialchars($member->user_name) ?> さん
+            <a href="../logout.php" class="logout-btn">ログアウト</a>
+        </p>
         <?php else : ?>
-            <form action="../login.php" method="post">
-                <p id="login">
-                    <input type="submit" value="ログイン" />
-                </p>
-            </form>
+        <form action="../login.php" method="post">
+            <p id="login">
+                <input type="submit" value="ログイン" />
+            </p>
+        </form>
         <?php endif; ?>
-    </header>
-</header>
-
-</body>
+    </body>
 </html>

@@ -32,7 +32,10 @@
 
                 <table class="table">
                     <thead>
-                        <tr><th style="width: 10%;">選択肢</th><th></th></tr>
+                        <tr>
+                            <th style="width: 10%">選択肢</th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr>
