@@ -11,6 +11,7 @@ if (!isset($_SESSION['member'])) {
 }
 
 $member = $_SESSION['member'];
+
 // 管理者アクセス制御
 if ($member->u_admin !== 1 && $member->u_admin !== '1') {
     header('Location: index.php');
@@ -20,6 +21,9 @@ if ($member->u_admin !== 1 && $member->u_admin !== '1') {
 $dao = new BookDAO();
 $message = '';
 $error = '';
+
+// ★ 全件取得（一覧表示用）
+$books = $dao->getAllBooks();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -36,6 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($success) {
             $message = "書籍を登録しました。";
+
+            // 登録後に最新一覧を再取得
+            $books = $dao->getAllBooks();
+
         } else {
             $error = "登録に失敗しました。";
         }
@@ -62,7 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'side.php'; ?>
 
     <main class="main-content flex-grow-1 p-4">
-        <h1>書籍登録</h1>
+        <div class="d-flex align-items-center mb-3">
+    <h1 class="m-0">書籍登録</h1>
+    <a href="book_search.php" class="btn btn-secondary ms-auto">書籍検索</a>
+</div>
+
+
 
         <?php if ($message): ?>
         <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
@@ -72,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
+        <!-- ▼ 書籍登録フォーム -->
         <div class="card p-4 mt-3">
             <h4>書籍新規登録フォーム</h4>
 
@@ -99,6 +113,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="btn btn-primary">登録</button>
             </form>
         </div>
+
+        <!-- ▼ ここから書籍一覧 -->
+        <div class="card p-4 mt-5">
+            <h4>書籍一覧</h4>
+
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>ISBNコード</th>
+                        <th>書籍名</th>
+                        <th>作者</th>
+                        <th>出版社</th>
+                        <th>登録日</th>
+                        <th>更新日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($books as $b): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($b->book_code) ?></td>
+                        <td><?= htmlspecialchars($b->book_name) ?></td>
+                        <td><?= htmlspecialchars($b->sakusya) ?></td>
+                        <td><?= htmlspecialchars($b->syuppan) ?></td>
+                        <td><?= htmlspecialchars($b->created_ad) ?></td>
+                        <td><?= htmlspecialchars($b->update_at) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
     </main>
 </div>
 </body>

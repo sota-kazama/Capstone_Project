@@ -57,5 +57,22 @@ class BookDAO{
         $syuppan
     ]);
 }
+public function getAllBooks()
+{
+    $dbh = DAO::get_db_connect();
+
+    $sql = "SELECT * FROM books ORDER BY book_code DESC";
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    $data = [];
+    while ($row = $stmt->fetchObject('Books')) {
+        $data[] = $row;
+    }
+
+    return $data;
+}
+
 }
 ?>
