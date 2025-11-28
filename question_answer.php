@@ -17,7 +17,7 @@ if (!$q) {
     die("指定された質問が見つかりません。");
 }
 
-// 回答一覧を取得
+// 回答一覧を取得（ShituAnswer オブジェクトの配列）
 $answers = $dao->getAnswers($shitu_number);
 ?>
 <!DOCTYPE html>
@@ -35,45 +35,62 @@ $answers = $dao->getAnswers($shitu_number);
 </head>
 
 <body>
-    <di class="d-flex w-100 min-vh-100">
+    <div class="d-flex w-100 min-vh-100">
         <div class="d-none d-md-block">
-                <?php include 'template/side.php'; ?>
-            </div>
+            <?php include 'template/side.php'; ?>
+        </div>
+
         <main class="main-content p-4">
             <h1><i class="bi bi-chat-dots"></i> 質問詳細</h1>
 
             <!-- 質問内容 -->
             <div class="card mt-4">
                 <div class="card-body">
-                    <h3 class="card-title"><?= nl2br(htmlspecialchars($q['shitu_content'])) ?></h3>
+                    <h3 class="card-title">
+                        <?= nl2br(htmlspecialchars($q->shitu_content)) ?>
+                    </h3>
+
                     <p class="text-muted mt-3">
                         投稿日：
                         <?php
-                        if (!empty($q['update_at'])) {
-                            echo date("Y-m-d H:i:s", strtotime($q['update_at']));
-                        } elseif (!empty($q['asked_date'])) {
-                            echo date("Y-m-d H:i:s", strtotime($q['asked_date']));
+                        if (!empty($q->update_at)) {
+                            echo date("Y-m-d H:i:s", strtotime($q->update_at));
+                        } elseif (!empty($q->asked_date)) {
+                            echo date("Y-m-d H:i:s", strtotime($q->asked_date));
                         } else {
                             echo '不明';
                         }
                         ?>
                     </p>
+
+
                 </div>
             </div>
-
 
             <!-- 回答一覧 -->
             <div class="mt-4">
                 <h4>回答</h4>
+
                 <?php if (empty($answers)): ?>
                     <p>まだ回答はありません。</p>
                 <?php else: ?>
                     <?php foreach ($answers as $a): ?>
                         <div class="card mb-2">
                             <div class="card-body">
-                                <p><?= nl2br(htmlspecialchars($a['ans_content'])) ?></p>
+                                <p><?= nl2br(htmlspecialchars($a->ans_content)) ?></p>
 
-                                <small class="text-muted">投稿日: <?= isset($a['update_at']) ? date("Y-m-d H:i:s", strtotime($a['update_at'])) : ($a['answer_date'] ?? '不明') ?></small>
+                                <small class="text-muted">
+                                    投稿日：
+                                    <?php
+                                    if (!empty($a->update_at)) {
+                                        echo date("Y-m-d H:i:s", strtotime($a->update_at));
+                                    } elseif (!empty($a->answer_date)) {
+                                        echo date("Y-m-d H:i:s", strtotime($a->answer_date));
+                                    } else {
+                                        echo "不明";
+                                    }
+                                    ?>
+                                </small>
 
 
                             </div>
@@ -86,20 +103,38 @@ $answers = $dao->getAnswers($shitu_number);
             <div class="mt-4">
                 <h5>回答する</h5>
                 <form action="question_answer_process.php" method="post">
-                    <input type="hidden" name="shitu_number" value="<?= $shitu_number ?>">
+                    <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>">
+
                     <div class="mb-3">
                         <textarea class="form-control" name="ans_content" rows="4" placeholder="回答内容を入力してください" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> 回答する</button>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send"></i> 回答する
+                    </button>
                 </form>
             </div>
 
             <a href="question_list.php" class="btn btn-secondary mt-3">一覧に戻る</a>
-        </main>
-    </di
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js">
-    </script>
+            <!-- 質問削除ボタン -->
+            <form action="question_delete.php" method="post" onsubmit="return confirm('本当に質問を削除しますか？');">
+                <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>">
+                <button type="submit" class="btn btn-danger mt-2">
+                    <i class="bi bi-trash"></i> 質問を削除
+                </button>
+            </form>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <footer>
+        <?php include 'template/footer.php'; ?>
+    </footer>
+
+
 </body>
 
 </html>
