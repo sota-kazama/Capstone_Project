@@ -22,9 +22,8 @@
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <div class="d-none d-md-block">
-                <?php include 'template/side.php'; ?>
-            </div>
+            <?php include 'template/side.php';?>
+
             <main class="main-content">
                 <!--ここに記載する-->
                 <h1>トップページ</h1>

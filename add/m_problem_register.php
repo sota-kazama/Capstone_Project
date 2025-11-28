@@ -33,6 +33,7 @@ $editCategories = [];
 if (isset($_GET['edit'])) {
     $id = intval($_GET['edit']);
     $editQuestion = $questionDAO->findById($id);
+
     if ($editQuestion) {
         // 編集対象の問題に紐づく分野を取得
         $editCategories = $categoryDAO->getCategoriesByQuestion($editQuestion->q_number);
@@ -45,22 +46,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $correct_answers = $_POST['correct_answers'] ?? [];
 
     $q_data = [
-        'q_content' => $_POST['q_content'] ?? '',
-        'answer_content' => $answers[0] ?? '',
-        'wrong_answer1' => $answers[1] ?? '',
-        'wrong_answer2' => $answers[2] ?? '',
-        'wrong_answer3' => $answers[3] ?? '',
-        'q_source' => $_POST['q_source'] ?? '',
-        'answers' => json_encode($answers),
-        'correct_answers' => json_encode($correct_answers)
+        'q_content'        => $_POST['q_content'] ?? '',
+        'answer_content'   => $answers[0] ?? '',
+        'wrong_answer1'    => $answers[1] ?? '',
+        'wrong_answer2'    => $answers[2] ?? '',
+        'wrong_answer3'    => $answers[3] ?? '',
+        'q_source'         => $_POST['q_source'] ?? '',
+        'answers'          => json_encode($answers),
+        'correct_answers'  => json_encode($correct_answers),
     ];
 
     // 画像アップロード処理
-    if (isset($_FILES['question_image']) && $_FILES['question_image']['error'] === UPLOAD_ERR_OK) {
+    if (
+        isset($_FILES['question_image']) &&
+        $_FILES['question_image']['error'] === UPLOAD_ERR_OK
+    ) {
         $uploadDir = __DIR__ . '/../uploads/';
+
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
+
         $tmpName = $_FILES['question_image']['tmp_name'];
         $fileName = uniqid() . '_' . basename($_FILES['question_image']['name']);
         $targetPath = $uploadDir . $fileName;
@@ -82,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         if ($questionDAO->insert($q_data)) {
-            // 新規登録後に ID を取得
             $q_number = $questionDAO->getLastInsertId();
             $message = "問題を登録しました。";
         } else {
@@ -92,8 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // カテゴリー登録処理（多対多）
     $selectedCategories = $_POST['area_numbers'] ?? [];
-    // まず既存の関連付けを削除
+
+    // 既存の関連付けを削除
     $categoryDAO->deleteCategoriesByQuestion($q_number);
+
     // 選択されたカテゴリーを再登録
     foreach ($selectedCategories as $area_number) {
         $categoryDAO->insertCategoryAssociation($q_number, $area_number);
@@ -104,21 +111,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $categories = $categoryDAO->getAll();
 $questions = $questionDAO->getAll();
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-            rel="stylesheet"
-        />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
         <title>問題登録・管理</title>
         <?php include '../template/header2.php'; ?>
+
         <script>
             function confirmDelete(id) {
                 if (confirm(`問題 #${id} を削除しますか？`)) {
@@ -139,43 +143,42 @@ $questions = $questionDAO->getAll();
                 </div>
 
                 <?php if ($message): ?>
-                <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
+                    <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
                 <?php endif; ?>
 
                 <form method="post" enctype="multipart/form-data" class="border rounded p-3 mb-5 bg-light">
-                    <input
-                        type="hidden"
-                        name="q_number"
-                        value="<?= htmlspecialchars($editQuestion->q_number ?? '') ?>"
-                    />
+                    <input type="hidden" name="q_number"
+                        value="<?= htmlspecialchars($editQuestion->q_number ?? '') ?>" />
 
                     <div class="mb-3">
                         <label class="form-label">問題文</label>
-                        <textarea name="q_content" class="form-control" rows="3" required>
-<?= htmlspecialchars($editQuestion->q_content ?? '') ?></textarea
-                        >
+                        <textarea name="q_content" class="form-control" rows="3" required><?= htmlspecialchars($editQuestion->q_content ?? '') ?></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">選択肢（4択）</label>
+
                         <?php
-                    $answers = $editQuestion ? json_decode($editQuestion->answers, true) : ["", "", "", ""]; $corrects =
-                        $editQuestion ? json_decode($editQuestion->correct_answers, true) : []; ?>
+                            $answers = $editQuestion ? json_decode($editQuestion->answers, true) : ["", "", "", ""];
+                            $corrects = $editQuestion ? json_decode($editQuestion->correct_answers, true) : [];
+                        ?>
+
                         <?php for ($i = 1; $i <= 4; $i++): ?>
-                        <div class="input-group mb-2">
-                            <span class="input-group-text"><?= $i ?></span>
-                            <input
-                                type="text"
-                                name="answers[]"
-                                class="form-control"
-                                value="<?= htmlspecialchars($answers[$i-1] ?? '') ?>"
-                                required
-                            />
-                            <div class="input-group-text">
-                                <input type="checkbox" name="correct_answers[]" value="<?= $i ?>"
-                                <?= in_array($i, $corrects ?? []) ? 'checked' : '' ?>> 正解
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><?= $i ?></span>
+                                <input
+                                    type="text"
+                                    name="answers[]"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($answers[$i-1] ?? '') ?>"
+                                    required
+                                />
+                                <div class="input-group-text">
+                                    <input type="checkbox" name="correct_answers[]" value="<?= $i ?>"
+                                        <?= in_array($i, $corrects ?? []) ? 'checked' : '' ?> />
+                                    正解
+                                </div>
                             </div>
-                        </div>
                         <?php endfor; ?>
                     </div>
 
@@ -192,38 +195,42 @@ $questions = $questionDAO->getAll();
                     <div class="mb-3">
                         <label class="form-label">画像（任意）</label>
                         <input type="file" name="question_image" class="form-control" />
+
                         <?php if (!empty($editQuestion->image_path)): ?>
-                        <div class="mt-2">
-                            <img
-                                src="../uploads/<?= htmlspecialchars($editQuestion->image_path) ?>"
-                                alt="問題画像"
-                                style="max-width: 200px"
-                            />
-                        </div>
+                            <div class="mt-2">
+                                <img src="../uploads/<?= htmlspecialchars($editQuestion->image_path) ?>"
+                                    alt="問題画像"
+                                    style="max-width: 200px" />
+                            </div>
                         <?php endif; ?>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">分野（複数選択可）</label><br />
+
                         <?php foreach ($categories as $cat): ?>
-                        <div class="form-check form-check-inline">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="area_numbers[]"
-                                value="<?= htmlspecialchars($cat->area_number) ?>"
-                                <?="in_array($cat-"
-                            />area_number, $editCategories) ? 'checked' : '' ?>>
-                            <label class="form-check-label"><?= htmlspecialchars($cat->area_name) ?></label>
-                        </div>
+                            <div class="form-check form-check-inline">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="area_numbers[]"
+                                    value="<?= htmlspecialchars($cat->area_number) ?>"
+                                    <?= in_array($cat->area_number, $editCategories) ? 'checked' : '' ?>
+                                />
+                                <label class="form-check-label">
+                                    <?= htmlspecialchars($cat->area_name) ?>
+                                </label>
+                            </div>
                         <?php endforeach; ?>
                     </div>
 
                     <div class="text-end">
                         <?php if ($editQuestion): ?>
-                        <a href="?" class="btn btn-secondary">キャンセル</a>
+                            <a href="?" class="btn btn-secondary">キャンセル</a>
                         <?php endif; ?>
-                        <button type="submit" class="btn btn-primary"><?= $editQuestion ? '更新' : '登録' ?></button>
+                        <button type="submit" class="btn btn-primary">
+                            <?= $editQuestion ? '更新' : '登録' ?>
+                        </button>
                     </div>
                 </form>
 
@@ -232,34 +239,38 @@ $questions = $questionDAO->getAll();
 
                 <div class="list-group mt-3">
                     <?php foreach ($questions as $q): ?>
-                    <div class="list-group-item">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <strong>#<?= $q->q_number ?>:</strong>
-                                <?= htmlspecialchars(mb_strimwidth($q->q_content, 0, 100, '...')) ?>
-                                <?php if (!empty($q->image_path)): ?> <br /><img
-                                    src="../uploads/<?= htmlspecialchars($q->image_path) ?>"
-                                    alt="問題画像"
-                                    style="max-width: 100px"
-                                />
-                                <?php endif; ?>
-                                <span class="text-muted small">
-                                    (更新:
-                                    <?= htmlspecialchars($q->update_ad ?? '') ?>)
-                                </span>
-                            </div>
-                            <div>
-                                <a href="?edit=<?= $q->q_number ?>" class="btn btn-sm btn-outline-primary">編集</a>
-                                <button
-                                    type="button"
-                                    class="btn btn-sm btn-outline-danger"
-                                    onclick="confirmDelete(<?= $q->q_number ?>)"
-                                >
-                                    削除
-                                </button>
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <strong>#<?= $q->q_number ?>:</strong>
+                                    <?= htmlspecialchars(mb_strimwidth($q->q_content, 0, 100, '...')) ?>
+
+                                    <?php if (!empty($q->image_path)): ?>
+                                        <br />
+                                        <img
+                                            src="../uploads/<?= htmlspecialchars($q->image_path) ?>"
+                                            alt="問題画像"
+                                            style="max-width: 100px" />
+                                    <?php endif; ?>
+
+                                    <span class="text-muted small">
+                                        (更新: <?= htmlspecialchars($q->update_ad ?? '') ?>)
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <a href="?edit=<?= $q->q_number ?>"
+                                        class="btn btn-sm btn-outline-primary">編集</a>
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="confirmDelete(<?= $q->q_number ?>)">
+                                        削除
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </main>
@@ -272,4 +283,3 @@ $questions = $questionDAO->getAll();
         <?php include '../template/footer.php'; ?>
     </footer>
 </html>
-

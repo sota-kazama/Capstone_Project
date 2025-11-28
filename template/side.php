@@ -32,7 +32,7 @@ $current = basename($_SERVER['PHP_SELF']);
 
                     <i class="bi bi-chat-left"></i>
                 質問箱
-                </a>          
+                </a>
             <?php endif; ?>
         </li>
     </ul>

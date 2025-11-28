@@ -7,12 +7,6 @@ $current = basename($_SERVER['PHP_SELF']);
     style="width: 280px; height: 1617px;">
 
     <ul class="nav nav-pills flex-column mb-auto">
-        <li>
-            <a href="../mypage.php"
-                class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
-                マイページトップ
-            </a>
-        </li>
 
         <li>
             <a href="admin_main.php"
@@ -29,9 +23,23 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
+            <a href="create_book.php"
+                class="nav-link <?= $current === 'create_book.php' ? 'active' : 'link-body-emphasis' ?>">
+                図書登録ページ
+            </a>
+        </li>
+
+        <li>
             <a href="shikaku_manage.php"
                 class="nav-link <?= $current === 'shikaku_manage.php' ? 'active' : 'link-body-emphasis' ?>">
-                資格管理ページ
+                資格登録ページ
+            </a>
+        </li>
+
+        <li>
+            <a href="m_problem_register.php"
+                class="nav-link <?= $current === 'm_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
+                問題管理ページ
             </a>
         </li>
 
@@ -43,9 +51,9 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
-            <a href="m_problem_register.php"
-                class="nav-link <?= $current === 'm_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
-                問題管理ページ
+            <a href="../mypage.php"
+                class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+                マイページトップ
             </a>
         </li>
 

@@ -166,15 +166,16 @@ $fields = $fieldDAO->getAll();
                                     />
                                 </td>
                                 <td>
-                                    <select name="s_name" class="form-control" required>
-                                        <?php foreach ($shikakuList as $s): ?>
-                                        <option value="<?= htmlspecialchars($s->s_name) ?>" <?="($field-">
-                                            s_number === $s->s_number) ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($s->s_name) ?>
-                                        </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
+    <select name="s_name" class="form-control" required>
+        <?php foreach ($shikakuList as $s): ?>
+        <option value="<?= htmlspecialchars($s->s_name) ?>"
+            <?= ($field->s_number === $s->s_number) ? 'selected' : '' ?>>
+            <?= htmlspecialchars($s->s_name) ?>
+        </option>
+        <?php endforeach; ?>
+    </select>
+</td>
+
                                 <td><?= htmlspecialchars($field->created_ad ?? '') ?></td>
                                 <td><?= htmlspecialchars($field->update_at ?? '') ?></td>
                                 <td class="d-flex gap-1">

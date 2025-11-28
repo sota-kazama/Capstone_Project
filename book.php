@@ -19,9 +19,10 @@ if (!empty($keyword)) {
 }
 
 //ログイン中の会員データを取得
-$member = $_SESSION['member'];
+if (!empty($_SESSION['member'])) {
+    $member = $_SESSION['member'];
+}
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -68,7 +69,7 @@ $member = $_SESSION['member'];
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>コード</th>
+                                    <th>書籍コード</th>
                                     <th>書籍名</th>
                                     <th>作者名</th>
                                     <th>出版社</th>

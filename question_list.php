@@ -7,6 +7,8 @@ $dao = new ShitumonDAO();
 // 質問一覧を取得
 $questions = $dao->getAll();
 ?>
+
+
 <!DOCTYPE html>
 <html>
 
