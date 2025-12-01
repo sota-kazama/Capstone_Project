@@ -2,17 +2,22 @@
 
 require_once __DIR__ . '/../helpers/MemberDAO.php';
 
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!empty($_SESSION['member'])) {
-    $member = $_SESSION['member'];
+$member = $_SESSION['member'] ?? null;
+
+// 配列かオブジェクトどちらでも user_name を安全に取得
+$userName = null;
+
+if (is_array($member) && isset($member['user_name'])) {
+    $userName = $member['user_name'];
+} elseif (is_object($member) && isset($member->user_name)) {
+    $userName = $member->user_name;
 }
+
 ?>
-
-
 <!DOCTYPE html>
 <html lang="jp">
     <head>
@@ -26,11 +31,12 @@ if (!empty($_SESSION['member'])) {
                 <img src="images/icon2.png" alt="サイトのロゴ" />
             </a>
 
-            <?php if (isset($member)) : ?>
+            <?php if ($userName !== null) : ?>
             <p id="logout">
-                <?= htmlspecialchars($member->user_name) ?> さん
+                <?= htmlspecialchars($userName) ?> さん
                 <a href="logout.php" class="logout-btn">ログアウト</a>
             </p>
+
             <?php else : ?>
             <form action="login.php" method="post">
                 <p id="login">
@@ -38,6 +44,7 @@ if (!empty($_SESSION['member'])) {
                 </p>
             </form>
             <?php endif; ?>
+
         </header>
         <hr />
     </body>
