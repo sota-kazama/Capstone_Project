@@ -2,14 +2,18 @@
 require_once '../helpers/QuestionDAO.php';
 
 $dao = new QuestionDAO();
-$questions = $dao->getAll();   // ← ここで DB からすべての問題を取得
+$questions = $dao->getAll();
 
-// 1問目を選択（例）
-if (!empty($questions)) {
-    $question = $questions[0];
+$i = isset($_GET['i']) ? intval($_GET['i']) : 0;
+
+// 問題が存在するかチェック
+if (!empty($questions) && isset($questions[$i])) {
+    $question = $questions[$i];
 } else {
-    $question = null;
+    header("Location: problem.php");
+    exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +47,7 @@ if (!empty($questions)) {
                 <!--ここに記載する-->
                 <div class="d-flex flex-wrap">
                     <h1>問題回答</h1>
-
+                    <!--しおり--> 
                     <?php if (isset($member)) : ?>
                     <button type="button" class="btn btn-primary ms-auto">
                         <svg
@@ -75,55 +79,40 @@ if (!empty($questions)) {
 
                     <tbody>
                         <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">A</a></td>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">A</a></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">B</a></td>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">B</a></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">C</a></td>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">C</a></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php" role="button">D</a></td>
+                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">D</a></td>
                             <td></td>
                         </tr>
 
                     </tbody>
 
-                    <!-- <tbody>
-                        <tr>
-                            <td>A</td>
-                            <td><?php echo $question->answer_content; ?></td>
-                        </tr>
-                        <tr>
-                            <td>B</td>
-                            <td><?php echo $question->wrong_answer1; ?></td>
-                        </tr>
-                        <tr>
-                            <td>C</td>
-                            <td><?php echo $question->wrong_answer2; ?></td>
-                        </tr>
-                        <tr>
-                            <td>D</td>
-                            <td><?php echo $question->wrong_answer3; ?></td>
-                        </tr>
-                    </tbody> -->
                 </table>
-
+                <!--ラベリング -->        
                 <?php if (isset($member)) : ?>
                 <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-success ms-auto">1</button>
-                    <button type="button" class="btn btn-warning">2</button>
-                    <button type="button" class="btn btn-danger">3</button>
+                    <button type="button" class="btn btn-outline-success ms-auto">1</button>
+                    <button type="button" class="btn btn-outline-warning">2</button>
+                    <button type="button" class="btn btn-outline-danger">3</button>
                 </div>
                 <?php endif; ?>
             </main>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            
+        </script>
     </body>
 
     <footer>

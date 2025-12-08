@@ -1,3 +1,22 @@
+<?php
+require_once '../helpers/QuestionDAO.php';
+
+$dao = new QuestionDAO();
+$questions = $dao->getAll();
+
+$i = isset($_GET['i']) ? intval($_GET['i']) : 0;
+
+// 問題が存在するかチェック
+if (!empty($questions) && isset($questions[$i])) {
+    $question = $questions[$i];
+} else {
+    // 最終問題を超えたら終了ページへ飛ばすなど
+    header("Location: end.php");
+    exit;
+}
+$referer = $_SERVER['HTTP_REFERER'] ?? '';
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -26,10 +45,10 @@
             <main class="main-content">
                 <!--ここに記載する-->
                 <div class="d-flex flex-wrap">
-                    <h1>問題回答</h1>
+                    <h1>問題解説</h1>
 
                     <?php if (isset($member)) : ?>
-                    <button type="button" class="btn btn-primary ms-auto">
+                    <button type="button" class="btn btn-outline-primary ms-auto">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -45,8 +64,8 @@
                     </button>
                     <?php endif; ?>
                 </div>
-                <h2>第何問</h2>
-                <h3>問題文</h3>
+                <h2>第<?php echo $question->q_number; ?>問</h2>
+                <h3><?php echo $question->q_content; ?></h3>
 
                 <table class="table">
                     <thead>
@@ -57,33 +76,61 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a class="btn btn-primary" role="button">A</a></td>
-                            <td></td>
+                            <?php if($question->answer_content == "a") : ?>
+                                <td><a class="btn btn-success" role="button">A</a></td>
+                                <td></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">A</a></td>
+                                <td></td>                                
+                            <?php endif;?>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-primary" role="button">B</a></td>
-                            <td></td>
+                            <?php if($question->answer_content == "b") : ?>
+                                <td><a class="btn btn-success" role="button">B</a></td>
+                                <td></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">B</a></td>
+                                <td></td>
+                            <?php endif;?>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-primary" role="button">C</a></td>
-                            <td></td>
+                            <?php if($question->answer_content == "c") : ?>
+                                <td><a class="btn btn-success" role="button">C</a></td>
+                                <td></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">C</a></td>
+                                <td></td>                                
+                            <?php endif;?>
                         </tr>
                         <tr>
-                            <td><a class="btn btn-primary" role="button">D</a></td>
-                            <td></td>
+                            <?php if($question->answer_content == "d") : ?>
+                                <td><a class="btn btn-success" role="button">D</a></td>
+                                <td></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">D</a></td>
+                                <td></td>
+                            <?php endif;?>
                         </tr>
                     </tbody>
                 </table>
                 <div class="d-flex flex-wrap justify-content-center">
                     <div style="width: 13rem">
-                        <a href="problem_response.php" class="btn btn-outline-primary w-100">次の問題</a>
+                        <?php if(strpos($referer, 'problem_response.php') !== false) : ?>
+                            <a href="problem_response.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
+                                次の問題
+                            </a>
+                        <?php else :?>
+                            <a href="problem_review.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
+                                次の問題
+                            </a>
+                        <?php endif;?>
                     </div>
                 </div>
                 <?php if (isset($member)) : ?>
                 <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-success ms-auto">1</button>
-                    <button type="button" class="btn btn-warning">2</button>
-                    <button type="button" class="btn btn-danger">3</button>
+                    <button type="button" class="btn btn-outline-success ms-auto">1</button>
+                    <button type="button" class="btn btn-outline-warning">2</button>
+                    <button type="button" class="btn btn-outline-danger">3</button>
                 </div>
                 <?php endif; ?>
             </main>
