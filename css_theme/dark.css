@@ -49,3 +49,34 @@ li a:hover {
 .menu a {
     color: #daddda;
 }
+
+/* ====== 入力フォーム ====== */
+.form-control {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.form-control::placeholder {
+    color: #bbb;
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+}
+
+/* ====== テーブル ====== */
+.table {
+    background-color: #2b2b2b;
+    color: #fff;
+}
+
+.table thead th {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #323232;
+}
