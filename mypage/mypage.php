@@ -1,17 +1,16 @@
 <?php
-require_once './helpers/MemberDAO.php';
+require_once '../helpers/MemberDAO.php';
 
-
-//セッションを開始する
+// セッションを開始する
 session_start();
 
-//未ログインの場合
+// 未ログインの場合
 if (!isset($_SESSION['member'])) {
     header('Location: login.php');
     exit;
 }
 
-//ログイン中の会員データを取得
+// ログイン中の会員データを取得
 $member = $_SESSION['member'];
 ?>
 
@@ -26,9 +25,9 @@ $member = $_SESSION['member'];
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icosns@1.11.3/font/bootstrap-icons.min.css"
         />
-        <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <link href="css/side.css" rel="stylesheet" />
-        <?php include 'template/header.php'; ?>
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
+        <?php include './header.php'; ?>
     </head>
 
     <head>
@@ -39,7 +38,7 @@ $member = $_SESSION['member'];
     <body>
         <div class="d-flex w-100 min-vh-100">
             <div class="d-none d-md-block">
-                <?php include 'mypage/side.php';?>
+                <?php include 'side.php'; ?>
             </div>
 
             <main class="main-content">
