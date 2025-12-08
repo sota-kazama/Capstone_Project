@@ -42,115 +42,124 @@ if (isset($_GET['msg'])) {
 
 $list = $dao->getAll();
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            rel="stylesheet"
+        />
 
-    <!-- 共通CSS -->
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
+        <!-- 共通CSS -->
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
 
-    <!-- ★ テーマCSS（重要） -->
-    <link id="theme-css" href="../css_theme/<?= $theme ?>.css" rel="stylesheet" />
+        <!-- ★ テーマCSS（重要） -->
+        <link id="theme-css" href="../css_theme/<?= $theme ?>.css" rel="stylesheet" />
 
-    <!-- ★ トグルボタンCSS -->
-    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+        <!-- ★ トグルボタンCSS -->
+        <link href="../css_theme/toggle-button.css" rel="stylesheet" />
 
-    <?php include '../template/header2.php'; ?>
+        <?php include '../template/header2.php'; ?>
 
-    <title>資格管理</title>
-</head>
+        <title>資格管理</title>
+    </head>
 
-<body>
-    <div class="d-flex w-100 min-vh-100">
-        <?php include 'side.php'; ?>
+    <body>
+        <div class="d-flex w-100 min-vh-100">
+            <?php include 'side.php'; ?>
 
-        <main class="main-content container mt-4">
-            <h1>資格管理</h1>
+            <main class="main-content container mt-4">
+                <h1>資格管理</h1>
 
-            <?php if ($message): ?>
-            <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
-            <?php endif; ?>
+                <?php if ($message): ?>
+                <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
+                <?php endif; ?>
 
-            <!-- 新規追加フォーム -->
-            <div class="card mb-4">
-                <div class="card-header">新しい資格を追加</div>
-                <div class="card-body">
-                    <form method="post">
-                        <div class="mb-3">
-                            <label for="s_name" class="form-label">資格名</label>
-                            <input type="text" name="s_name" id="s_name" class="form-control" required />
-                        </div>
-                        <button type="submit" name="add" class="btn btn-primary">追加</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 一覧 -->
-            <table class="table table-bordered align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>資格名</th>
-                        <th>登録日</th>
-                        <th>更新日</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($list as $row): ?>
-                    <tr>
+                <!-- 新規追加フォーム -->
+                <div class="card mb-4">
+                    <div class="card-header">新しい資格を追加</div>
+                    <div class="card-body">
                         <form method="post">
-                            <td><?= htmlspecialchars($row->s_number) ?></td>
-                            <td>
-                                <input
-                                    type="text"
-                                    name="s_name"
-                                    value="<?= htmlspecialchars($row->s_name) ?>"
-                                    class="form-control"
-                                />
-                            </td>
-                            <td><?= htmlspecialchars($row->created_ad) ?></td>
-                            <td><?= htmlspecialchars($row->update_at) ?></td>
-                            <td>
-                                <input type="hidden" name="s_number" value="<?= htmlspecialchars($row->s_number) ?>" />
-                                <button type="submit" name="update" class="btn btn-sm btn-success">更新</button>
-                                <button
-                                    type="submit"
-                                    name="delete"
-                                    class="btn btn-sm btn-danger"
-                                    onclick="return confirm('削除しますか？');"
-                                >削除</button>
-                            </td>
+                            <div class="mb-3">
+                                <label for="s_name" class="form-label">資格名</label>
+                                <input type="text" name="s_name" id="s_name" class="form-control" required />
+                            </div>
+                            <button type="submit" name="add" class="btn btn-primary">追加</button>
                         </form>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </main>
-    </div>
+                    </div>
+                </div>
 
-    <!-- ★ テーマ切替ボタン -->
-    <button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
-        <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
-    </button>
+                <!-- 一覧 -->
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>資格名</th>
+                            <th>登録日</th>
+                            <th>更新日</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($list as $row): ?>
+                        <tr>
+                            <form method="post">
+                                <td><?= htmlspecialchars($row->s_number) ?></td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        name="s_name"
+                                        value="<?= htmlspecialchars($row->s_name) ?>"
+                                        class="form-control"
+                                    />
+                                </td>
+                                <td><?= htmlspecialchars($row->created_ad) ?></td>
+                                <td><?= htmlspecialchars($row->update_at) ?></td>
+                                <td>
+                                    <input
+                                        type="hidden"
+                                        name="s_number"
+                                        value="<?= htmlspecialchars($row->s_number) ?>"
+                                    />
+                                    <button type="submit" name="update" class="btn btn-sm btn-success">更新</button>
+                                    <button
+                                        type="submit"
+                                        name="delete"
+                                        class="btn btn-sm btn-danger"
+                                        onclick="return confirm('削除しますか？');"
+                                    >
+                                        削除
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </main>
+        </div>
 
-    <!-- JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- ★ テーマ切替ボタン -->
+        <button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+        </button>
 
-    <!-- ★ テーマ切替JS -->
-    <script src="../js/theme-toggle.js"></script>
+        <!-- JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 
-</body>
+        <!-- ★ テーマ切替JS -->
+        <script src="../js/theme-toggle.js"></script>
+    </body>
 
-<footer>
-    <?php include '../template/footer.php'; ?>
-</footer>
-
+    <footer>
+        <?php include '../template/footer.php'; ?>
+    </footer>
 </html>

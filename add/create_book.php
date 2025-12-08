@@ -54,97 +54,96 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="utf-8" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <?php include '../template/header2.php'; ?>
-    <title>書籍登録</title>
-</head>
+    <head>
+        <meta charset="utf-8" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
+        <?php include '../template/header2.php'; ?>
+        <title>書籍登録</title>
+    </head>
 
-<body>
-<div class="d-flex w-100 min-vh-100">
-    <?php include 'side.php'; ?>
+    <body>
+        <div class="d-flex w-100 min-vh-100">
+            <?php include 'side.php'; ?>
 
-    <main class="main-content flex-grow-1 p-4">
-        <div class="d-flex align-items-center mb-3">
-    <h1 class="m-0">書籍登録</h1>
-    <a href="book_search.php" class="btn btn-secondary ms-auto">書籍検索</a>
-</div>
-
-
-
-        <?php if ($message): ?>
-        <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
-        <?php endif; ?>
-
-        <?php if ($error): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-
-        <!-- ▼ 書籍登録フォーム -->
-        <div class="card p-4 mt-3">
-            <h4>書籍新規登録フォーム</h4>
-
-            <form method="POST">
-                <div class="mb-3">
-                    <label class="form-label">ISBN-13コード</label>
-                    <input type="text" class="form-control" name="book_code" maxlength="14" required />
+            <main class="main-content flex-grow-1 p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <h1 class="m-0">書籍登録</h1>
+                    <a href="book_search.php" class="btn btn-secondary ms-auto">書籍検索</a>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">書籍名</label>
-                    <input type="text" class="form-control" name="book_name" maxlength="50" required />
+                <?php if ($message): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
+                <?php endif; ?>
+
+                <?php if ($error): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
+
+                <!-- ▼ 書籍登録フォーム -->
+                <div class="card p-4 mt-3">
+                    <h4>書籍新規登録フォーム</h4>
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">ISBN-13コード</label>
+                            <input type="text" class="form-control" name="book_code" maxlength="14" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">書籍名</label>
+                            <input type="text" class="form-control" name="book_name" maxlength="50" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">作者名</label>
+                            <input type="text" class="form-control" name="sakusya" maxlength="50" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">出版社名</label>
+                            <input type="text" class="form-control" name="syuppan" maxlength="50" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">登録</button>
+                    </form>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">作者名</label>
-                    <input type="text" class="form-control" name="sakusya" maxlength="50" required />
-                </div>
+                <!-- ▼ ここから書籍一覧 -->
+                <div class="card p-4 mt-5">
+                    <h4>書籍一覧</h4>
 
-                <div class="mb-3">
-                    <label class="form-label">出版社名</label>
-                    <input type="text" class="form-control" name="syuppan" maxlength="50" required />
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>ISBNコード</th>
+                                <th>書籍名</th>
+                                <th>作者</th>
+                                <th>出版社</th>
+                                <th>登録日</th>
+                                <th>更新日</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($books as $b): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($b->book_code) ?></td>
+                                <td><?= htmlspecialchars($b->book_name) ?></td>
+                                <td><?= htmlspecialchars($b->sakusya) ?></td>
+                                <td><?= htmlspecialchars($b->syuppan) ?></td>
+                                <td><?= htmlspecialchars($b->created_ad) ?></td>
+                                <td><?= htmlspecialchars($b->update_at) ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
-
-                <button type="submit" class="btn btn-primary">登録</button>
-            </form>
+            </main>
         </div>
-
-        <!-- ▼ ここから書籍一覧 -->
-        <div class="card p-4 mt-5">
-            <h4>書籍一覧</h4>
-
-            <table class="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th>ISBNコード</th>
-                        <th>書籍名</th>
-                        <th>作者</th>
-                        <th>出版社</th>
-                        <th>登録日</th>
-                        <th>更新日</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($books as $b): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($b->book_code) ?></td>
-                        <td><?= htmlspecialchars($b->book_name) ?></td>
-                        <td><?= htmlspecialchars($b->sakusya) ?></td>
-                        <td><?= htmlspecialchars($b->syuppan) ?></td>
-                        <td><?= htmlspecialchars($b->created_ad) ?></td>
-                        <td><?= htmlspecialchars($b->update_at) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-
-    </main>
-</div>
-</body>
+    </body>
 </html>
