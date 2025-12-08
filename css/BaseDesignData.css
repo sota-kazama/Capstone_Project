@@ -105,3 +105,53 @@ li a {
 .logout-btn:hover {
     background-color: #787575;
 }
+
+.login-btn1 {
+    background-color: #a5c2e3;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.login-btn1:hover {
+    background-color: #2f6bb2;
+}
+
+h1, h4, h5 {
+    border-left: 4px solid #0d6efd;
+    padding-left: 10px;
+    font-weight: 600;
+}
+
+/* カード共通 */
+.card {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+}
+
+/* 回答カードだけ左青線 */
+.answer-card {
+    border-left: 3px solid #0d6efd;
+}
+
+/* フォームのテキストエリア */
+textarea.form-control {
+    border-radius: 6px;
+    border: 1px solid #d0d7de;
+}
+textarea.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: none;
+}
+
+/* ボタンの丸み */
+.btn {
+    border-radius: 6px;
+}

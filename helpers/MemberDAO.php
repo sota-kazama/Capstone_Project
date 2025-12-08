@@ -20,7 +20,7 @@ class Member
 class MemberDAO
 {
     /**
-     * メンバー取得（ログイン認証）
+     * ログイン認証
      */
     public function get_member(string $mail_address, string $pass_word)
     {
@@ -31,6 +31,7 @@ class MemberDAO
         $stmt->execute();
 
         $member = $stmt->fetchObject('Member');
+
         if ($member !== false && password_verify($pass_word, $member->pass_word)) {
             return $member;
         }
@@ -43,12 +44,16 @@ class MemberDAO
     public function insert(Member $member): void
     {
         $dbh = DAO::get_db_connect();
-        $sql = "INSERT INTO master_user (mail_address, user_name, pass_word) VALUES (:mail_address, :user_name, :pass_word)";
+        $sql = "INSERT INTO master_user (mail_address, user_name, pass_word)
+                VALUES (:mail_address, :user_name, :pass_word)";
         $stmt = $dbh->prepare($sql);
+
         $password = password_hash($member->pass_word, PASSWORD_DEFAULT);
+
         $stmt->bindValue(':mail_address', $member->mail_address, PDO::PARAM_STR);
         $stmt->bindValue(':user_name', $member->user_name, PDO::PARAM_STR);
         $stmt->bindValue(':pass_word', $password, PDO::PARAM_STR);
+
         $stmt->execute();
     }
 
@@ -62,11 +67,12 @@ class MemberDAO
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':mail_address', $mail_address, PDO::PARAM_STR);
         $stmt->execute();
+
         return $stmt->fetch() !== false;
     }
 
     // ===================== 管理者用 =====================
-    
+
     /**
      * ページング付きメンバー取得
      */
@@ -101,11 +107,12 @@ class MemberDAO
     }
 
     /**
-     * メンバー情報更新（パスワードは任意）
+     * 管理者：メンバー情報更新（パスワード任意）
      */
     public function updateMemberAccount(int $user_id, string $user_name, string $mail_address, ?string $password_hashed, int $u_admin): bool
     {
         $dbh = DAO::get_db_connect();
+
         $sql = "
             UPDATE master_user
             SET user_name = :user_name,
@@ -113,9 +120,11 @@ class MemberDAO
                 u_admin = :u_admin,
                 update_at = GETDATE()
         ";
+
         if ($password_hashed !== null) {
             $sql .= ", pass_word = :pass_word";
         }
+
         $sql .= " WHERE user_id = :user_id";
 
         $stmt = $dbh->prepare($sql);
@@ -123,6 +132,7 @@ class MemberDAO
         $stmt->bindValue(':mail_address', $mail_address, PDO::PARAM_STR);
         $stmt->bindValue(':u_admin', $u_admin, PDO::PARAM_INT);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
         if ($password_hashed !== null) {
             $stmt->bindValue(':pass_word', $password_hashed, PDO::PARAM_STR);
         }
@@ -131,15 +141,69 @@ class MemberDAO
     }
 
     /**
-     * 会員種別（有効/無効）更新
+     * 管理者：会員種別更新
      */
     public function setMemberType(int $user_id, int $member_type): bool
     {
         $dbh = DAO::get_db_connect();
-        $sql = "UPDATE master_user SET member_type = :member_type, update_at = GETDATE() WHERE user_id = :user_id";
+        $sql = "
+            UPDATE master_user
+            SET member_type = :member_type,
+                update_at = GETDATE()
+            WHERE user_id = :user_id
+        ";
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':member_type', $member_type, PDO::PARAM_INT);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    // ===================== ユーザー本人用 =====================
+
+    /**
+     * user_id からメンバー情報取得
+     */
+    public function getMemberById(int $user_id)
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM master_user WHERE user_id = :user_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * ログイン中ユーザー自身のプロフィール更新
+     */
+    public function updateMemberSelf(int $user_id, string $user_name, string $mail_address, ?string $password_hashed = null): bool
+    {
+        $dbh = DAO::get_db_connect();
+
+        $sql = "
+            UPDATE master_user
+            SET user_name = :user_name,
+                mail_address = :mail_address,
+                update_at = GETDATE()
+        ";
+
+        if ($password_hashed !== null) {
+            $sql .= ", pass_word = :pass_word";
+        }
+
+        $sql .= " WHERE user_id = :user_id";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':user_name', $user_name, PDO::PARAM_STR);
+        $stmt->bindValue(':mail_address', $mail_address, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        if ($password_hashed !== null) {
+            $stmt->bindValue(':pass_word', $password_hashed, PDO::PARAM_STR);
+        }
+
         return $stmt->execute();
     }
 }
