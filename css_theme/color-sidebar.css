@@ -1,0 +1,29 @@
+:root {
+    --sidebar-bg-color: #91acd1;
+    --link-color: #2f3438;
+    --link-hover-color: #0d6efd;
+    --active-link-bg-color: #7287a5;
+    --active-link-text-color: #ffffff;
+    --icon-color: #3a4046;
+    --border-color: #dee2e6;
+}
+
+.custom-sidebar-color {
+    background-color: var(--sidebar-bg-color) !important;
+    color: var(--link-color);
+}
+
+.nav-link {
+    color: var(--link-color);
+}
+.nav-link:hover {
+    background-color: #fff;
+}
+
+.nav-link.active {
+    background-color: var(--active-link-bg-color) !important;
+    color: var(--active-link-text-color) !important;
+}
+.nav-link.active i {
+    color: var(--active-link-text-color);
+}

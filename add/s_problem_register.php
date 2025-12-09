@@ -17,6 +17,9 @@ $shikakuDAO = new ShikakuDAO();
 // メッセージ初期化
 $message = "";
 
+// ★ テーマ設定の追加 (テーマCSSとボタン表示に必要)
+$theme = $_COOKIE['theme'] ?? 'light';
+
 // 資格一覧を取得
 $shikakuList = $shikakuDAO->getAll();
 
@@ -38,7 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
         $fieldDAO->delete($areaCode);
         $message = "分野を削除しました。";
-    } elseif ($sNumber === null) {
+    } elseif ($sNumber === null && !isset($_POST['delete'])) {
+        // 削除時以外で資格が選択されていない場合
         $message = "選択された資格が存在しません。";
     } else {
         if (isset($_POST['update'])) {
@@ -50,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // --- PRGパターンでリダイレクト ---
     header("Location: " . $_SERVER['PHP_SELF'] . "?msg=" . urlencode($message));
     exit;
 }
@@ -60,28 +63,38 @@ if (isset($_GET['msg'])) {
     $message = $_GET['msg'];
 }
 
-// 最新の分野一覧を取得
 $fields = $fieldDAO->getAll();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="ja">
+    
+
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-            rel="stylesheet"
-        />
-        <link href="../css/BaseDesignData.css" rel="stylesheet" />
-        <link href="../css/side.css" rel="stylesheet" />
-        <?php include '../template/header2.php'; ?>
-        <title>問題分野管理</title>
-    </head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
+
+    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
+
+    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+
+    <title>問題分野管理</title>
+    <?php include '../template/header2.php'; ?>
+</head>
+
+
     <body>
         <div class="d-flex w-100 min-vh-100">
             <?php include 'side.php'; ?>
+
             <main class="main-content container mt-4">
                 <h1>問題分野管理</h1>
 
@@ -89,7 +102,6 @@ $fields = $fieldDAO->getAll();
                 <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
                 <?php endif; ?>
 
-                <!-- 新規登録カード -->
                 <div class="card mb-4">
                     <div class="card-header">新しい分野を登録</div>
                     <div class="card-body">
@@ -129,7 +141,6 @@ $fields = $fieldDAO->getAll();
                     </div>
                 </div>
 
-                <!-- 分野一覧テーブル -->
                 <table class="table table-bordered align-middle">
                     <thead class="table-light">
                         <tr>
@@ -142,6 +153,7 @@ $fields = $fieldDAO->getAll();
                             <th>操作</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <?php foreach ($fields as $index =>
                         $field): ?>
@@ -176,6 +188,7 @@ $fields = $fieldDAO->getAll();
     </select>
 </td>
 
+
                                 <td><?= htmlspecialchars($field->created_ad ?? '') ?></td>
                                 <td><?= htmlspecialchars($field->update_at ?? '') ?></td>
                                 <td class="d-flex gap-1">
@@ -197,8 +210,15 @@ $fields = $fieldDAO->getAll();
             </main>
         </div>
 
+        <button id="theme-toggle-btn" class="btn theme-toggle-btn">
+            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+        </button>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <script src="../js/theme-toggle.js"></script>
     </body>
+
     <footer>
         <?php include '../template/footer.php'; ?>
     </footer>

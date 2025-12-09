@@ -1,0 +1,118 @@
+/* ========== Base Layout & Typography ========== */
+body {
+    font-family: PlemolJP;
+    margin: 0;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    background-color: #ffffff;
+    color: #000;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+.main {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Navigation */
+nav {
+    position: fixed;
+    top: 24px;
+    width: 100%;
+    z-index: 10;
+}
+
+li a {
+    display: block;
+    padding: 8px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Right-top icons */
+#link,
+#login,
+#logout {
+    position: absolute;
+    top: 20px;
+    text-align: right;
+}
+
+#link {
+    right: 125px;
+    width: 38px;
+    height: 50px;
+    cursor: pointer;
+}
+
+#login {
+    right: 125px;
+    width: 20px;
+    height: 20px;
+}
+
+#logout {
+    right: 65px;
+    height: 17px;
+}
+
+/* Footer */
+.footerlinks {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-bottom: 10px;
+}
+.footerlinks a {
+    font-size: 10px;
+    text-decoration: none;
+}
+
+/* Logout button */
+.logout-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-left: 5px;
+    transition: background-color 0.3s;
+}
+.logout-btn:hover {
+    background-color: #787575;
+}
+
+/* Theme Toggle Button (右下) */
+#theme-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    border-radius: 50%;
+    border: none;
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    transition: 0.3s;
+}
+#theme-toggle-btn:hover {
+    filter: brightness(0.9);
+}
+body.dark-mode #theme-toggle-btn {
+    background-color: #333;
+    color: #f0f0f0;
+}

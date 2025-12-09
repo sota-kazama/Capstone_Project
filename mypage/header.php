@@ -28,7 +28,7 @@ if (is_array($member) && isset($member['user_name'])) {
     <?php include __DIR__ . '/hamburger.php'; ?>
 
     <!-- ロゴ -->
-    <a href="index.php">
+    <a href="../index.php">
         <img src="../images/icon2.png" alt="サイトのロゴ" />
     </a>
 

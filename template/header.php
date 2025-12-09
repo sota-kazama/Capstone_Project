@@ -20,33 +20,34 @@ if (is_array($member) && isset($member['user_name'])) {
 ?>
 <!DOCTYPE html>
 <html lang="jp">
+    <head>
+        <meta charset="UTF-8" />
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-</head>
+    <body>
+        <header>
+            <?php include "template/hamburger.php"; ?>
+            <a href="index.php">
+                <img src="images/icon2.png" alt="サイトのロゴ" />
+            </a>
 
-<body>
-    <header>
-        <?php include "template/hamburger.php"; ?>
-        <a href="index.php">
-            <img src="images/icon2.png" alt="サイトのロゴ" />
-        </a>
-
-        <?php if ($userName !== null) : ?>
+            <?php if ($userName !== null) : ?>
             <p id="logout">
-                <?= htmlspecialchars($userName) ?> さん
+                <?= htmlspecialchars($userName) ?>
+                さん
                 <a href="logout.php" class="logout-btn">ログアウト</a>
             </p>
 
-        <?php else : ?>
+            <?php else : ?>
             <form action="login.php" method="post">
                 <p id="login">
-                    <input type="submit" value="ログイン" class="login-btn1">
+                    <input type="submit" value="ログイン" class="login-btn1" />
                 </p>
+            </form>
+            <!-- ★この閉じタグが必要 -->
             <?php endif; ?>
-    </header>
-    <hr />
-</body>
-
+        </header>
+        <hr />
+    </body>
 </html>

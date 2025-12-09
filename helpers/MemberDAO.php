@@ -33,6 +33,11 @@ class MemberDAO
         $member = $stmt->fetchObject('Member');
 
         if ($member !== false && password_verify($pass_word, $member->pass_word)) {
+            // 認証成功時、最終アクセス日を更新
+            $this->update_access_date($member->user_id);
+            // 最終アクセス日更新後に最新の情報を再取得するか、
+            // $member->access_date を現在のタイムスタンプ（PHP側の日付）で上書きすることも可能です
+            // 今回はDB側の更新のみに留めます。
             return $member;
         }
         return false;
@@ -44,8 +49,10 @@ class MemberDAO
     public function insert(Member $member): void
     {
         $dbh = DAO::get_db_connect();
+        // INSERT時に access_date も設定する場合は、SQLに追加が必要です
         $sql = "INSERT INTO master_user (mail_address, user_name, pass_word)
                 VALUES (:mail_address, :user_name, :pass_word)";
+
         $stmt = $dbh->prepare($sql);
 
         $password = password_hash($member->pass_word, PASSWORD_DEFAULT);
@@ -64,6 +71,7 @@ class MemberDAO
     {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM master_user WHERE mail_address = :mail_address";
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':mail_address', $mail_address, PDO::PARAM_STR);
         $stmt->execute();
@@ -71,7 +79,44 @@ class MemberDAO
         return $stmt->fetch() !== false;
     }
 
+    /**
+     * 最終アクセス日を現在日時に更新
+     */
+    public function update_access_date(int $user_id): bool
+    {
+        $dbh = DAO::get_db_connect();
+        // DBの日付型に合わせた形式で更新（例: GETDATE() は SQL Server の場合。MySQLなら NOW()）
+        $sql = "
+            UPDATE master_user
+            SET access_date = GETDATE()
+            WHERE user_id = :user_id
+        ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
     // ===================== 管理者用 =====================
+
+    /**
+     * 全メンバー取得（ページングなし）
+     */
+    public function getAllMembers(): array
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            SELECT user_id, user_name, mail_address, u_admin, member_type, access_date
+            FROM master_user
+            ORDER BY user_id ASC
+        ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     /**
      * ページング付きメンバー取得
@@ -83,15 +128,17 @@ class MemberDAO
         $countSql = "SELECT COUNT(*) AS total_count FROM master_user";
         $countStmt = $dbh->query($countSql);
         $totalCount = (int)$countStmt->fetchColumn();
+
         $totalPages = (int)ceil($totalCount / $perPage);
         $offset = ($page - 1) * $perPage;
 
         $sql = "
-            SELECT user_id, user_name, mail_address, u_admin, member_type
+            SELECT user_id, user_name, mail_address, u_admin, member_type, access_date
             FROM master_user
             ORDER BY user_id ASC
             OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY
         ";
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
@@ -109,8 +156,13 @@ class MemberDAO
     /**
      * 管理者：メンバー情報更新（パスワード任意）
      */
-    public function updateMemberAccount(int $user_id, string $user_name, string $mail_address, ?string $password_hashed, int $u_admin): bool
-    {
+    public function updateMemberAccount(
+        int $user_id,
+        string $user_name,
+        string $mail_address,
+        ?string $password_hashed,
+        int $u_admin
+    ): bool {
         $dbh = DAO::get_db_connect();
 
         $sql = "
@@ -152,6 +204,7 @@ class MemberDAO
                 update_at = GETDATE()
             WHERE user_id = :user_id
         ";
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':member_type', $member_type, PDO::PARAM_INT);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
@@ -167,7 +220,9 @@ class MemberDAO
     public function getMemberById(int $user_id)
     {
         $dbh = DAO::get_db_connect();
+        // 取得するカラムに access_date を追加
         $sql = "SELECT * FROM master_user WHERE user_id = :user_id";
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -178,8 +233,13 @@ class MemberDAO
     /**
      * ログイン中ユーザー自身のプロフィール更新
      */
-    public function updateMemberSelf(int $user_id, string $user_name, string $mail_address, ?string $password_hashed = null): bool
-    {
+    public function updateMemberSelf(
+        int $user_id,
+        string $user_name,
+        string $mail_address,
+        ?string $password_hashed = null
+    ): bool {
+
         $dbh = DAO::get_db_connect();
 
         $sql = "
