@@ -11,7 +11,7 @@ if (!empty($questions) && isset($questions[$i])) {
     $question = $questions[$i];
 } else {
     // 最終問題を超えたら終了ページへ飛ばすなど
-    header("Location: end.php");
+    header("Location: problem_result.php");
     exit;
 }
 $referer = $_SERVER['HTTP_REFERER'] ?? '';
@@ -116,13 +116,21 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                 <div class="d-flex flex-wrap justify-content-center">
                     <div style="width: 13rem">
                         <?php if(strpos($referer, 'problem_response.php') !== false) : ?>
-                            <a href="problem_response.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
-                                次の問題
-                            </a>
+                            <?php if(!empty($questions) && isset($questions[$i+1])) : ?>
+                                <a href="problem_response.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
+                                    次の問題
+                                </a>
+                            <?php else : ?>
+                                <a href="problem_result.php" class="btn btn-outline-primary w-100">結果を見る</a>
+                            <?php endif;?>
                         <?php else :?>
-                            <a href="problem_review.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
-                                次の問題
-                            </a>
+                            <?php if(!empty($questions) && isset($questions[$i+1])) : ?>
+                                <a href="problem_review.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
+                                    次の問題
+                                </a>
+                            <?php else : ?>
+                                <a href="problem_result.php" class="btn btn-outline-primary w-100">結果を見る</a>
+                            <?php endif;?>
                         <?php endif;?>
                     </div>
                 </div>

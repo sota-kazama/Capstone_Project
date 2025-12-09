@@ -34,25 +34,26 @@
                         <div style="width: 20rem;">
                             <a href="problem_response.php" class="btn btn-outline-primary w-100">続きから(〇問目)</a>
                         </div>
+
                     <?php endif; ?>
                 </div>
                 <?php if(isset($member)) : ?>
                     <div class="d-flex flex-wrap justify-content-center p-2 g-col-6 gap-4">
-                        <div class="card shadow-sm" style="width: 13rem;">
+                        <div class="card shadow-sm" style="width: 14rem;">
                             <div class="card-body">
                                 <h5 class="card-title fw-semibold">レベル1(復習不要)</h5>
                                 <h5 class="card-title fw-semibold">〇問</h5>
                                 <a href="problem_review.php" class="btn btn-outline-success w-100">復習</a>
                             </div>
                         </div>
-                        <div class="card shadow-sm" style="width: 13rem;">
+                        <div class="card shadow-sm" style="width: 14rem;">
                             <div class="card-body">
                                 <h5 class="card-title fw-semibold">レベル2(復習要)</h5>
                                 <h5 class="card-title fw-semibold">〇問</h5>
                                 <a href="problem_review.php" class="btn btn-outline-warning w-100">復習</a>
                             </div>
                         </div>
-                        <div class="card shadow-sm" style="width: 13rem;">
+                        <div class="card shadow-sm" style="width: 14rem;">
                             <div class="card-body">
                                 <h5 class="card-title fw-semibold">レベル3(復習必要)</h5>
                                 <h5 class="card-title fw-semibold">〇問</h5>
