@@ -12,25 +12,22 @@ if (!isset($_SESSION['member'])) {
 
 $member = $_SESSION['member'];
 
-// 管理者アクセス制御
-if ($member->u_admin !== 1 && $member->u_admin !== '1') {
-    header('Location: index.php');
-    exit;
-}
-
 $dao = new BookDAO();
 $message = '';
 $error = '';
+
+// ★ テーマ設定の追加 (前回の要望に基づき追加)
+$theme = $_COOKIE['theme'] ?? 'light';
 
 // ★ 全件取得（一覧表示用）
 $books = $dao->getAllBooks();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $book_code  = $_POST['book_code'] ?? '';
-        $book_name  = $_POST['book_name'] ?? '';
-        $sakusya    = $_POST['sakusya'] ?? '';
-        $syuppan    = $_POST['syuppan'] ?? '';
+        $book_code 	= $_POST['book_code'] ?? '';
+        $book_name 	= $_POST['book_name'] ?? '';
+        $sakusya 	= $_POST['sakusya'] ?? '';
+        $syuppan 	= $_POST['syuppan'] ?? '';
 
         if ($book_code === '' || $book_name === '' || $sakusya === '' || $syuppan === '') {
             throw new Exception("全ての項目を入力してください。");
@@ -55,14 +52,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 
-
 <!DOCTYPE html>
 <html lang="ja">
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            rel="stylesheet"
+        />
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
+
+        <link id="theme-css" href="../css_theme/<?= $theme ?>.css" rel="stylesheet" />
+
+        <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+
         <?php include '../template/header2.php'; ?>
         <title>書籍登録</title>
     </head>
@@ -85,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
-                <!-- ▼ 書籍登録フォーム -->
                 <div class="card p-4 mt-3">
                     <h4>書籍新規登録フォーム</h4>
 
@@ -114,7 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
                 </div>
 
-                <!-- ▼ ここから書籍一覧 -->
                 <div class="card p-4 mt-5">
                     <h4>書籍一覧</h4>
 
@@ -145,5 +149,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </main>
         </div>
+
+        <button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+        </button>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="../js/theme-toggle.js"></script>
     </body>
+
+    <footer><?php include '../template/footer.php'; ?></footer>
 </html>

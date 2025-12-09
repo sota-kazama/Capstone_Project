@@ -17,6 +17,9 @@ $shikakuDAO = new ShikakuDAO();
 // メッセージ初期化
 $message = "";
 
+// ★ テーマ設定の追加 (テーマCSSとボタン表示に必要)
+$theme = $_COOKIE['theme'] ?? 'light';
+
 // 資格一覧を取得
 $shikakuList = $shikakuDAO->getAll();
 
@@ -38,7 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
         $fieldDAO->delete($areaCode);
         $message = "分野を削除しました。";
-    } elseif ($sNumber === null) {
+    } elseif ($sNumber === null && !isset($_POST['delete'])) {
+        // 削除時以外で資格が選択されていない場合
         $message = "選択された資格が存在しません。";
     } else {
         if (isset($_POST['update'])) {
@@ -65,31 +69,27 @@ $fields = $fieldDAO->getAll();
 
 <!DOCTYPE html>
 <html lang="ja">
+    
+
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <!-- Bootstrap -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-            rel="stylesheet"
-        />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-        <!-- 共通CSS -->
-        <link href="../css/BaseDesignData.css" rel="stylesheet" />
-        <link href="../css/side.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
-        <!-- テーマCSS ※ id="theme-css" が重要 -->
-        <link id="theme-css" rel="stylesheet" href="../css_theme/light.css" />
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
 
-        <!-- テーマ切り替えJS -->
-        <script src="../js/theme.js" defer></script>
+    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
 
-        <?php include '../template/header2.php'; ?>
+    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
 
-        <title>問題分野管理</title>
-    </head>
+    <title>問題分野管理</title>
+    <?php include '../template/header2.php'; ?>
+</head>
+
 
     <body>
         <div class="d-flex w-100 min-vh-100">
@@ -102,7 +102,6 @@ $fields = $fieldDAO->getAll();
                 <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
                 <?php endif; ?>
 
-                <!-- 新規登録カード -->
                 <div class="card mb-4">
                     <div class="card-header">新しい分野を登録</div>
                     <div class="card-body">
@@ -142,7 +141,6 @@ $fields = $fieldDAO->getAll();
                     </div>
                 </div>
 
-                <!-- 分野一覧 -->
                 <table class="table table-bordered align-middle">
                     <thead class="table-light">
                         <tr>
@@ -180,15 +178,16 @@ $fields = $fieldDAO->getAll();
                                     />
                                 </td>
                                 <td>
-                                    <select name="s_name" class="form-control" required>
-                                        <?php foreach ($shikakuList as $s): ?>
-                                        <option value="<?= htmlspecialchars($s->s_name) ?>" <?="($field-">
-                                            s_number === $s->s_number) ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($s->s_name) ?>
-                                        </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
+    <select name="s_name" class="form-control" required>
+        <?php foreach ($shikakuList as $s): ?>
+        <option value="<?= htmlspecialchars($s->s_name) ?>"
+            <?= ($field->s_number === $s->s_number) ? 'selected' : '' ?>>
+            <?= htmlspecialchars($s->s_name) ?>
+        </option>
+        <?php endforeach; ?>
+    </select>
+</td>
+
 
                                 <td><?= htmlspecialchars($field->created_ad ?? '') ?></td>
                                 <td><?= htmlspecialchars($field->update_at ?? '') ?></td>
@@ -211,7 +210,13 @@ $fields = $fieldDAO->getAll();
             </main>
         </div>
 
+        <button id="theme-toggle-btn" class="btn theme-toggle-btn">
+            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+        </button>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <script src="../js/theme-toggle.js"></script>
     </body>
 
     <footer>

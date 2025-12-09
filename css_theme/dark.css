@@ -1,13 +1,19 @@
+/* =========================================
+   Dark Theme Colors
+========================================= */
+
+/* Body & Main Content */
 body {
-    background-color: #2f3136;
-    color: #daddda;
+    background-color: #2f3136 !important;
+    color: #daddda !important;
 }
 
 .main-content {
-    background-color: #36393f;
-    color: #daddda;
+    background-color: #36393f !important;
+    color: #daddda !important;
 }
 
+/* サイドバーの一般的なリンクスタイル（!importantは削除し、独自のCSSを尊重） */
 li a {
     background-color: #2f3136;
     color: #b9bbbe;
@@ -27,56 +33,119 @@ li a:hover {
 }
 
 .logout-btn {
-    background-color: #4f545c;
-    color: #ffffff;
+    background-color: #4f545c !important;
+    color: #ffffff !important;
 }
 
 .logout-btn:hover {
-    background-color: #6b6f75;
+    background-color: #6b6f75 !important;
 }
 
 /* ハンバーガーのバー色 */
 .hamburger span {
-    background-color: #daddda;
+    background-color: #daddda !important;
 }
 
 /* メニュー背景色 */
 .menu {
-    background-color: #2f3136;
+    background-color: #2f3136 !important;
 }
 
 /* メニューリンク文字色 */
 .menu a {
-    color: #daddda;
+    color: #daddda !important;
 }
 
 /* ====== 入力フォーム ====== */
 .form-control {
-    background-color: #333;
-    color: #fff;
-    border-color: #555;
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #555 !important;
 }
 
 .form-control::placeholder {
-    color: #bbb;
+    color: #bbb !important;
 }
 
 .btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: #4a90e2 !important;
+    border-color: #4a90e2 !important;
 }
 
-/* ====== テーブル ====== */
+/* ====== カード (新規登録カード) の修正（!importantを維持） ====== */
+.card {
+    background-color: #3a3a3a !important;
+    border: 1px solid #444 !important;
+    color: #daddda !important;
+}
+
+.card-header {
+    background-color: #2b2b2b !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* ====== テーブルの修正（!importantを維持） ====== */
 .table {
-    background-color: #2b2b2b;
-    color: #fff;
+    background-color: #2b2b2b !important;
+    color: #fff !important;
+    /* Bootstrap 5 のカスタムプロパティを上書き */
+    --bs-table-color: #fff !important;
+    --bs-table-bg: #2b2b2b !important;
+    --bs-table-border-color: #444 !important;
 }
 
 .table thead th {
-    background-color: #3a3a3a;
-    color: #fff;
+    background-color: #3a3a3a !important;
+    color: #fff !important;
+}
+
+/* table-light クラスの上書き（見出し行） */
+.table-light {
+    --bs-table-color: #fff !important;
+    --bs-table-bg: #3a3a3a !important;
+    background-color: #3a3a3a !important;
+    color: #fff !important;
+}
+
+/* table-bordered の枠線 */
+.table-bordered > :not(caption) > * {
+    border-color: #444 !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #323232;
+    background-color: #323232 !important;
+}
+
+.alert-info {
+    background-color: #40444b !important;
+    color: #99aab5 !important;
+    border-color: #4f545c !important;
+}
+
+/* 例: ../css_theme/dark.css に追加 */
+
+/* フォームの背景と枠線（問題登録フォームの「bg-light」を上書き） */
+.main-content form.border {
+    background-color: #343a40 !important; /* 暗い背景色 */
+    border-color: #495057 !important; /* 濃い枠線 */
+}
+
+/* フォーム内のラベルやテキスト（文字色を白に） */
+.main-content form.border label.form-label,
+.main-content form.border .form-check-label {
+    color: #f8f9fa !important; /* 白い文字色 */
+}
+
+/* 選択肢の入力欄のグループテキスト（1, 2, 3, 4 の部分） */
+.main-content form.border .input-group-text {
+    background-color: #495057 !important; /* 暗い背景色 */
+    border-color: #6c757d !important;
+    color: #f8f9fa !important;
+}
+
+/* 選択肢やその他の入力欄 */
+.main-content form.border .form-control {
+    background-color: #495057 !important; /* 暗い背景色 */
+    border-color: #6c757d !important;
+    color: #f8f9fa !important;
 }
