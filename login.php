@@ -1,11 +1,14 @@
 <?php
+// ヘルパーファイルのパスが相対パスで正しいか確認
 require_once './helpers/MemberDAO.php';
 
 $mail_address = '';
 $errs = [];
 
+// セッションを開始
 session_start();
 
+// 既にログインしている場合はindex.phpへリダイレクト
 if (!empty($_SESSION['member'])) {
     header('Location:index.php');
     exit;
@@ -15,25 +18,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mail_address = $_POST['mail_address'] ?? '';
     $pass_word = $_POST['pass_word'] ?? '';
 
+    // メールアドレスのバリデーション
     if ($mail_address === '') {
         $errs['mail_address'] = 'メールアドレスを入力してください。';
     } elseif (!filter_var($mail_address, FILTER_VALIDATE_EMAIL)) {
         $errs['mail_address'] = 'メールアドレスの形式に誤りがあります。';
     }
 
+    // パスワードのバリデーション
     if ($pass_word === '') {
         $errs['pass_word'] = 'パスワードを入力してください。';
     }
 
+    // バリデーションエラーがなければログイン処理を実行
     if (empty($errs)) {
         $memberDAO = new MemberDAO();
+        
+        // MemberDAO::get_member を呼び出す
+        // ※このメソッド（前回修正済み）の内部で、認証成功時に
+        //   自動的に最終アクセス日(access_date)を更新する処理が実行されます。
         $member = $memberDAO->get_member($mail_address, $pass_word);
+        
         if ($member !== false) {
+            // ログイン成功
             session_regenerate_id(true);
             $_SESSION['member'] = $member;
             header('Location: index.php');
             exit;
         } else {
+            // ログイン失敗
             $errs[] = 'メールアドレスまたはパスワードに誤りがあります。';
         }
     }

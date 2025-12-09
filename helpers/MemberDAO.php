@@ -33,6 +33,11 @@ class MemberDAO
         $member = $stmt->fetchObject('Member');
 
         if ($member !== false && password_verify($pass_word, $member->pass_word)) {
+            // 認証成功時、最終アクセス日を更新
+            $this->update_access_date($member->user_id);
+            // 最終アクセス日更新後に最新の情報を再取得するか、
+            // $member->access_date を現在のタイムスタンプ（PHP側の日付）で上書きすることも可能です
+            // 今回はDB側の更新のみに留めます。
             return $member;
         }
         return false;
@@ -44,6 +49,7 @@ class MemberDAO
     public function insert(Member $member): void
     {
         $dbh = DAO::get_db_connect();
+        // INSERT時に access_date も設定する場合は、SQLに追加が必要です
         $sql = "INSERT INTO master_user (mail_address, user_name, pass_word)
                 VALUES (:mail_address, :user_name, :pass_word)";
 
@@ -73,6 +79,25 @@ class MemberDAO
         return $stmt->fetch() !== false;
     }
 
+    /**
+     * 最終アクセス日を現在日時に更新
+     */
+    public function update_access_date(int $user_id): bool
+    {
+        $dbh = DAO::get_db_connect();
+        // DBの日付型に合わせた形式で更新（例: GETDATE() は SQL Server の場合。MySQLなら NOW()）
+        $sql = "
+            UPDATE master_user
+            SET access_date = GETDATE()
+            WHERE user_id = :user_id
+        ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
     // ===================== 管理者用 =====================
 
     /**
@@ -82,7 +107,7 @@ class MemberDAO
     {
         $dbh = DAO::get_db_connect();
         $sql = "
-            SELECT user_id, user_name, mail_address, u_admin, member_type
+            SELECT user_id, user_name, mail_address, u_admin, member_type, access_date
             FROM master_user
             ORDER BY user_id ASC
         ";
@@ -108,7 +133,7 @@ class MemberDAO
         $offset = ($page - 1) * $perPage;
 
         $sql = "
-            SELECT user_id, user_name, mail_address, u_admin, member_type
+            SELECT user_id, user_name, mail_address, u_admin, member_type, access_date
             FROM master_user
             ORDER BY user_id ASC
             OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY
@@ -195,6 +220,7 @@ class MemberDAO
     public function getMemberById(int $user_id)
     {
         $dbh = DAO::get_db_connect();
+        // 取得するカラムに access_date を追加
         $sql = "SELECT * FROM master_user WHERE user_id = :user_id";
 
         $stmt = $dbh->prepare($sql);
