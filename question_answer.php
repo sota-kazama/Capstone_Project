@@ -46,7 +46,12 @@ $answers = $dao->getAnswers($shitu_number);
         <!-- 質問内容 --> 
         <div class="card mt-4"> 
             <div class="card-body"> 
-                <h3 class="card-title"><?= nl2br(htmlspecialchars($q->shitu_content ?? '質問内容が存在しません')) ?></h3> 
+                <!-- タイトル表示 -->
+                <h3 class="card-title"><?= htmlspecialchars($q->shitu_title ?? '[タイトルなし]') ?></h3>
+
+                <!-- 質問内容表示 -->
+                <p class="mt-3"><?= nl2br(htmlspecialchars($q->shitu_content ?? '[質問内容なし]')) ?></p>
+
                 <p class="text-muted mt-3"> 
                     投稿日： 
                     <?php 
@@ -59,6 +64,9 @@ $answers = $dao->getAnswers($shitu_number);
                     } 
                     ?> 
                 </p> 
+                
+                <!-- 分野表示 -->
+                <p class="text-muted">分野：<?= htmlspecialchars($q->area_name ?? '[未設定]') ?></p>
             </div> 
         </div> 
 
