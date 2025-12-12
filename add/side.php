@@ -51,7 +51,7 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
-            <a href="../mypage.php"
+            <a href="../mypage/mypage.php"
                 class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
                 マイページトップ
             </a>

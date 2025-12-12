@@ -1,17 +1,24 @@
-<?php
-session_start();
+<<?php
 require_once '../helpers/MemberDAO.php';
 
-// セッションから取得
-$member = $_SESSION['member'] ?? null;
+// セッションを開始する
+session_start();
 
-// メッセージ類の初期化（ここが重要）
+// 未ログインの場合はログインページへリダイレクト
+if (!isset($_SESSION['member'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// ログイン中の会員データを取得
+$member = $_SESSION['member'];
+
+// メッセージ類の初期化（成功・エラー用）
 $message = '';
 $error = '';
 
-// ユーザーID取得（オブジェクトでも配列でも対応）
+// ユーザーIDの取得（オブジェクトと配列両方に対応）
 $user_id = null;
-
 if ($member !== null) {
     if (is_object($member) && isset($member->user_id)) {
         $user_id = $member->user_id;
@@ -20,35 +27,34 @@ if ($member !== null) {
     }
 }
 
+// ユーザーIDが取得できない場合、ログインページにリダイレクト
 if ($user_id === null) {
     header('Location: ../login.php');
     exit;
 }
 
+// MemberDAOインスタンスを作成
 $dao = new MemberDAO();
-$userInfo = $dao->getMemberById($user_id);
 
-
+// ユーザー情報を取得
 try {
-    // 最新データ取得
     $userData = $dao->getMemberById($user_id);
 } catch (Exception $e) {
     $error = 'ユーザー情報取得中にエラーが発生しました：' . $e->getMessage();
 }
 
-// POST処理
+// POST処理（プロフィール更新）
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // POSTデータの取得
         $user_name = $_POST['user_name'] ?? null;
         $mail_address = $_POST['mail_address'] ?? null;
         $pass_word = $_POST['pass_word'] ?? null;
 
-        // パスワード入力時だけ更新
-        $password_hashed = !empty($pass_word)
-            ? password_hash($pass_word, PASSWORD_DEFAULT)
-            : null;
+        // パスワードが入力されている場合、ハッシュ化
+        $password_hashed = !empty($pass_word) ? password_hash($pass_word, PASSWORD_DEFAULT) : null;
 
-        // 更新
+        // プロフィール更新処理
         $success = $dao->updateMemberSelf(
             $user_id,
             $user_name,
@@ -56,14 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $password_hashed
         );
 
+        // 更新が成功した場合
         if ($success) {
             $message = 'プロフィールを更新しました。';
 
-            // セッション更新
+            // セッションの会員データを更新
             $updated = $dao->getMemberById($user_id);
             $_SESSION['member'] = $updated;
 
-            // 表示用データ更新
+            // 表示用データも更新
             $userData = $updated;
         } else {
             $error = 'プロフィール更新に失敗しました。';
@@ -74,6 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="ja">
     <head>
@@ -84,25 +95,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
             rel="stylesheet"
         />
-
         <!-- 既存CSS -->
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
-
         <?php include './header.php'; ?>
-
         <title>プロフィール編集</title>
     </head>
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-
             <!-- サイドメニュー -->
             <?php include 'side.php'; ?>
 
             <!-- メイン -->
             <main class="main-content flex-grow-1 p-4">
-
                 <h1>プロフィール編集</h1>
 
                 <?php if ($message): ?>
@@ -149,9 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             />
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save"></i> 更新
-                        </button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> 更新</button>
                     </form>
                 </div>
             </main>

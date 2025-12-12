@@ -10,8 +10,7 @@ $i = isset($_GET['i']) ? intval($_GET['i']) : 0;
 if (!empty($questions) && isset($questions[$i])) {
     $question = $questions[$i];
 } else {
-    header("Location: problem.php");
-    exit;
+    $question = null;
 }
 
 ?>
@@ -49,7 +48,7 @@ if (!empty($questions) && isset($questions[$i])) {
                     <h1>問題回答</h1>
                     <!--しおり--> 
                     <?php if (isset($member)) : ?>
-                    <button type="button" class="btn btn-primary ms-auto">
+                    <button type="button" class="btn btn-outline-primary ms-auto" onclick="bookMark()">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -113,6 +112,7 @@ if (!empty($questions) && isset($questions[$i])) {
         <script>
             
         </script>
+
     </body>
 
     <footer>

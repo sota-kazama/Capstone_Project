@@ -66,7 +66,7 @@ $totalPages = ceil($totalCount / $perPage);
             <div class="list-group">
                 <?php if (empty($questions)): ?>
                     <p>まだ質問はありません。</p>
-                <?php else: ?>
+                    <?php else: ?>
                     <?php foreach ($questions as $q): ?>
                         <?php if ($q->shitu_title && $q->shitu_content): ?>
                             <a href="question_answer.php?shitu_number=<?= htmlspecialchars($q->shitu_number) ?>"
