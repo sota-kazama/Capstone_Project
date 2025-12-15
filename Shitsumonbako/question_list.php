@@ -1,6 +1,6 @@
 <?php
-require_once 'helpers/ShitumonDAO.php';
-require_once 'helpers/DAO.php';
+require_once '../helpers/ShitumonDAO.php';
+require_once '../helpers/DAO.php';
 
 // DAO生成
 $dao = new ShitumonDAO();
@@ -33,13 +33,13 @@ $totalPages = ceil($totalCount / $perPage);
     <link href="css/BaseDesignData.css" rel="stylesheet" />
     <link href="css/side.css" rel="stylesheet" />
 
-    <?php include 'template/header.php'; ?>
+    <?php include '../template/header.php'; ?>
     <title>質問一覧</title>
 </head>
 
 <body>
     <div class="d-flex w-100 min-vh-100">
-        <?php include 'template/side.php'; ?>
+        <?php include '../template/side.php'; ?>
         <main class="main-content p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>質問一覧</h1>
