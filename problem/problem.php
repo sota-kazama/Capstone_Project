@@ -1,8 +1,17 @@
 <?php
-session_start();
+require_once '../helpers/QuestionDAO.php';
 
-if (isset($_POST['bookmark_i'])) {
-    $_SESSION['bookmark_i'] = (int)$_POST['bookmark_i'];
+$dao = new QuestionDAO();
+
+// ブックマーク保存
+if (isset($_POST['bookmark_q_number'])) {
+    $_SESSION['bookmark_q_number'] = (int)$_POST['bookmark_q_number'];
+}
+
+// ブックマークされた問題を取得
+$bookmarkQuestion = null;
+if (isset($_SESSION['bookmark_q_number'])) {
+    $bookmarkQuestion = $dao->findById($_SESSION['bookmark_q_number']);
 }
 ?>
 
@@ -38,11 +47,13 @@ if (isset($_POST['bookmark_i'])) {
                     <div style="width: 20rem;">
                         <a href="problem_response.php" class="btn btn-outline-primary w-100">問題開始</a>
                     </div>
-                    <?php if(isset($member)) : ?>
+                    <?php if ($bookmarkQuestion !== null) : ?>
                         <div style="width: 20rem;">
-                            <a href="problem_response.php" class="btn btn-outline-primary w-100">続きから(〇問目)</a>
+                            <a href="problem_response.php?i=<?= $bookmarkQuestion->q_number - 1 ?>"
+                            class="btn btn-outline-primary w-100">
+                                続きから（<?= $bookmarkQuestion->q_number ?>問目）
+                            </a>
                         </div>
-
                     <?php endif; ?>
                 </div>
                 <?php if(isset($member)) : ?>

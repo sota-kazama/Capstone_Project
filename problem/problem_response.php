@@ -48,8 +48,9 @@ if (!empty($questions) && isset($questions[$i])) {
                     <h1>問題回答</h1>
                     <!--しおり--> 
                     <?php if (isset($member)) : ?>
-                        <form action="problem.php" method="get" class="ms-auto">
-                            <input type="submit" class="btn btn-outline-primary" value="ブックマーク"></input>
+                        <form action="problem.php" method="post" class="ms-auto">
+                            <input type="hidden" name="bookmark_q_number" value="<?= $question->q_number ?>">
+                            <input type="submit" class="btn btn-outline-primary" value="ブックマーク">
                         </form>
                     <?php endif; ?>
                 </div>
