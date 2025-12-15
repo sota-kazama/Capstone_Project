@@ -16,3 +16,5 @@ submenuParents.forEach((arrow) => {
         li.classList.toggle("active");
     });
 });
+
+document.body.style.overflow = isActive ? "hidden" : "";
