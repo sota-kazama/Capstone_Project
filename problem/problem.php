@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (isset($_POST['bookmark_i'])) {
+    $_SESSION['bookmark_i'] = (int)$_POST['bookmark_i'];
+}
+?>
+
 <!DOCTYPE html>
 <html>
     <head>

@@ -48,20 +48,9 @@ if (!empty($questions) && isset($questions[$i])) {
                     <h1>問題回答</h1>
                     <!--しおり--> 
                     <?php if (isset($member)) : ?>
-                    <button type="button" class="btn btn-outline-primary ms-auto" onclick="bookMark()">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="20"
-                            fill="currentColor"
-                            class="bi bi-bookmark"
-                            viewBox="0 0 16 16"
-                        >
-                            <path
-                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"
-                            />
-                        </svg>
-                    </button>
+                        <form action="problem.php" method="get" class="ms-auto">
+                            <input type="submit" class="btn btn-outline-primary" value="ブックマーク"></input>
+                        </form>
                     <?php endif; ?>
                 </div>
 
@@ -100,9 +89,9 @@ if (!empty($questions) && isset($questions[$i])) {
                 <!--ラベリング -->        
                 <?php if (isset($member)) : ?>
                 <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-outline-success ms-auto">1</button>
-                    <button type="button" class="btn btn-outline-warning">2</button>
-                    <button type="button" class="btn btn-outline-danger">3</button>
+                    <button type="button" class="btn btn-outline-success ms-auto" disabled>1</button>
+                    <button type="button" class="btn btn-outline-warning" disabled>2</button>
+                    <button type="button" class="btn btn-outline-danger" disabled>3</button>
                 </div>
                 <?php endif; ?>
             </main>
