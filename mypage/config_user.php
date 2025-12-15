@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- 既存CSS -->
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
-        <?php include './header.php'; ?>
+        <?php include '../template/header.php'; ?>
         <title>プロフィール編集</title>
     </head>
 

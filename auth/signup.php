@@ -1,3 +1,45 @@
+<?php
+require_once '../helpers/MemberDAO.php';
+$theme = $_COOKIE['theme'] ?? 'light';
+// $errs = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $mail_address = $_POST['mail_address'] ?? '';
+    $pass_word = $_POST['pass_word'] ?? '';
+    $pass_word2 = $_POST['pass_word2'] ?? '';
+    $user_name = $_POST['user_name'] ?? '';
+
+    $memberDAO = new MemberDAO();
+
+    if (!filter_var($mail_address, FILTER_VALIDATE_EMAIL)) {
+        $errs['mail_address'] = 'メールアドレスの形式が正しくありません。';
+    } elseif ($memberDAO->email_exists($mail_address) === true) {
+        $errs['mail_address'] = 'このメールアドレスはすでに登録されています。';
+    }
+
+    if (!preg_match('/\A.{4,}\Z/', $pass_word)) {
+        $errs['pass_word'] = 'パスワードは4文字以上で入力してください。';
+    } elseif ($pass_word != $pass_word2) {
+        $errs['pass_word'] = 'パスワードが一致しません。';
+    }
+
+    if ($user_name === "") {
+        $errs['user_name'] = 'ユーザー名を入力してください。';
+    }
+
+    if(empty($errs)) {
+        $member = new Member();
+        $member->mail_address = $mail_address;
+        $member->pass_word = $pass_word;
+        $member->user_name = $user_name;
+
+        $memberDAO->insert($member);
+        header('Location:signupEnd.php');
+        exit;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,18 +47,16 @@
         <title>新規会員登録</title>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="../css/sidebar.css" rel="stylesheet" />
-        <link rel="stylesheet" href="css/SignupDesign.css" />
+        <link href="../css_theme/sidebar.css" rel="stylesheet" />
+        <link rel="stylesheet" href="../css_theme/SignupDesign.css" />
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
-        <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
         <link href="../css_theme/toggle-button.css" rel="stylesheet" />
 
-        <?php include 'template/header2.php'; ?>
-        <?php include 'template/hamburger.php'; ?>
+        <?php include '../template/header2.php'; ?>
     </head>
 
     <body>
@@ -29,7 +69,7 @@
                         <tr>
                             <td>ユーザー名*</td>
                             <td>
-                                <input type="text" placeholder="例)電子 太郎" name="user_name" />
+                                <input type="text" placeholder="例)電子 太郎" name="user_name" class="form-control"/>
                                 <span style="color: red"><?= @$errs['user_name'] ?></span>
                             </td>
                         </tr>
@@ -37,7 +77,7 @@
                         <tr>
                             <td>メールアドレス*</td>
                             <td>
-                                <input type="email" placeholder="例)aaa@aaa" name="mail_address" />
+                                <input type="email" placeholder="例)aaa@aaa" name="mail_address" class="form-control"/>
                                 <span style="color: red"><?= @$errs['mail_address'] ?></span>
                             </td>
                         </tr>
@@ -45,7 +85,7 @@
                         <tr>
                             <td>パスワード(4文字以上)*</td>
                             <td>
-                                <input type="password" minlength="4" name="pass_word" />
+                                <input type="password" minlength="4" name="pass_word" class="form-control"/>
                                 <span style="color: red"><?= @$errs['pass_word'] ?></span>
                             </td>
                         </tr>
@@ -75,7 +115,7 @@
         <script src="../js/theme-toggle.js"></script>
 
         <footer>
-            <?php include 'template/footer.php'; ?>
+            <?php include '../template/footer.php'; ?>
         </footer>
     </body>
 </html>

@@ -125,7 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 required
                                 onchange="loadMemberData()"
                             >
-                                <option value="">-- ユーザーを選択してください --</option>
+                                <option value=""
+                                label class="form-label">-- ユーザーを選択してください --</option>
 
                                 <?php foreach ($allMembers as $m): ?>
                                 <option

@@ -10,3 +10,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["theme"])) {
 }
 
 echo json_encode(["status" => "error"]);
+?>

@@ -1,13 +1,19 @@
 <?php
 require_once 'DAO.php';
 
+// -----------------------------
+// エンティティクラス
+// -----------------------------
 class Shitumon {
     public int $shitu_number;        // 質問番号
+    public ?string $shitu_title;     // 質問タイトル（NULLを許可）
     public string $shitu_content;    // 質問内容
-    public ?int $s_number;           // 資格番号（NULLあり）
     public int $reception_status;    // 質問受付状態
     public string $asked_date;       // 質問日
     public string $update_at;        // 更新日
+    public ?string $area_number;     // 出題分野番号
+    public ?string $area_name;       // 分野名
+      public ?int $s_number = null;
 }
 
 class ShituAnswer {
@@ -18,12 +24,14 @@ class ShituAnswer {
     public string $update_at;        // 更新日
 }
 
+// -----------------------------
+// DAO クラス
+// -----------------------------
 class ShitumonDAO {
 
     // 質問一覧取得
     public function getAll() {
         $dbh = DAO::get_db_connect();
-
         $sql = "SELECT * FROM shitumon ORDER BY shitu_number DESC";
         $stmt = $dbh->query($sql);
 
@@ -37,7 +45,6 @@ class ShitumonDAO {
     // 質問番号で取得
     public function getByNumber(int $shitu_number) {
         $dbh = DAO::get_db_connect();
-
         $sql = "SELECT * FROM shitumon WHERE shitu_number = ?";
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(1, $shitu_number, PDO::PARAM_INT);
@@ -46,53 +53,70 @@ class ShitumonDAO {
         return $stmt->fetchObject('Shitumon');
     }
 
-    // 質問登録
-    public function insert(string $shitu_content, ?int $s_number = null, int $reception_status = 1) {
+    // -----------------------------
+    // 質問登録（s_number削除済み）
+    // -----------------------------
+    public function insert(
+        string $shitu_title,
+        string $shitu_content,
+        int $reception_status = 1,
+        ?string $area_number = null,
+        ?string $area_name = null
+    ) {
         $dbh = DAO::get_db_connect();
 
-        $sql = "INSERT INTO shitumon (shitu_content, s_number, reception_status)
-                VALUES (?, ?, ?)";
-        $stmt = $dbh->prepare($sql);
+        $sql = "INSERT INTO shitumon 
+                (shitu_title, shitu_content, reception_status, asked_date, update_at, area_number, area_name)
+                VALUES (?, ?, ?, GETDATE(), GETDATE(), ?, ?)";
 
-        $stmt->bindValue(1, $shitu_content, PDO::PARAM_STR);
-        if ($s_number === null) {
-            $stmt->bindValue(2, null, PDO::PARAM_NULL);
-        } else {
-            $stmt->bindValue(2, $s_number, PDO::PARAM_INT);
-        }
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(1, $shitu_title, PDO::PARAM_STR);
+        $stmt->bindValue(2, $shitu_content, PDO::PARAM_STR);
         $stmt->bindValue(3, $reception_status, PDO::PARAM_INT);
+        $stmt->bindValue(4, $area_number, $area_number === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(5, $area_name, $area_name === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
 
         return $stmt->execute();
     }
 
+    // -----------------------------
     // 質問更新
-    public function update(int $shitu_number, string $shitu_content, ?int $s_number = null, int $reception_status = 1) {
+    // -----------------------------
+    public function update(
+        int $shitu_number,
+        string $shitu_title,
+        string $shitu_content,
+        int $reception_status = 1,
+        ?string $area_number = null,
+        ?string $area_name = null
+    ) {
         $dbh = DAO::get_db_connect();
 
         $sql = "UPDATE shitumon SET
+                    shitu_title = ?,
                     shitu_content = ?,
-                    s_number = ?,
                     reception_status = ?,
+                    area_number = ?,
+                    area_name = ?,
                     update_at = GETDATE()
                 WHERE shitu_number = ?";
-        $stmt = $dbh->prepare($sql);
 
-        $stmt->bindValue(1, $shitu_content, PDO::PARAM_STR);
-        if ($s_number === null) {
-            $stmt->bindValue(2, null, PDO::PARAM_NULL);
-        } else {
-            $stmt->bindValue(2, $s_number, PDO::PARAM_INT);
-        }
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(1, $shitu_title, PDO::PARAM_STR);
+        $stmt->bindValue(2, $shitu_content, PDO::PARAM_STR);
         $stmt->bindValue(3, $reception_status, PDO::PARAM_INT);
-        $stmt->bindValue(4, $shitu_number, PDO::PARAM_INT);
+        $stmt->bindValue(4, $area_number, $area_number === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(5, $area_name, $area_name === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(6, $shitu_number, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
 
+    // -----------------------------
     // 質問削除
+    // -----------------------------
     public function delete(int $shitu_number) {
         $dbh = DAO::get_db_connect();
-
         $sql = "DELETE FROM shitumon WHERE shitu_number = ?";
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(1, $shitu_number, PDO::PARAM_INT);
@@ -100,13 +124,12 @@ class ShitumonDAO {
         return $stmt->execute();
     }
 
+    // -----------------------------
     // 回答一覧取得
+    // -----------------------------
     public function getAnswers(int $shitu_number) {
         $dbh = DAO::get_db_connect();
-
-        $sql = "SELECT * FROM shitu_answer
-                WHERE shitu_number = ?
-                ORDER BY ans_number ASC";
+        $sql = "SELECT * FROM shitu_answer WHERE shitu_number = ? ORDER BY ans_number ASC";
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(1, $shitu_number, PDO::PARAM_INT);
         $stmt->execute();
@@ -118,34 +141,32 @@ class ShitumonDAO {
         return $data;
     }
 
+    // -----------------------------
     // 回答追加
+    // -----------------------------
     public function addAnswer(int $shitu_number, string $ans_content) {
         $dbh = DAO::get_db_connect();
-
-        $sql = "INSERT INTO shitu_answer (shitu_number, ans_content)
-                VALUES (?, ?)";
+        $sql = "INSERT INTO shitu_answer (shitu_number, ans_content, answer_date, update_at) VALUES (?, ?, GETDATE(), GETDATE())";
         $stmt = $dbh->prepare($sql);
-
         $stmt->bindValue(1, $shitu_number, PDO::PARAM_INT);
         $stmt->bindValue(2, $ans_content, PDO::PARAM_STR);
 
         return $stmt->execute();
     }
 
+    // -----------------------------
     // 質問と回答の両方削除（トランザクション）
+    // -----------------------------
     public function deleteWithAnswers(int $shitu_number) {
         $dbh = DAO::get_db_connect();
-
         try {
             $dbh->beginTransaction();
 
-            // 回答削除
             $sql1 = "DELETE FROM shitu_answer WHERE shitu_number = ?";
             $stmt1 = $dbh->prepare($sql1);
             $stmt1->bindValue(1, $shitu_number, PDO::PARAM_INT);
             $stmt1->execute();
 
-            // 質問削除
             $sql2 = "DELETE FROM shitumon WHERE shitu_number = ?";
             $stmt2 = $dbh->prepare($sql2);
             $stmt2->bindValue(1, $shitu_number, PDO::PARAM_INT);
@@ -159,5 +180,72 @@ class ShitumonDAO {
             throw $e;
         }
     }
+
+    // 分野ごとの質問一覧取得
+public function getByArea(?string $area_number) {
+    $dbh = DAO::get_db_connect();
+    if ($area_number) {
+        $sql = "SELECT * FROM shitumon WHERE area_number = ? ORDER BY shitu_number DESC";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(1, $area_number, PDO::PARAM_STR);
+        $stmt->execute();
+    } else {
+        $sql = "SELECT * FROM shitumon ORDER BY shitu_number DESC";
+        $stmt = $dbh->query($sql);
+    }
+
+    $data = [];
+    while ($row = $stmt->fetchObject('Shitumon')) {
+        $data[] = $row;
+    }
+    return $data;
 }
+
+
+
+   public function getAllByAreaOrderPage(string $area_number = '', string $order = 'DESC', int $page = 1, int $perPage = 10) {
+        $dbh = DAO::get_db_connect();
+        $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+        $offset = ($page - 1) * $perPage;
+
+        if ($area_number !== '') {
+            $sql = "SELECT * FROM shitumon WHERE area_number = ? ORDER BY shitu_number $order OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(1, $area_number, PDO::PARAM_STR);
+            $stmt->bindValue(2, $offset, PDO::PARAM_INT);
+            $stmt->bindValue(3, $perPage, PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            $sql = "SELECT * FROM shitumon ORDER BY shitu_number $order OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(1, $offset, PDO::PARAM_INT);
+            $stmt->bindValue(2, $perPage, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        $data = [];
+        while ($row = $stmt->fetchObject('Shitumon')) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    // 総件数取得（ページネーション用）
+    public function getCountByArea(string $area_number = '') {
+        $dbh = DAO::get_db_connect();
+        if ($area_number !== '') {
+            $sql = "SELECT COUNT(*) FROM shitumon WHERE area_number = ?";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(1, $area_number, PDO::PARAM_STR);
+            $stmt->execute();
+        } else {
+            $sql = "SELECT COUNT(*) FROM shitumon";
+            $stmt = $dbh->query($sql);
+        }
+        return (int)$stmt->fetchColumn();
+    }
+}
+
+
+
 ?>

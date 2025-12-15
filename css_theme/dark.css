@@ -2,150 +2,192 @@
    Dark Theme Colors
 ========================================= */
 
-/* Body & Main Content */
-body {
-    background-color: #2f3136 !important;
-    color: #daddda !important;
+/* ===============================
+   Theme Variables
+=============================== */
+body.dark-mode {
+    /* Base */
+    --bg-body: #2f3136;
+    --bg-main: #36393f;
+    --text-main: #daddda;
+
+    /* Menu / Hamburger */
+    --bg-menu: #2f3136;
+    --text-menu: #daddda;
+    --border-menu: #444;
+    --bg-overlay: rgba(0, 0, 0, 0.6);
+
+    /* Hamburger visibility */
+    --hamburger-color: #ffffff; /* ★ 視認性重視 */
+
+    /* UI */
+    --bg-hover: #40444b;
+    --bg-muted: #4f545c;
+    --border-default: #444;
 }
 
-.main-content {
-    background-color: #36393f !important;
-    color: #daddda !important;
+/* ===============================
+   Body & Main Content
+=============================== */
+body.dark-mode {
+    background-color: var(--bg-body);
+    color: var(--text-main);
 }
 
-/* サイドバーの一般的なリンクスタイル（!importantは削除し、独自のCSSを尊重） */
-li a {
-    background-color: #2f3136;
+body.dark-mode .main-content {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+/* ===============================
+   サイドバー・リンク
+=============================== */
+body.dark-mode li a {
+    background-color: var(--bg-body);
     color: #b9bbbe;
 }
 
-li a:hover {
-    background-color: #40444b;
+body.dark-mode li a:hover {
+    background-color: var(--bg-hover);
     color: #ffffff;
 }
 
-.footerlinks a {
+/* ===============================
+   Footer
+=============================== */
+body.dark-mode .footerlinks a {
     color: #72767d;
 }
 
-.footerlinks a:hover {
+body.dark-mode .footerlinks a:hover {
     color: #ffffff;
 }
 
-.logout-btn {
-    background-color: #4f545c !important;
-    color: #ffffff !important;
+/* ===============================
+   ログアウトボタン
+=============================== */
+body.dark-mode .logout-btn {
+    background-color: var(--bg-muted);
+    color: #ffffff;
 }
 
-.logout-btn:hover {
-    background-color: #6b6f75 !important;
+body.dark-mode .logout-btn:hover {
+    background-color: #6b6f75;
 }
 
-/* ハンバーガーのバー色 */
-.hamburger span {
-    background-color: #daddda !important;
+/* ===============================
+   Form
+=============================== */
+body.dark-mode .form-control {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
 }
 
-/* メニュー背景色 */
-.menu {
-    background-color: #2f3136 !important;
+body.dark-mode .form-control::placeholder {
+    color: #cccccc;
 }
 
-/* メニューリンク文字色 */
-.menu a {
-    color: #daddda !important;
+body.dark-mode .btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
 }
 
-/* ====== 入力フォーム ====== */
-.form-control {
-    background-color: #333 !important;
-    color: #fff !important;
-    border-color: #555 !important;
+/* ===============================
+   Card
+=============================== */
+body.dark-mode .card {
+    background-color: #3a3a3a;
+    border: 1px solid var(--border-default);
+    color: var(--text-main);
 }
 
-.form-control::placeholder {
-    color: #bbb !important;
+body.dark-mode .card-header {
+    background-color: #2b2b2b;
+    border-bottom: 1px solid var(--border-default);
 }
 
-.btn-primary {
-    background-color: #4a90e2 !important;
-    border-color: #4a90e2 !important;
+/* ===============================
+   Table
+=============================== */
+body.dark-mode .table {
+    background-color: #2b2b2b;
+    color: #fff;
+    --bs-table-color: #fff;
+    --bs-table-bg: #2b2b2b;
+    --bs-table-border-color: var(--border-default);
 }
 
-/* ====== カード (新規登録カード) の修正（!importantを維持） ====== */
-.card {
-    background-color: #3a3a3a !important;
-    border: 1px solid #444 !important;
-    color: #daddda !important;
+body.dark-mode .table thead th {
+    background-color: #3a3a3a;
+    color: #fff;
 }
 
-.card-header {
-    background-color: #2b2b2b !important;
-    border-bottom: 1px solid #444 !important;
+body.dark-mode .table-light {
+    --bs-table-color: #fff;
+    --bs-table-bg: #3a3a3a;
+    background-color: #3a3a3a;
+    color: #fff;
 }
 
-/* ====== テーブルの修正（!importantを維持） ====== */
-.table {
-    background-color: #2b2b2b !important;
-    color: #fff !important;
-    /* Bootstrap 5 のカスタムプロパティを上書き */
-    --bs-table-color: #fff !important;
-    --bs-table-bg: #2b2b2b !important;
-    --bs-table-border-color: #444 !important;
+body.dark-mode .table-bordered > :not(caption) > * {
+    border-color: var(--border-default);
 }
 
-.table thead th {
-    background-color: #3a3a3a !important;
-    color: #fff !important;
+body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #323232;
 }
 
-/* table-light クラスの上書き（見出し行） */
-.table-light {
-    --bs-table-color: #fff !important;
-    --bs-table-bg: #3a3a3a !important;
-    background-color: #3a3a3a !important;
-    color: #fff !important;
+/* ===============================
+   Alert
+=============================== */
+body.dark-mode .alert-info {
+    background-color: #40444b;
+    color: #99aab5;
+    border-color: #4f545c;
 }
 
-/* table-bordered の枠線 */
-.table-bordered > :not(caption) > * {
-    border-color: #444 !important;
+/* ===============================
+   Form（詳細）
+=============================== */
+body.dark-mode .main-content form.border {
+    background-color: #343a40;
+    border-color: #495057;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #323232 !important;
+body.dark-mode .main-content form.border label.form-label,
+body.dark-mode .main-content form.border .form-check-label,
+body.dark-mode .main-content form.border .input-group-text {
+    color: #e0e0e0;
 }
 
-.alert-info {
-    background-color: #40444b !important;
-    color: #99aab5 !important;
-    border-color: #4f545c !important;
+body.dark-mode .main-content form.border .input-group-text {
+    background-color: #495057;
+    border-color: #6c757d;
 }
 
-/* 例: ../css_theme/dark.css に追加 */
-
-/* フォームの背景と枠線（問題登録フォームの「bg-light」を上書き） */
-.main-content form.border {
-    background-color: #343a40 !important; /* 暗い背景色 */
-    border-color: #495057 !important; /* 濃い枠線 */
+body.dark-mode .main-content form.border .form-control {
+    background-color: #495057;
+    border-color: #6c757d;
+    color: #f8f9fa;
 }
 
-/* フォーム内のラベルやテキスト（文字色を白に） */
-.main-content form.border label.form-label,
-.main-content form.border .form-check-label {
-    color: #f8f9fa !important; /* 白い文字色 */
+/* ===============================
+   Login / Signup
+=============================== */
+body.dark-mode .login-box,
+body.dark-mode .signup-box {
+    background-color: #383a3f;
 }
 
-/* 選択肢の入力欄のグループテキスト（1, 2, 3, 4 の部分） */
-.main-content form.border .input-group-text {
-    background-color: #495057 !important; /* 暗い背景色 */
-    border-color: #6c757d !important;
-    color: #f8f9fa !important;
+/* ===============================
+   Select / Input
+=============================== */
+body.dark-mode select.form-control option {
+    color: #e0e0e0;
+    background-color: #495057;
 }
 
-/* 選択肢やその他の入力欄 */
-.main-content form.border .form-control {
-    background-color: #495057 !important; /* 暗い背景色 */
-    border-color: #6c757d !important;
-    color: #f8f9fa !important;
+body.dark-mode input.form-control {
+    color: #f0f0f0;
 }
