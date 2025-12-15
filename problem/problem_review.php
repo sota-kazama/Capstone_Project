@@ -100,9 +100,9 @@ if (!empty($questions) && isset($questions[$i])) {
                 <!--ラベリング -->        
                 <?php if (isset($member)) : ?>
                 <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-outline-success ms-auto">1</button>
-                    <button type="button" class="btn btn-outline-warning">2</button>
-                    <button type="button" class="btn btn-outline-danger">3</button>
+                    <button type="button" class="btn btn-outline-success ms-auto" disabled>1</button>
+                    <button type="button" class="btn btn-outline-warning" disabled>2</button>
+                    <button type="button" class="btn btn-outline-danger" disabled>3</button>
                 </div>
                 <?php endif; ?>
             </main>

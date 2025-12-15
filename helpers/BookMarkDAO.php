@@ -12,13 +12,13 @@ class BookMark
     public date $update_at;  //更新日
 }
 
-class BookDAO{
+class BookMarkDAO{
     //問題情報取得
-    public function getProblem(int $q_number) {
+    public function getBookMark(int $q_number) {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM question_data WHERE q_number = :q_number";
         $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
