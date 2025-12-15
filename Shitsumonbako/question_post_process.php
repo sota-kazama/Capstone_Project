@@ -1,7 +1,7 @@
 
 <?php
-require_once 'helpers/ShitumonDAO.php';
-require_once 'helpers/DAO.php';
+require_once '../helpers/ShitumonDAO.php';
+require_once '../helpers/DAO.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

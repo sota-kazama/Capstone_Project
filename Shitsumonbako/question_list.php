@@ -30,8 +30,8 @@ $totalPages = ceil($totalCount / $perPage);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/BaseDesignData.css" rel="stylesheet" />
-    <link href="css/side.css" rel="stylesheet" />
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
 
     <?php include '../template/header.php'; ?>
     <title>質問一覧</title>
@@ -106,5 +106,9 @@ $totalPages = ceil($totalCount / $perPage);
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
+ <footer>
+        <?php include '../template/footer.php'; ?>
+    </footer>
 
 </html>

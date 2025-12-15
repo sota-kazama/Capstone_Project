@@ -1,5 +1,5 @@
 <?php
-require_once 'helpers/DAO.php';
+require_once '../helpers/DAO.php';
 
 // q_categories から分野一覧を取得
 $dbh = DAO::get_db_connect();
@@ -16,13 +16,13 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link href="css/BaseDesignData.css" rel="stylesheet" />
     <link href="css/side.css" rel="stylesheet" />
-    <?php include 'template/header.php'; ?>
+    <?php include '../template/header.php'; ?>
     <title>質問投稿</title>
 </head>
 <body>
 <div class="d-flex w-100 min-vh-100">
     <div class="d-none d-md-block">
-        <?php include 'template/side.php'; ?>
+        <?php include '../template/side.php'; ?>
     </div>
 
     <main class="main-content p-4">
@@ -81,7 +81,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </script>
 
 <footer>
-    <?php include 'template/footer.php'; ?>
+    <?php include '../template/footer.php'; ?>
 </footer>
 </body>
 </html>

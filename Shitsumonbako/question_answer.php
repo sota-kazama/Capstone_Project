@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/helpers/ShitumonDAO.php';
+require_once '../helpers/ShitumonDAO.php';
 
 $dao = new ShitumonDAO();
 
@@ -37,13 +37,13 @@ $answers = $dao->getAnswers($shitu_number);
     <link href="css/BaseDesignData.css" rel="stylesheet" />
     <link href="css/side.css" rel="stylesheet" />
 
-    <?php include 'template/header.php'; ?>
+    <?php include '../template/header.php'; ?>
 </head>
 
 <body>
     <div class="d-flex w-100 min-vh-100">
         <div class="d-none d-md-block">
-            <?php include 'template/side.php'; ?>
+            <?php include '../template/side.php'; ?>
         </div>
 
         <main class="main-content p-4">
@@ -125,7 +125,7 @@ $answers = $dao->getAnswers($shitu_number);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <footer>
-        <?php include 'template/footer.php'; ?>
+        <?php include '../template/footer.php'; ?>
     </footer>
 </body>
 
