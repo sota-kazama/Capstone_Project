@@ -24,37 +24,24 @@ if (is_array($member) && isset($member['user_name'])) {
 ?>
 
 
-<!DOCTYPE html>
-<html lang="jp">
-    <head>
-        <meta charset="UTF-8" />
-        <link href="<?= BASE_URL ?>/css/BaseDesignData.css" rel="stylesheet" />
-    </head>
+<header>
+    <?php include __DIR__ . '/hamburger.php'; ?>
 
-    <body>
-        <header>
-            <?php include __DIR__ . '/hamburger.php'; ?>
+    <a href="<?= BASE_URL ?>/index.php">
+        <img src="<?= BASE_URL ?>/images/icon2.png" alt="サイトのロゴ" />
+    </a>
 
-
-            <a href="<?= BASE_URL ?>/index.php">
-                <img src="<?= BASE_URL ?>/images/icon2.png" alt="サイトのロゴ" />
-            </a>
-
-            <?php if ($userName !== null) : ?>
-            <p id="logout">
-                <?= htmlspecialchars($userName) ?>
-                さん
-                <a href="<?= BASE_URL ?>/auth/logout.php" class="logout-btn">ログアウト</a>
+    <?php if ($userName !== null) : ?>
+        <p id="logout">
+            <?= htmlspecialchars($userName) ?> さん
+            <a href="<?= BASE_URL ?>/auth/logout.php" class="logout-btn">ログアウト</a>
+        </p>
+    <?php else : ?>
+        <form action="<?= BASE_URL ?>/auth/login.php" method="post">
+            <p id="login">
+                <input type="submit" value="ログイン" class="login-btn1" />
             </p>
-
-            <?php else : ?>
-            <form action="<?= BASE_URL ?>/auth/login.php" method="post">
-                <p id="login">
-                    <input type="submit" value="ログイン" class="login-btn1" />
-                </p>
-            </form>
-            <?php endif; ?>
-        </header>
-        <hr />
-    </body>
-</html>
+        </form>
+    <?php endif; ?>
+</header>
+<hr />

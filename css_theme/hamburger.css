@@ -147,3 +147,7 @@
     background-color: var(--bg-menu);
     color: inherit;
 }
+/* ライトテーマ用ハンバーガーのバー */
+.hamburger span {
+    background-color: #333; /* 黒系 */
+}
