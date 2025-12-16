@@ -19,7 +19,7 @@ function toggleTheme() {
 
     if (currentHref.includes("light.css")) {
         // ダークへ
-        themeLink.href = "../css_theme/dark.css";
+        themeLink.href = "./css_theme/dark.css";
         body.classList.remove("light-mode");
         body.classList.add("dark-mode");
         icon.classList.remove("bi-moon");
@@ -27,7 +27,7 @@ function toggleTheme() {
         newTheme = "dark";
     } else {
         // ライトへ
-        themeLink.href = "../css_theme/light.css";
+        themeLink.href = "./css_theme/light.css";
         body.classList.remove("dark-mode");
         body.classList.add("light-mode");
         icon.classList.remove("bi-sun");

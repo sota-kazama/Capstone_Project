@@ -1,28 +1,20 @@
 <?php
-// BASE_URL の定義と読み込み（共通設定ファイル）
-require_once __DIR__ . '/../helpers/config.php'; // BASE_URL 読み込み
-
+require_once __DIR__ . '/../helpers/config.php';
 require_once __DIR__ . '/../helpers/MemberDAO.php';
 
-// セッションが開始されていない場合のみ開始
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// セッションから会員情報を取得
 $member = $_SESSION['member'] ?? null;
 
-// 配列かオブジェクトどちらでも user_name を安全に取得
 $userName = null;
-
 if (is_array($member) && isset($member['user_name'])) {
     $userName = $member['user_name'];
 } elseif (is_object($member) && isset($member->user_name)) {
     $userName = $member->user_name;
 }
-
 ?>
-
 
 <header>
     <?php include __DIR__ . '/hamburger.php'; ?>

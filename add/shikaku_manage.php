@@ -72,7 +72,7 @@ $list = $dao->getAll();
         <title>資格管理</title>
     </head>
 
-    <body>
+    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
         <div class="d-flex w-100 min-vh-100">
             <?php include 'side.php'; ?>
 

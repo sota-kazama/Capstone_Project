@@ -34,8 +34,8 @@ $answers = $dao->getAnswers($shitu_number);
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         rel="stylesheet" />
-    <link href="css/BaseDesignData.css" rel="stylesheet" />
-    <link href="css/side.css" rel="stylesheet" />
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
 
     <?php include '../template/header.php'; ?>
 </head>
