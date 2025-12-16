@@ -20,17 +20,15 @@ if (!empty($keyword)) {
 }
 
 // ログイン
-if (!empty($_SESSION['member'])) {
-    $member = $_SESSION['member'];
-}
+$member = $_SESSION['member'] ?? null;
 ?>
 
+
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="jp">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>書籍検索</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link
@@ -38,32 +36,15 @@ if (!empty($_SESSION['member'])) {
             rel="stylesheet"
         />
 
-        <link href="css_theme/base.css" rel="stylesheet" />
-        <link href="css_theme/layout-common.css" rel="stylesheet" />
-        <link href="css_theme/side.css" rel="stylesheet" />
-
-        <link id="theme-css" href="css_theme/<?= $theme ?>.css" rel="stylesheet" />
-
-        <style>
-            .theme-toggle-btn {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 9999;
-                border-radius: 50%;
-                width: 50px;
-                height: 50px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0;
-                font-size: 1.2rem;
-            }
-        </style>
+        <link href="./css/BaseDesignData.css" rel="stylesheet" />
+        <link href="./css/side.css" rel="stylesheet" />
+        <link id="theme-css" rel="stylesheet" href="./css_theme/<?= htmlspecialchars($theme) ?>.css" />
+        <link href="./css_theme/toggle-button.css" rel="stylesheet" />
+        <title>図書検索</title>
     </head>
 
-    <body>
-        <?php include 'template/header.php'; ?>
+    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
+        <?php include './template/header.php'; ?>
 
         <div class="d-flex w-100 min-vh-100">
             <div class="d-none d-md-block">
@@ -111,9 +92,8 @@ if (!empty($_SESSION['member'])) {
                                     <td><?= htmlspecialchars($book->sakusya) ?></td>
                                     <td><?= htmlspecialchars($book->syuppan) ?></td>
                                     <td>
-                                        <?php
-                                             $q = urlencode($book->book_code); $amazon_url =
-                                            "https://www.amazon.co.jp/s?k=" . $q; ?>
+                                        <?php $amazon_url = "https://www.amazon.co.jp/s?k=" . urlencode($book->book_code);
+                                        ?>
                                         <a
                                             href="<?= $amazon_url ?>"
                                             target="_blank"
@@ -127,7 +107,6 @@ if (!empty($_SESSION['member'])) {
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-
                         <?php else: ?>
                         <p>「<?= htmlspecialchars($keyword) ?>」の検索結果はありませんでした。</p>
                         <?php endif; ?>
@@ -136,61 +115,16 @@ if (!empty($_SESSION['member'])) {
                 </div>
             </main>
         </div>
-
-        <button id="theme-toggle-btn" class="theme-toggle-btn btn btn-primary">
+        <button id="theme-toggle-btn" class="btn theme-toggle-btn">
             <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
         </button>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script>
-            // サーバーにテーマを反映
-            function updateServerTheme(theme) {
-                // 相対パスの調整: book.phpがルートにあると仮定し、theme_set.phpが同じ階層にある場合は"theme_set.php"のまま
-                fetch("theme_set.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "theme=" + theme,
-                })
-                    .then((res) => res.json())
-                    .then((data) => console.log("テーマ更新:", data))
-                    .catch((err) => console.error(err));
-            }
-
-            // テーマ切替関数（css_theme 対応済）
-            function toggleTheme() {
-                const themeLink = document.getElementById("theme-css");
-                const icon = document.getElementById("theme-icon");
-
-                let newTheme;
-
-                if (themeLink.href.includes("light.css")) {
-                    // ダークテーマへ
-                    // 相対パスの調整: light.css, dark.cssが 'css_theme/' 内にあると仮定
-                    themeLink.href = "css_theme/dark.css"; 
-                    icon.classList.remove("bi-moon");
-                    icon.classList.add("bi-sun");
-                    newTheme = "dark";
-                } else {
-                    // ライトテーマへ
-                    // 相対パスの調整: light.css, dark.cssが 'css_theme/' 内にあると仮定
-                    themeLink.href = "css_theme/light.css"; 
-                    icon.classList.remove("bi-sun");
-                    icon.classList.add("bi-moon");
-                    newTheme = "light";
-                }
-
-                // サーバー側に反映
-                updateServerTheme(newTheme);
-            }
-
-            // ボタンイベント登録
-            document.addEventListener("DOMContentLoaded", () => {
-                document.getElementById("theme-toggle-btn").addEventListener("click", toggleTheme);
-            });
-        </script>
-
-        <?php include 'template/footer.php'; ?>
-        
+        <script src="./js/theme-toggle_top.js"></script>
     </body>
+
+    <footer>
+        <?php include './template/footer.php'; ?>
+    </footer>
 </html>

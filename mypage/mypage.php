@@ -38,7 +38,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
     <link href="../css_theme/toggle-button.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
 <div class="d-flex w-100 min-vh-100">
     <div class="d-none d-md-block">

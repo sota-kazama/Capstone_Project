@@ -2,27 +2,20 @@
    Dark Theme Colors
 ========================================= */
 
-/* ===============================
-   Theme Variables
-=============================== */
 body.dark-mode {
     /* Base */
     --bg-body: #2f3136;
     --bg-main: #36393f;
     --text-main: #daddda;
 
-    /* Menu / Hamburger */
-    --bg-menu: #2f3136;
-    --text-menu: #daddda;
-    --border-menu: #444;
-    --bg-overlay: rgba(0, 0, 0, 0.6);
-
-    /* Hamburger visibility */
-    --hamburger-color: #ffffff; /* ★ 視認性重視 */
+    /* Sidebar / Menu */
+    --bg-sidebar: #2b2d31;
+    --bg-sidebar-active: #40444b;
+    --bg-sidebar-hover: #4f545c;
+    --text-sidebar: #b9bbbe;
+    --text-sidebar-active: #ffffff;
 
     /* UI */
-    --bg-hover: #40444b;
-    --bg-muted: #4f545c;
     --border-default: #444;
 }
 
@@ -40,16 +33,32 @@ body.dark-mode .main-content {
 }
 
 /* ===============================
-   サイドバー・リンク
+   サイドバーリンク（通常）
 =============================== */
-body.dark-mode li a {
-    background-color: var(--bg-body);
-    color: #b9bbbe;
+body.dark-mode li a,
+body.dark-mode .nav-link {
+    color: var(--text-sidebar);
 }
 
-body.dark-mode li a:hover {
-    background-color: var(--bg-hover);
-    color: #ffffff;
+/* Hover */
+body.dark-mode li a:hover,
+body.dark-mode .nav-link:hover {
+    background-color: var(--bg-sidebar-hover);
+    color: var(--text-sidebar-active);
+}
+
+/* ===============================
+   ★ アクティブ
+=============================== */
+body.dark-mode .nav-link.active {
+    background-color: var(--bg-sidebar-active) !important;
+    color: var(--text-sidebar-active) !important;
+    font-weight: 600;
+}
+
+/* アクティブ時アイコン */
+body.dark-mode .nav-link.active i {
+    color: var(--text-sidebar-active);
 }
 
 /* ===============================
@@ -64,10 +73,10 @@ body.dark-mode .footerlinks a:hover {
 }
 
 /* ===============================
-   ログアウトボタン
+   Logout
 =============================== */
 body.dark-mode .logout-btn {
-    background-color: var(--bg-muted);
+    background-color: #4f545c;
     color: #ffffff;
 }
 
@@ -113,25 +122,10 @@ body.dark-mode .card-header {
 body.dark-mode .table {
     background-color: #2b2b2b;
     color: #fff;
-    --bs-table-color: #fff;
-    --bs-table-bg: #2b2b2b;
-    --bs-table-border-color: var(--border-default);
 }
 
 body.dark-mode .table thead th {
     background-color: #3a3a3a;
-    color: #fff;
-}
-
-body.dark-mode .table-light {
-    --bs-table-color: #fff;
-    --bs-table-bg: #3a3a3a;
-    background-color: #3a3a3a;
-    color: #fff;
-}
-
-body.dark-mode .table-bordered > :not(caption) > * {
-    border-color: var(--border-default);
 }
 
 body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
@@ -148,31 +142,6 @@ body.dark-mode .alert-info {
 }
 
 /* ===============================
-   Form（詳細）
-=============================== */
-body.dark-mode .main-content form.border {
-    background-color: #343a40;
-    border-color: #495057;
-}
-
-body.dark-mode .main-content form.border label.form-label,
-body.dark-mode .main-content form.border .form-check-label,
-body.dark-mode .main-content form.border .input-group-text {
-    color: #e0e0e0;
-}
-
-body.dark-mode .main-content form.border .input-group-text {
-    background-color: #495057;
-    border-color: #6c757d;
-}
-
-body.dark-mode .main-content form.border .form-control {
-    background-color: #495057;
-    border-color: #6c757d;
-    color: #f8f9fa;
-}
-
-/* ===============================
    Login / Signup
 =============================== */
 body.dark-mode .login-box,
@@ -181,13 +150,8 @@ body.dark-mode .signup-box {
 }
 
 /* ===============================
-   Select / Input
+   Hamburger
 =============================== */
-body.dark-mode select.form-control option {
-    color: #e0e0e0;
-    background-color: #495057;
-}
-
-body.dark-mode input.form-control {
-    color: #f0f0f0;
+body.dark-mode .hamburger span {
+    background-color: #ffffff;
 }

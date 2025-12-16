@@ -130,7 +130,7 @@ $questions = $questionDAO->getAll();
 </head>
 
 
-<body>
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
 
 
