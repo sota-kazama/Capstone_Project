@@ -47,7 +47,7 @@ $message = ""; // メッセージ変数を初期化
 
         <title>管理者トップ</title>
     </head>
-    <body>
+    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
         <?php include '../template/header2.php'; ?>
 
         <div class="d-flex w-100 min-vh-100">

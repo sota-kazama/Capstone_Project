@@ -1,11 +1,13 @@
 <link href="<?= BASE_URL ?>/css_theme/hamburger.css" rel="stylesheet" />
 
+<!-- ハンバーガー -->
 <div class="hamburger" id="hamburger">
     <span></span>
     <span></span>
     <span></span>
 </div>
 
+<!-- メニュー -->
 <nav class="menu" id="menu">
     <ul>
         <li><a href="<?= BASE_URL ?>/problem/problem.php">問題</a></li>
@@ -17,6 +19,9 @@
         <?php endif; ?>
     </ul>
 </nav>
+
+<!-- 赤表示用スタイル追加 -->
+
 
 <script>
 const hamburger = document.getElementById("hamburger");

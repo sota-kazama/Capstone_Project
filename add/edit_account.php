@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <title>アカウント情報編集</title>
     </head>
-    <body>
+    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
         <?php include '../template/header2.php'; ?>
 
         <div class="d-flex w-100 min-vh-100">
