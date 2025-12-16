@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/helpers/ShitumonDAO.php';
+require_once __DIR__ . '/../helpers/ShitumonDAO.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: question_list.php');

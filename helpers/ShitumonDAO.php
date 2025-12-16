@@ -244,7 +244,11 @@ public function getByArea(?string $area_number) {
         }
         return (int)$stmt->fetchColumn();
     }
+
+
 }
+
+
 
 
 
