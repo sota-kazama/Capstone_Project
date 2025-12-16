@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     // ----------------------
-    // ⭐投稿完了 → リストへ移動
+    //投稿完了 → リストへ移動
     // ----------------------
     header("Location: question_list.php");
     exit;

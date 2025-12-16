@@ -37,10 +37,13 @@ $totalPages = ceil($totalCount / $perPage);
     <title>質問一覧</title>
 </head>
 
+
+
 <body>
     <div class="d-flex w-100 min-vh-100">
         <?php include '../template/side.php'; ?>
-        <main class="main-content p-4">
+        <main class="main-content p-4 d-flex flex-column">
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>質問一覧</h1>
                 <a href="question_post.php" class="btn btn-primary">新しい質問</a>
@@ -66,7 +69,7 @@ $totalPages = ceil($totalCount / $perPage);
             <div class="list-group">
                 <?php if (empty($questions)): ?>
                     <p>まだ質問はありません。</p>
-                    <?php else: ?>
+                <?php else: ?>
                     <?php foreach ($questions as $q): ?>
                         <?php if ($q->shitu_title && $q->shitu_content): ?>
                             <a href="question_answer.php?shitu_number=<?= htmlspecialchars($q->shitu_number) ?>"
@@ -79,7 +82,10 @@ $totalPages = ceil($totalCount / $perPage);
                                 </div>
                                 <p class="mb-1"><?= nl2br(htmlspecialchars($q->shitu_content)) ?></p>
                                 <small class="text-muted">
-                                    投稿日: <?= $q->update_at ?? $q->asked_date ? date("Y-m-d H:i:s", strtotime($q->update_at ?? $q->asked_date)) : '不明' ?>
+                                    投稿日: <?= !empty($q->update_at ?? $q->asked_date)
+                                                ? date("Y-m-d H:i:s", strtotime($q->update_at ?? $q->asked_date))
+                                                : '不明' ?>
+
                                 </small>
                             </a>
                         <?php endif; ?>
@@ -87,19 +93,41 @@ $totalPages = ceil($totalCount / $perPage);
                 <?php endif; ?>
             </div>
 
-            <!-- ページネーション -->
             <?php if ($totalPages > 1): ?>
-                <nav class="mt-4">
-                    <ul class="pagination">
+               
+                    <ul class="pagination justify-content-center">
+
+                        <!-- Previous -->
+                        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                            <?php if ($page <= 1): ?>
+                                <span class="page-link">Previous</span>
+                            <?php else: ?>
+                                <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page - 1 ?>">Previous</a>
+                            <?php endif; ?>
+                        </li>
+
+                        <!-- ページ番号 -->
                         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                                <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $i ?>">
-                                    <?= $i ?>
-                                </a>
+                            <li class="page-item <?= $i == $page ? 'active' : '' ?>" <?= $i == $page ? 'aria-current="page"' : '' ?>>
+                                <?php if ($i == $page): ?>
+                                    <span class="page-link"><?= $i ?></span>
+                                <?php else: ?>
+                                    <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $i ?>"><?= $i ?></a>
+                                <?php endif; ?>
                             </li>
                         <?php endfor; ?>
+
+                        <!-- Next -->
+                        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                            <?php if ($page >= $totalPages): ?>
+                                <span class="page-link">Next</span>
+                            <?php else: ?>
+                                <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page + 1 ?>">Next</a>
+                            <?php endif; ?>
+                        </li>
+
                     </ul>
-                </nav>
+
             <?php endif; ?>
 
         </main>
@@ -107,8 +135,8 @@ $totalPages = ceil($totalCount / $perPage);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
- <footer>
-        <?php include '../template/footer.php'; ?>
-    </footer>
+<footer>
+    <?php include '../template/footer.php'; ?>
+</footer>
 
 </html>
