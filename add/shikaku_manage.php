@@ -13,9 +13,6 @@ $member = $_SESSION['member'];
 $dao = new ShikakuDAO();
 $message = "";
 
-// Cookieからテーマ読み込み
-$theme = $_COOKIE['theme'] ?? 'light';
-
 // --- POST処理 ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add'])) {
@@ -32,10 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = "資格を削除しました。";
     }
 
+    // --- ここがポイント ---
+    // POSTが完了したらリダイレクトしてGETに切り替える
     header("Location: shikaku_manage.php?msg=" . urlencode($message));
     exit;
 }
 
+// --- GETでページ表示 ---
 if (isset($_GET['msg'])) {
     $message = $_GET['msg'];
 }
@@ -49,33 +49,19 @@ $list = $dao->getAll();
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        <!-- Bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
             rel="stylesheet"
         />
-
-        <!-- 共通CSS -->
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
-
-        <!-- ★ テーマCSS（重要） -->
-        <link id="theme-css" href="../css_theme/<?= $theme ?>.css" rel="stylesheet" />
-
-        <!-- ★ トグルボタンCSS -->
-        <link href="../css_theme/toggle-button.css" rel="stylesheet" />
-
-        <?php include '../template/header2.php'; ?>
-
         <title>資格管理</title>
     </head>
 
     <body>
         <div class="d-flex w-100 min-vh-100">
             <?php include 'side.php'; ?>
-
             <main class="main-content container mt-4">
                 <h1>資格管理</h1>
 
@@ -147,16 +133,7 @@ $list = $dao->getAll();
             </main>
         </div>
 
-        <!-- ★ テーマ切替ボタン -->
-        <button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
-            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
-        </button>
-
-        <!-- JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- ★ テーマ切替JS -->
-        <script src="../js/theme-toggle.js"></script>
     </body>
 
     <footer>

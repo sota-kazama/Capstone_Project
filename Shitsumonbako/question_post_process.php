@@ -1,7 +1,8 @@
-
 <?php
 require_once '../helpers/ShitumonDAO.php';
 require_once '../helpers/DAO.php';
+require_once __DIR__ . '/../helpers/config.php';
+require_once __DIR__ . '/../helpers/MemberDAO.php'; // 追加
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -47,19 +48,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $area_name = $cat['area_name'];
 
     // ----------------------
+    // セッションから user_id を取得
+    // ----------------------
+    session_start();
+
+    // セッションから 'member' 情報を取得
+    $member = $_SESSION['member'] ?? null;
+
+    // ユーザー名またはユーザーIDを取得
+    $user_id = null;
+    if (is_array($member) && isset($member['user_id'])) {
+        $user_id = $member['user_id'];
+    } elseif (is_object($member) && isset($member->user_id)) {
+        $user_id = $member->user_id;
+    }
+
+    // user_id が取得できない場合はエラー
+    if (!$user_id) {
+        die("ユーザーIDが無効です。ログインしてください。");
+    }
+
+    // ----------------------
     // DAO 登録
     // ----------------------
     $dao = new ShitumonDAO();
     $dao->insert(
         $shitu_title,
         $shitu_content,
-        1,
+        1, // reception_status のデフォルト値
         $area_number,
-        $area_name
+        $area_name,
+        $user_id // user_id を渡す
     );
 
     // ----------------------
-    // ⭐投稿完了 → リストへ移動
+    // 投稿完了 → リストへ移動
     // ----------------------
     header("Location: question_list.php");
     exit;

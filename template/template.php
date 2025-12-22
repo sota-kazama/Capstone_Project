@@ -1,14 +1,3 @@
-<?php
-require_once './helpers/MemberDAO.php';
-
-
-//セッションを開始する
-session_start();
-
-//ログイン中の会員データを取得
-$member = $_SESSION['member'];
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,17 +21,7 @@ $member = $_SESSION['member'];
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <script>
-                $(function () {
-                $(window).on('load resize', function(){
-                    var replaceWidth = 768; //ブレイクポイント設定
-                    var windowWidth = parseInt($(window).width());
-                    if (windowWidth >= replaceWidth) {
-                	// PC用コード
-                        <?php include 'template/side.php';?>
-                    });
-                });
-            </script>
+            <?php include 'template/side.php';?>
 
             <main class="main-content">
                 <!--ここに記載する-->

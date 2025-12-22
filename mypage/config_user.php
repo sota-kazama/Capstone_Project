@@ -5,7 +5,7 @@ session_start();
 
 // 未ログインチェック
 if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>プロフィール編集</title>
 </head>
 
-<body>
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 <?php include '../template/header.php'; ?>
 
 <div class="d-flex w-100 min-vh-100">
@@ -157,11 +157,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/theme-toggle.js"></script>
+<script src="./js/theme-toggle.js"></script>
 
 </body>
 
 <footer>
-<?php include '../template/footer.php'; ?>
+<?php include './template/footer.php'; ?>
 </footer>
 </html>

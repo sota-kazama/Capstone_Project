@@ -19,12 +19,6 @@ li a:hover {
     color: #000000;
 }
 
-/* Nav background sections */
-#nav-link,
-#nav-pills {
-    background-color: black;
-}
-
 /* Footer links */
 .footerlinks a {
     color: #a2a0a0;
@@ -42,16 +36,6 @@ li a:hover {
 
 .logout-btn:hover {
     background-color: #787575;
-}
-
-/* ハンバーガーのバー色 */
-.hamburger span {
-    background-color: #333;
-}
-
-/* メニューリンク文字色 */
-.menu a {
-    color: #333;
 }
 
 /* ====== 入力フォーム ====== */
@@ -84,7 +68,10 @@ li a:hover {
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: #fafafa;
 }
-/* ライトテーマ用ハンバーガーのバー */
-.hamburger span {
-    background-color: #333; /* 黒系 */
+
+/* ===============================
+   ハンバーガー（ライト専用）
+=============================== */
+body:not(.dark-mode) .hamburger span {
+    background-color: #333;
 }
