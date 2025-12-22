@@ -63,27 +63,29 @@ class ShitumonDAO
     // 質問登録（s_number削除済み）
     // -----------------------------
     public function insert(
-        string $shitu_title,
-        string $shitu_content,
-        int $reception_status = 1,
-        ?string $area_number = null,
-        ?string $area_name = null
-    ) {
-        $dbh = DAO::get_db_connect();
+    string $shitu_title,
+    string $shitu_content,
+    int $reception_status = 1,
+    ?string $area_number = null,
+    ?string $area_name = null,
+    ?int $user_id = null // user_id を引数として追加
+) {
+    $dbh = DAO::get_db_connect();
 
-        $sql = "INSERT INTO shitumon 
-                (shitu_title, shitu_content, reception_status, asked_date, update_at, area_number, area_name)
-                VALUES (?, ?, ?, GETDATE(), GETDATE(), ?, ?)";
+    $sql = "INSERT INTO shitumon 
+            (shitu_title, shitu_content, reception_status, asked_date, update_at, area_number, area_name, user_id)
+            VALUES (?, ?, ?, GETDATE(), GETDATE(), ?, ?, ?)";
 
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(1, $shitu_title, PDO::PARAM_STR);
-        $stmt->bindValue(2, $shitu_content, PDO::PARAM_STR);
-        $stmt->bindValue(3, $reception_status, PDO::PARAM_INT);
-        $stmt->bindValue(4, $area_number, $area_number === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
-        $stmt->bindValue(5, $area_name, $area_name === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(1, $shitu_title, PDO::PARAM_STR);
+    $stmt->bindValue(2, $shitu_content, PDO::PARAM_STR);
+    $stmt->bindValue(3, $reception_status, PDO::PARAM_INT);
+    $stmt->bindValue(4, $area_number, $area_number === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $stmt->bindValue(5, $area_name, $area_name === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $stmt->bindValue(6, $user_id, $user_id === null ? PDO::PARAM_NULL : PDO::PARAM_INT);  // user_id をバインド
 
-        return $stmt->execute();
-    }
+    return $stmt->execute();
+}
 
     // -----------------------------
     // 質問更新
@@ -283,4 +285,27 @@ class ShitumonDAO
         }
         return (int)$stmt->fetchColumn();
     }
+
+    //個人質問管理
+
+    //質問一覧取得
+    public function getAlluser() {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM shitumon ORDER BY shitu_number DESC";
+        $stmt = $dbh->query($sql);
+
+        $data = [];
+        while ($row = $stmt->fetchObject('Shitumon')) {
+            $data[] = $row;
+        }
+        return $data;
+    }
 }
+
+
+
+
+
+
+
+?>

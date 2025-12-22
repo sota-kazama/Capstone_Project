@@ -5,7 +5,7 @@ session_start();
 
 // 未ログインチェック
 if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 

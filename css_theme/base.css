@@ -116,3 +116,17 @@ body.dark-mode #theme-toggle-btn {
     background-color: #333;
     color: #f0f0f0;
 }
+
+/* 日付と本文の間のスペースを調整 */
+.update-info .d-flex {
+    margin-bottom: 0; /* 日付と本文の間の余白をなくす */
+}
+
+.update-info small {
+    margin-bottom: 0; /* 小さな日付部分のマージンを消す */
+}
+
+.update-info p {
+    margin-top: 0; /* 本文の上の余白をなくす */
+    margin-bottom: 0; /* 本文の下の余白もなくす */
+}
