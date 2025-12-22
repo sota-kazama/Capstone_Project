@@ -155,3 +155,9 @@ body.dark-mode .signup-box {
 body.dark-mode .hamburger span {
     background-color: #ffffff;
 }
+/* ===============================
+   更新情報の日付（ダークモード）
+=============================== */
+body.dark-mode .main-content .text-muted {
+    color: #99aab5 !important; /* 見やすい明るい色に変更 */
+}

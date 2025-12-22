@@ -30,14 +30,11 @@ class MemberDAO
         $stmt->bindValue(':mail_address', $mail_address, PDO::PARAM_STR);
         $stmt->execute();
 
-        $member = $stmt->fetchObject('Member');
+        $member = $stmt->fetchObject('Member');  // 'Member' クラスのインスタンスを取得
 
         if ($member !== false && password_verify($pass_word, $member->pass_word)) {
             // 認証成功時、最終アクセス日を更新
             $this->update_access_date($member->user_id);
-            // 最終アクセス日更新後に最新の情報を再取得するか、
-            // $member->access_date を現在のタイムスタンプ（PHP側の日付）で上書きすることも可能です
-            // 今回はDB側の更新のみに留めます。
             return $member;
         }
         return false;
