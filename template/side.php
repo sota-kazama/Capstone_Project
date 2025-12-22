@@ -23,7 +23,7 @@ $current = basename($_SERVER['PHP_SELF']);
                 <a href="board.php" class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>">
                     <i class="bi bi-person-fill"></i>
                 掲示板
-                </a>                
+                </a>
             <?php endif; ?>
         </li>
     </ul>

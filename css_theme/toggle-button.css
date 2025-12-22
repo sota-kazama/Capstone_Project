@@ -1,0 +1,59 @@
+/* テーマ切替ボタン（右下固定） */
+.theme-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    padding: 0;
+    font-size: 1.2rem;
+    cursor: pointer;
+
+    /* ライトモードのデフォルトカラー */
+    background-color: #f0f0f0;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* ライトモード */
+@media (prefers-color-scheme: light) {
+    .theme-toggle-btn {
+        background-color: #f0f0f0;
+        color: #333;
+        border: 1px solid #ccc;
+    }
+
+    .theme-toggle-btn:hover {
+        background-color: #e0e0e0;
+    }
+
+    .theme-toggle-btn:active {
+        background-color: #d0d0d0;
+    }
+}
+
+/* ダークモード */
+@media (prefers-color-scheme: dark) {
+    .theme-toggle-btn {
+        background-color: #333;
+        color: #f0f0f0;
+        border: 1px solid #444;
+    }
+
+    .theme-toggle-btn:hover {
+        background-color: #444;
+    }
+
+    .theme-toggle-btn:active {
+        background-color: #555;
+    }
+}

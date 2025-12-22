@@ -40,7 +40,6 @@ $member = $_SESSION['member'] ?? null;
     </li>
 <?php endif; ?>
 
-<<<<<<< HEAD
         <!-- 質問箱管理機能 -->
         <li>
             <a
@@ -65,6 +64,4 @@ $member = $_SESSION['member'] ?? null;
         </li>
         <?php endif; ?>
     </ul>
-=======
->>>>>>> ff9a182911c6d247bc4c0c34dba4b33712622196
 </div>
