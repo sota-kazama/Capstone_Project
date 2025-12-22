@@ -9,33 +9,30 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
-        <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <link href="css/side.css" rel="stylesheet" />
-        <?php include 'template/header.php'; ?>
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
+        <?php include 'problem_header.php'; ?>
     </head>
 
     <head>
         <!--こっちのheadを変更しない-->
-        <title>掲示板</title>
+        <title>問題</title>
     </head>
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <div class="d-none d-md-block">
-                <?php include 'template/side.php'; ?>
-            </div>
-
+            <?php include 'problem_side.php';?>
             <main class="main-content">
                 <!--ここに記載する-->
-                <h1>掲示板</h1>
-                <p>ここに、メインとなるページの内容が生成されます。</p>
-                <div style="height: 1500px; background-color: #f8f9fa">長いコンテンツの例</div>
+                <h1>結果</h1>
+
+
             </main>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     <footer>
-        <?php include 'template/footer.php'; ?>
+        <?php include 'problem_footer.php'; ?>
     </footer>
 </html>

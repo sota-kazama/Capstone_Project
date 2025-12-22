@@ -1,77 +1,144 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
-/* ハンバーガーボタンの位置 */
+/* =========================
+   ハンバーガー
+========================= */
 .hamburger {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 30px;
-    height: 25px;
+    width: 36px;
+    height: 28px;
+    position: fixed;
+    top: 15px;
+    right: 15px;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 1200;
+
+    display: flex; /* 常に表示 */
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .hamburger span {
-    display: block;
     height: 4px;
-    background-color: #333;
-    margin: 5px 0;
+    background: #333;
     border-radius: 2px;
-    transition: 0.3s;
+
+    /* GPU最適化 */
+    will-change: transform, opacity;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
 }
 
-/* ボタンがアクティブなとき（クリック時） */
 .hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
+    transform: translateY(12px) rotate(45deg);
 }
-
 .hamburger.active span:nth-child(2) {
     opacity: 0;
 }
-
 .hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
+    transform: translateY(-12px) rotate(-45deg);
 }
 
-/* メニュー */
+/* =========================
+   メニュー（右スライド）
+========================= */
 .menu {
+    position: fixed;
     top: 0;
     right: 0;
-    width: 200px;
+    width: 260px;
     height: 100vh;
-    background-color: #fafafa;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    padding: 60px 20px 20px;
-    box-sizing: border-box;
-    z-index: 900;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
+
+    /* 初期状態 */
+    transform: translate3d(100%, 0, 0);
+    opacity: 0;
+
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+
+    will-change: transform, opacity;
+    z-index: 1100;
+    padding-top: 70px;
+
+    pointer-events: none;
+    overscroll-behavior: contain; /* iOS対策 */
 }
 
 .menu.active {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
+/* =========================
+   メニューリスト
+========================= */
 .menu ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 .menu li {
-    margin-bottom: 15px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #eee;
+    position: relative;
 }
 
 .menu a {
-    text-decoration: none;
     color: #333;
-    font-weight: bold;
-    font-size: 18px;
+    text-decoration: none;
+    display: block;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.menu.active ul {
-    height: auto;
+/* =========================
+   サブメニュー（軽量）
+========================= */
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: #f9f9f9;
+}
+
+.menu li.active > .submenu {
+    max-height: 500px; /* 十分大きければOK */
+}
+
+/* =========================
+   矢印
+========================= */
+.menu li > .arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+
+    border-right: 2px solid #333;
+    border-bottom: 2px solid #333;
+
+    transform: translateY(-50%) rotate(-45deg);
+    transition: transform 0.25s ease;
+}
+
+.menu li.active > .arrow {
+    transform: translateY(-50%) rotate(45deg);
+}
+
+/* =========================
+   オーバーレイ
+========================= */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
 }

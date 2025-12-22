@@ -1,30 +1,63 @@
 <?php
+// BASE_URL の定義と読み込み
+require_once __DIR__ . '/../helpers/config.php'; // BASE_URL 読み込み
+
+// 現在のページファイル名
 $current = basename($_SERVER['PHP_SELF']);
 ?>
 
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; height: 1617px;">
-    <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-    </a>
+    <a href="<?= BASE_URL ?>/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        </a>
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
-            <a href="question.php" class="nav-link <?= $current === 'question.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-square"></i>
+            <a
+                href="<?= BASE_URL ?>/problem/problem.php"
+                class="nav-link <?= $current === 'problem.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
+                <i class="bi bi-check2-square"></i>
                 問題
             </a>
         </li>
+
         <li>
-            <a href="book.php" class="nav-link <?= $current === 'book.php' ? 'active' : 'link-body-emphasis' ?>">
+            <a
+                href="<?= BASE_URL ?>/book.php"
+                class="nav-link <?= $current === 'book.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
                 <i class="bi bi-book"></i>
                 書籍検索
             </a>
         </li>
-        <li>
-            <?php if(isset($member)) : ?>
-                <a href="board.php" class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>">
+
+        <?php if(isset($member)) : ?>
+            <li>
+                <a
+                    href="<?= BASE_URL ?>/board.php"
+                    class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>"
+                >
                     <i class="bi bi-person-fill"></i>
-                掲示板
+                    掲示板
                 </a>
-            <?php endif; ?>
-        </li>
+            </li>
+            <li>
+                <a
+                    href="<?= BASE_URL ?>/mypage/mypage.php"
+                    class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>"
+                >
+                    <i class="bi bi-card-list"></i>
+                    マイページ
+                </a>
+            </li>
+            <li>
+                <a
+                    href="<?= BASE_URL ?>/Shitsumonbako/question_list.php"
+                    class="nav-link <?= $current === 'question_list.php' ? 'active' : 'link-body-emphasis' ?>"
+                >
+                    <i class="bi bi-chat-left"></i>
+                    質問箱
+                </a>
+            </li>
+        <?php endif; ?>
     </ul>
 </div>

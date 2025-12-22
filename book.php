@@ -1,42 +1,56 @@
 <?php
 require_once './helpers/BookDAO.php';
+require_once './helpers/MemberDAO.php';
 
-// セッションの開始
+// セッション開始
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 1. キーワードの取得
-// GETリクエストから 'keyword' を取得。なければ空文字列。
+// Cookieのテーマ読み込み（無ければlight）
+$theme = $_COOKIE['theme'] ?? 'light';
+
+// GETパラメータ
 $keyword = $_GET['keyword'] ?? '';
 $books = [];
 
-// 2. キーワードが入力されている場合にのみ検索を実行
 if (!empty($keyword)) {
     $BookDAO = new BookDAO();
     $books = $BookDAO->searchBooks($keyword);
 }
+
+// ログイン
+$member = $_SESSION['member'] ?? null;
 ?>
 
 
 <!DOCTYPE html>
-<html>
+<html lang="jp">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>書籍検索</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link
-            rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            rel="stylesheet"
         />
-        <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <?php include 'template/header.php'; ?>
-        <link href="css/side.css" rel="stylesheet" />
+
+        <link href="./css/BaseDesignData.css" rel="stylesheet" />
+        <link href="./css/side.css" rel="stylesheet" />
+        <link id="theme-css" rel="stylesheet" href="./css_theme/<?= htmlspecialchars($theme) ?>.css" />
+        <link href="./css_theme/toggle-button.css" rel="stylesheet" />
+        <title>図書検索</title>
     </head>
-    <body>
+
+    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
+        <?php include './template/header.php'; ?>
+
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'template/side.php';?>
+            <div class="d-none d-md-block">
+                <?php include 'template/side.php'; ?>
+            </div>
+
             <main class="main-content">
                 <div class="container-fluid py-4">
                     <h1 class="mb-4">図書検索</h1>
@@ -59,10 +73,11 @@ if (!empty($keyword)) {
                     <div class="search-results mt-4">
                         <?php if (!empty($books)): ?>
                         <h2>検索結果 (<?= count($books) ?>件)</h2>
+
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>コード</th>
+                                    <th>書籍コード</th>
                                     <th>書籍名</th>
                                     <th>作者名</th>
                                     <th>出版社</th>
@@ -70,20 +85,15 @@ if (!empty($keyword)) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                        foreach ($books as $book):
-                                        ?>
+                                <?php foreach ($books as $book): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($book->book_code) ?></td>
                                     <td><?= htmlspecialchars($book->book_name) ?></td>
                                     <td><?= htmlspecialchars($book->sakusya) ?></td>
                                     <td><?= htmlspecialchars($book->syuppan) ?></td>
-
                                     <td>
-                                        <?php
-                                                // 検索クエリとして書籍コードのみを使用
-                                                $search_query = urlencode($book->book_code); // Amazonの検索URL
-                                        $amazon_url = "https://www.amazon.co.jp/s?k=" . $search_query; ?>
+                                        <?php $amazon_url = "https://www.amazon.co.jp/s?k=" . urlencode($book->book_code);
+                                        ?>
                                         <a
                                             href="<?= $amazon_url ?>"
                                             target="_blank"
@@ -98,16 +108,23 @@ if (!empty($keyword)) {
                             </tbody>
                         </table>
                         <?php else: ?>
-                        <p>「<?= htmlspecialchars($keyword) ?>」に関するする書籍は見つかりませんでした。</p>
+                        <p>「<?= htmlspecialchars($keyword) ?>」の検索結果はありませんでした。</p>
                         <?php endif; ?>
                     </div>
                     <?php endif; ?>
                 </div>
             </main>
         </div>
+        <button id="theme-toggle-btn" class="btn theme-toggle-btn">
+            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+        </button>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="./js/theme-toggle_top.js"></script>
     </body>
+
     <footer>
-        <?php include 'template/footer.php'; ?>
+        <?php include './template/footer.php'; ?>
     </footer>
 </html>

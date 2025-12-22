@@ -1,14 +1,3 @@
-<?php
-require_once './helpers/MemberDAO.php';
-
-
-//セッションを開始する
-session_start();
-
-//ログイン中の会員データを取得
-$member = $_SESSION['member'];
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,40 +5,29 @@ $member = $_SESSION['member'];
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="../css/sidebar.css" rel="stylesheet" />
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <link href="css/side.css" rel="stylesheet" />
         <?php include 'template/header.php'; ?>
+        <?php include 'template/hamburger.html';?>
     </head>
 
     <head>
-        <!--こっちのheadを変更する-->
+        <!--こっちのheadを変更しない-->
         <title>メインページ</title>
     </head>
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <script>
-                $(function () {
-                $(window).on('load resize', function(){
-                    var replaceWidth = 768; //ブレイクポイント設定
-                    var windowWidth = parseInt($(window).width());
-                    if (windowWidth >= replaceWidth) {
-                	// PC用コード
-                        <?php include 'template/side.php';?>
-                    });
-                });
-            </script>
+            <?php include 'template/side.php';?>
 
             <main class="main-content">
                 <!--ここに記載する-->
                 <h1>トップページ</h1>
                 <p>ここに、メインとなるページの内容が生成されます。</p>
-
-                変更テストその3
                 <div style="height: 1500px; background-color: #f8f9fa">長いコンテンツの例</div>
             </main>
         </div>

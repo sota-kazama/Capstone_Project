@@ -1,44 +1,67 @@
 <?php
+require_once __DIR__ . '/../helpers/config.php'; // BASE_URL 読み込み
+
+// 現在のページファイル名
 $current = basename($_SERVER['PHP_SELF']);
+
+// セッションから会員情報取得（配列 or オブジェクト両対応）
 $member = $_SESSION['member'] ?? null;
+$isAdmin = false;
+
+if ($member !== null) {
+    if (is_object($member) && isset($member->u_admin)) {
+        $isAdmin = ($member->u_admin == 1);
+    } elseif (is_array($member) && isset($member['u_admin'])) {
+        $isAdmin = ($member['u_admin'] == 1);
+    }
+}
 ?>
 
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; height: 1617px;">
-    <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-    </a>
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; height: 1617px">
     <ul class="nav nav-pills flex-column mb-auto">
+        <!-- マイページ -->
         <li>
-            <a href="./mypage.php" class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+            <a
+                href="<?= BASE_URL ?>/mypage/mypage.php"
+                class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
                 <i class="bi bi-square"></i>
                 マイページトップ
             </a>
         </li>
+
+        <!-- アカウント設定 -->
         <li>
-            <a href="setting.php" class="nav-link <?= $current === 'setting.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-book"></i>
+            <a
+                href="<?= BASE_URL ?>/mypage/config_user.php"
+                class="nav-link <?= $current === 'config_user.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
+                <i class="bi bi-gear"></i>
                 アカウント設定
             </a>
         </li>
+
+        <!-- 目標設定 -->
         <li>
-            <a href="goal.php" class="nav-link <?= $current === 'goal.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-book"></i>
+            <a
+                href="<?= BASE_URL ?>/mypage/goal.php"
+                class="nav-link <?= $current === 'goal.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
+                <i class="bi bi-bullseye"></i>
                 目標設定
             </a>
         </li>
+
+        <!-- 成果登録 -->
         <li>
-            <a href="results.php" class="nav-link <?= $current === 'results.php' ? 'active' : 'link-body-emphasis' ?>">
-                <i class="bi bi-book"></i>
+            <a
+                href="<?= BASE_URL ?>/mypage/results.php"
+                class="nav-link <?= $current === 'results.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
+                <i class="bi bi-graph-up"></i>
                 成果登録
             </a>
         </li>
-        <?php if ($member !== null && $member->u_admin == 1) : ?>
-    <li>
-        <a href="./add/admin_main.php" class="nav-link <?= $current === 'admin.php' ? 'active' : 'link-body-emphasis' ?>">
-            <i class="bi bi-gear"></i>
-            管理者ページ
-        </a>
-    </li>
-<?php endif; ?>
 
         <!-- 質問箱管理機能 -->
         <li>

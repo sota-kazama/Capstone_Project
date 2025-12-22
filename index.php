@@ -8,7 +8,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +38,6 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
             <!-- メインコンテンツ -->
             <main class="main-content">
-                <!--ここに記載する-->
                 <h1>トップページ</h1>
                 <p>ここに、メインとなるページの内容が生成されます。</p>
 
