@@ -1,7 +1,9 @@
 <?php
 require_once '../helpers/MemberDAO.php';
+require_once '../helpers/u_goalsDAO.php';
 
 session_start();
+
 
 // 未ログインの場合
 if (!isset($_SESSION['member'])) {
@@ -10,6 +12,35 @@ if (!isset($_SESSION['member'])) {
 }
 
 $member = $_SESSION['member'];
+
+//DBからログインユーザーの目標を取得
+$GoalsDAO = new GoalsDAO();
+$goal_data = $GoalsDAO->getGoalByUserId($member->user_id);
+
+// // 目標日までの日数計算
+// $goal_date = null; //初期値
+// if ($goal_data === null) {
+//     $goal_date = '目標が設定されていません';
+// } else {
+//     $today = new DateTime();
+//     $goal_date_obj = new DateTime($goal_data->goal_date);
+//     $interval = $today->diff($goal_date_obj);
+//     $goal_date = $interval->days;
+//     if ($today > $goal_date_obj) {
+//         $goal_date = 0; // 目標日を過ぎている場合
+//     }
+// }
+
+$days_left = null;
+if ($goal_data && !empty($goal_data->goal_date)) {
+    // 残り日数の計算
+    $today = new DateTime();
+    $target_date = new DateTime($goal_data->goal_date);
+    $interval = $today->diff($target_date);
+    
+    // 日付が過ぎている場合は0、そうでなければ日数を取得
+    $days_left = $target_date > $today ? $interval->days : 0;
+}
 
 // テーマ（Cookie なければ light）
 $theme = $_COOKIE['theme'] ?? 'light';
@@ -47,7 +78,23 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
     <main class="main-content container mt-4">
         <h1 class="mt-5">マイページ</h1>
-
+        <div class="mb-4">
+        <h2>あなたの目標</h2>
+        <?php if ($goal_data && !empty($goal_data->goal)): ?>
+            <div class="d-flex align-items-baseline">
+                <p class="fs-4 me-3"><?= htmlspecialchars($goal_data->goal) ?></p>
+                <?php if ($days_left !== null): ?>
+                    <span class="badge bg-danger">あと<?= $days_left ?>日！</span>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <p class="text-muted">目標を立ててみましょう！
+            <a href="goal_edit.php" class="btn btn-outline-primary btn-sm">目標を設定する</a></p>
+        <?php endif; ?>
+    </div>
+        <h2>目標達成状況</h2><br>
+        <!-- マイルストーンを表示、達成なら赤マス、未達成なら白マス -->
+        <h2>成績表</h2>
         <!-- 正誤表 -->
         <!-- 途中から回答する -->
         <!-- 目標日 -->
