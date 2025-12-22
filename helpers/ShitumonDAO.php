@@ -4,7 +4,8 @@ require_once 'DAO.php';
 // -----------------------------
 // エンティティクラス
 // -----------------------------
-class Shitumon {
+class Shitumon
+{
     public int $shitu_number;        // 質問番号
     public ?string $shitu_title;     // 質問タイトル（NULLを許可）
     public string $shitu_content;    // 質問内容
@@ -18,7 +19,8 @@ class Shitumon {
     public ?int $shitu_count = null; // 質問数
 }
 
-class ShituAnswer {
+class ShituAnswer
+{
     public int $ans_number;          // 回答番号
     public int $shitu_number;        // 質問番号
     public string $ans_content;      // 回答内容
@@ -29,10 +31,12 @@ class ShituAnswer {
 // -----------------------------
 // DAO クラス
 // -----------------------------
-class ShitumonDAO {
+class ShitumonDAO
+{
 
     // 質問一覧取得
-    public function getAll() {
+    public function getAll()
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM shitumon ORDER BY shitu_number DESC";
         $stmt = $dbh->query($sql);
@@ -45,7 +49,8 @@ class ShitumonDAO {
     }
 
     // 質問番号で取得
-    public function getByNumber(int $shitu_number) {
+    public function getByNumber(int $shitu_number)
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM shitumon WHERE shitu_number = ?";
         $stmt = $dbh->prepare($sql);
@@ -123,7 +128,9 @@ class ShitumonDAO {
     }
 
     // 回答一覧取得
-    public function getAnswers(int $shitu_number) {
+    // -----------------------------
+    public function getAnswers(int $shitu_number)
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM shitu_answer WHERE shitu_number = ? ORDER BY ans_number ASC";
         $stmt = $dbh->prepare($sql);
@@ -138,7 +145,9 @@ class ShitumonDAO {
     }
 
     // 回答追加
-    public function addAnswer(int $shitu_number, string $ans_content) {
+    // -----------------------------
+    public function addAnswer(int $shitu_number, string $ans_content)
+    {
         $dbh = DAO::get_db_connect();
         $sql = "INSERT INTO shitu_answer (shitu_number, ans_content, answer_date, update_at) VALUES (?, ?, GETDATE(), GETDATE())";
         $stmt = $dbh->prepare($sql);
@@ -148,8 +157,11 @@ class ShitumonDAO {
         return $stmt->execute();
     }
 
+    // -----------------------------
     // 質問と回答の両方削除（トランザクション）
-    public function deleteWithAnswers(int $shitu_number) {
+    // -----------------------------
+    public function deleteWithAnswers(int $shitu_number)
+    {
         $dbh = DAO::get_db_connect();
         try {
             $dbh->beginTransaction();
@@ -166,7 +178,6 @@ class ShitumonDAO {
 
             $dbh->commit();
             return true;
-
         } catch (PDOException $e) {
             $dbh->rollBack();
             throw $e;
@@ -174,28 +185,30 @@ class ShitumonDAO {
     }
 
     // 分野ごとの質問一覧取得
-    public function getByArea(?string $area_number) {
-    $dbh = DAO::get_db_connect();
-    if ($area_number) {
-        $sql = "SELECT * FROM shitumon WHERE area_number = ? ORDER BY shitu_number DESC";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(1, $area_number, PDO::PARAM_STR);
-        $stmt->execute();
-    } else {
-        $sql = "SELECT * FROM shitumon ORDER BY shitu_number DESC";
-        $stmt = $dbh->query($sql);
+    public function getByArea(?string $area_number)
+    {
+        $dbh = DAO::get_db_connect();
+        if ($area_number) {
+            $sql = "SELECT * FROM shitumon WHERE area_number = ? ORDER BY shitu_number DESC";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(1, $area_number, PDO::PARAM_STR);
+            $stmt->execute();
+        } else {
+            $sql = "SELECT * FROM shitumon ORDER BY shitu_number DESC";
+            $stmt = $dbh->query($sql);
+        }
+
+        $data = [];
+        while ($row = $stmt->fetchObject('Shitumon')) {
+            $data[] = $row;
+        }
+        return $data;
     }
 
-    $data = [];
-    while ($row = $stmt->fetchObject('Shitumon')) {
-        $data[] = $row;
-    }
-    return $data;
-}
 
 
-
-    public function getAllByAreaOrderPage(string $area_number = '', string $order = 'DESC', int $page = 1, int $perPage = 10) {
+    public function getAllByAreaOrderPage(string $area_number = '', string $order = 'DESC', int $page = 1, int $perPage = 10)
+    {
         $dbh = DAO::get_db_connect();
         $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
         $offset = ($page - 1) * $perPage;
@@ -223,7 +236,8 @@ class ShitumonDAO {
     }
 
     // 総件数取得（ページネーション用）
-    public function getCountByArea(string $area_number = '') {
+    public function getCountByArea(string $area_number = '')
+    {
         $dbh = DAO::get_db_connect();
         if ($area_number !== '') {
             $sql = "SELECT COUNT(*) FROM shitumon WHERE area_number = ?";
