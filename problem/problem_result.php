@@ -21,7 +21,7 @@
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'problem_side.php';?>
+            <?php include '../template/side.php';?>
             <main class="main-content">
                 <!--ここに記載する-->
                 <h1>結果</h1>
