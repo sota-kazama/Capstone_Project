@@ -17,11 +17,12 @@ if (!$q) {
     die("指定された質問が見つかりません。");
 }
 
+// 質問の受付状態をチェック
+$is_ended = $q->reception_status == 0; // 受付終了状態かどうか
+
 // 回答一覧を取得（ShituAnswer オブジェクトの配列）
 $answers = $dao->getAnswers($shitu_number);
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -31,9 +32,7 @@ $answers = $dao->getAnswers($shitu_number);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>質問詳細</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-        rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
 
@@ -56,15 +55,15 @@ $answers = $dao->getAnswers($shitu_number);
                     <p><?= nl2br(htmlspecialchars($q->shitu_content)) ?></p>
 
                     <p class="text-muted mt-3">
-                        投稿日：
-                        <?php
+                        投稿日：<?php
                         if (!empty($q->update_at)) {
                             echo date("Y-m-d H:i:s", strtotime($q->update_at));
                         } elseif (!empty($q->asked_date)) {
                             echo date("Y-m-d H:i:s", strtotime($q->asked_date));
                         } else {
                             echo '不明';
-                        } ?>
+                        }
+                        ?>
                     </p>
                 </div>
             </div>
@@ -89,35 +88,42 @@ $answers = $dao->getAnswers($shitu_number);
                 <?php endif; ?>
             </div>
 
-            <!-- 回答フォーム -->
-            <div class="mt-4">
-                <h5>回答する</h5>
-                <form action="question_answer_process.php" method="post">
-                    <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>" />
+            <!-- 受付終了状態でなければ回答フォームを表示 -->
+            <?php if (!$is_ended): ?>
+                <!-- 回答フォーム -->
+                <div class="mt-4">
+                    <h5>回答する</h5>
+                    <form action="question_answer_process.php" method="post">
+                        <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>" />
 
-                    <div class="mb-3">
-                        <textarea
-                            class="form-control"
-                            name="ans_content"
-                            rows="4"
-                            placeholder="回答内容を入力してください"
-                            required></textarea>
-                    </div>
+                        <div class="mb-3">
+                            <textarea
+                                class="form-control"
+                                name="ans_content"
+                                rows="4"
+                                placeholder="回答内容を入力してください"
+                                required></textarea>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> 回答する</button>
-                </form>
-            </div>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> 回答する</button>
+                    </form>
+                </div>
+            <?php else: ?>
+                <p class="text-muted mt-3">この質問は受付終了のため、回答できません。</p>
+            <?php endif; ?>
 
             <a href="question_list.php" class="btn btn-secondary mt-3">一覧に戻る</a>
 
-            <!-- 質問削除ボタン -->
-            <form
-                action="question_delete.php"
-                method="post"
-                onsubmit="return confirm('本当に質問を削除しますか？');">
-                <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>" />
-                <button type="submit" class="btn btn-danger mt-2"><i class="bi bi-trash"></i> 質問を削除</button>
-            </form>
+            <!-- 質問削除ボタン（受付終了では削除ボタンを表示しない） -->
+            <?php if (!$is_ended): ?>
+                <form
+                    action="question_delete.php"
+                    method="post"
+                    onsubmit="return confirm('本当に質問を削除しますか？');">
+                    <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>" />
+                    <button type="submit" class="btn btn-danger mt-2"><i class="bi bi-trash"></i> 質問を削除</button>
+                </form>
+            <?php endif; ?>
         </main>
     </div>
 

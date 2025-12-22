@@ -15,6 +15,7 @@ class Shitumon {
     public ?string $area_name;       // 分野名
     public ?int $s_number = null;
     public ?int $user_id = null;            //ユーザーid
+    public ?int $shitu_count = null; // 質問数
 }
 
 class ShituAnswer {
@@ -54,16 +55,14 @@ class ShitumonDAO {
         return $stmt->fetchObject('Shitumon');
     }
 
-    // -----------------------------
-    // 質問登録（s_number削除済み）
-    // -----------------------------
+    // 質問登録
     public function insert(
     string $shitu_title,
     string $shitu_content,
     int $reception_status = 1,
     ?string $area_number = null,
     ?string $area_name = null,
-    ?int $user_id = null // user_id を引数として追加
+    ?int $user_id = null
 ) {
     $dbh = DAO::get_db_connect();
 
@@ -77,14 +76,12 @@ class ShitumonDAO {
     $stmt->bindValue(3, $reception_status, PDO::PARAM_INT);
     $stmt->bindValue(4, $area_number, $area_number === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->bindValue(5, $area_name, $area_name === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $stmt->bindValue(6, $user_id, $user_id === null ? PDO::PARAM_NULL : PDO::PARAM_INT);  // user_id をバインド
+    $stmt->bindValue(6, $user_id, $user_id === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
 
     return $stmt->execute();
 }
 
-    // -----------------------------
     // 質問更新
-    // -----------------------------
     public function update(
         int $shitu_number,
         string $shitu_title,
@@ -115,9 +112,7 @@ class ShitumonDAO {
         return $stmt->execute();
     }
 
-    // -----------------------------
     // 質問削除
-    // -----------------------------
     public function delete(int $shitu_number) {
         $dbh = DAO::get_db_connect();
         $sql = "DELETE FROM shitumon WHERE shitu_number = ?";
@@ -127,9 +122,7 @@ class ShitumonDAO {
         return $stmt->execute();
     }
 
-    // -----------------------------
     // 回答一覧取得
-    // -----------------------------
     public function getAnswers(int $shitu_number) {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM shitu_answer WHERE shitu_number = ? ORDER BY ans_number ASC";
@@ -144,9 +137,7 @@ class ShitumonDAO {
         return $data;
     }
 
-    // -----------------------------
     // 回答追加
-    // -----------------------------
     public function addAnswer(int $shitu_number, string $ans_content) {
         $dbh = DAO::get_db_connect();
         $sql = "INSERT INTO shitu_answer (shitu_number, ans_content, answer_date, update_at) VALUES (?, ?, GETDATE(), GETDATE())";
@@ -157,9 +148,7 @@ class ShitumonDAO {
         return $stmt->execute();
     }
 
-    // -----------------------------
     // 質問と回答の両方削除（トランザクション）
-    // -----------------------------
     public function deleteWithAnswers(int $shitu_number) {
         $dbh = DAO::get_db_connect();
         try {
@@ -250,11 +239,13 @@ class ShitumonDAO {
 
     //個人質問管理
 
-    //質問一覧取得
-    public function getAlluser() {
+    // ユーザーIDで質問一覧を取得
+    public function getAllByUser(int $user_id) {
         $dbh = DAO::get_db_connect();
-        $sql = "SELECT * FROM shitumon ORDER BY shitu_number DESC";
-        $stmt = $dbh->query($sql);
+        $sql = "SELECT * FROM shitumon WHERE user_id = ? ORDER BY shitu_number DESC";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
+        $stmt->execute();
 
         $data = [];
         while ($row = $stmt->fetchObject('Shitumon')) {
@@ -262,12 +253,18 @@ class ShitumonDAO {
         }
         return $data;
     }
+
+    // 質問の受付状態を更新
+    public function updateReceptionStatus(int $shitu_number, int $status) {
+        $dbh = DAO::get_db_connect();
+        $sql = "UPDATE shitumon SET reception_status = ? WHERE shitu_number = ?";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(1, $status, PDO::PARAM_INT);
+        $stmt->bindValue(2, $shitu_number, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+
 }
-
-
-
-
-
-
 
 ?>
