@@ -63,6 +63,17 @@ if ($member !== null) {
             </a>
         </li>
 
+        <!-- 質問箱管理機能 -->
+        <li>
+            <a
+                href="<?= BASE_URL ?>/mypage/shitumon.php"
+                class="nav-link <?= $current === 'shitumon.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
+                <i class="bi bi-question-circle"></i>
+                質問箱管理
+            </a>
+        </li>
+
         <!-- 管理者メニュー -->
         <?php if ($isAdmin) : ?>
         <li>

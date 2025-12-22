@@ -1,5 +1,18 @@
 <?php
 require_once '../helpers/DAO.php';
+require_once '../helpers/MemberDAO.php';
+// セッションを開始して、ログインユーザーの情報を取得
+session_start();
+$member = $_SESSION['member'] ?? null;
+
+// ユーザーがログインしていない場合、エラーメッセージを表示してリダイレクト
+if (!$member || !isset($member->user_id)) {
+    $_SESSION['error'] = 'ログインが必要です。';
+    header('Location: login.php'); // ログインページにリダイレクト
+    exit;
+}
+
+$user_id = $member->user_id; // user_idをオブジェクトのプロパティとして取得
 
 // q_categories から分野一覧を取得
 $dbh = DAO::get_db_connect();
@@ -28,7 +41,18 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <main class="main-content p-4">
         <h1 class="mb-4"><i class="bi bi-chat-dots"></i> 質問投稿</h1>
 
+        <?php
+        // セッションメッセージの表示
+        if (isset($_SESSION['error'])) {
+            echo '<div class="alert alert-danger" role="alert">' . htmlspecialchars($_SESSION['error']) . '</div>';
+            unset($_SESSION['error']);
+        }
+        ?>
+
         <form action="question_post_process.php" method="post" class="needs-validation" novalidate>
+            <!-- user_id を隠しフィールドとして追加 -->
+            <input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id) ?>">
+
             <!-- 質問タイトル -->
             <div class="mb-3">
                 <label for="shitu_title" class="form-label">質問タイトル</label>

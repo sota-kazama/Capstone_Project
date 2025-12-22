@@ -51,6 +51,13 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
+            <a href="update_info.php"
+                class="nav-link <?= $current === 'update_info.php' ? 'active' : 'link-body-emphasis' ?>">
+                更新情報ページ
+            </a>
+        </li>
+
+        <li>
             <a href="../mypage/mypage.php"
                 class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
                 マイページトップ
