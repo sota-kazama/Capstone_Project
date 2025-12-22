@@ -20,7 +20,7 @@ class Member
 class MemberDAO
 {
     /**
-     * ログイン認証
+     * メンバー取得（ログイン認証）
      */
     public function get_member(string $mail_address, string $pass_word)
     {

@@ -7,6 +7,12 @@ $current = basename($_SERVER['PHP_SELF']);
     style="width: 280px; height: 1617px;">
 
     <ul class="nav nav-pills flex-column mb-auto">
+        <li>
+            <a href="../mypage.php"
+                class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
+                マイページトップ
+            </a>
+        </li>
 
         <li>
             <a href="admin_main.php"
@@ -23,27 +29,21 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
-            <a href="create_book.php"
-                class="nav-link <?= $current === 'create_book.php' ? 'active' : 'link-body-emphasis' ?>">
-                図書登録ページ
-            </a>
-        </li>
-
-        <li>
             <a href="shikaku_manage.php"
                 class="nav-link <?= $current === 'shikaku_manage.php' ? 'active' : 'link-body-emphasis' ?>">
-                資格登録ページ
+                資格管理ページ
             </a>
         </li>
 
         <li>
-            <a href="m_problem_register.php"
-                class="nav-link <?= $current === 'm_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
+            <a href="problem_register.php"
+                class="nav-link <?= $current === 'problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
                 問題管理ページ
             </a>
         </li>
 
         <li>
+<<<<<<< HEAD
             <a href="s_problem_register.php"
                 class="nav-link <?= $current === 's_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
                 問題分野管理ページ
@@ -65,6 +65,8 @@ $current = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li>
+=======
+>>>>>>> ff9a182911c6d247bc4c0c34dba4b33712622196
             <a href="../logout.php"
                 class="nav-link <?= $current === 'logout.php' ? 'active' : 'link-body-emphasis' ?>"
                 onclick="return confirm('本当にログアウトしますか？');">

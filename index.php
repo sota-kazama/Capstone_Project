@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 require_once './helpers/updateDAO.php';
 
@@ -7,9 +8,12 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
 
 
+=======
+>>>>>>> ff9a182911c6d247bc4c0c34dba4b33712622196
 <!DOCTYPE html>
-<html lang="ja">
+<html>
     <head>
+<<<<<<< HEAD
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -35,9 +39,33 @@ $theme = $_COOKIE['theme'] ?? 'light';
             <div class="d-none d-md-block">
                 <?php include './template/side.php'; ?>
             </div>
+=======
+        <!--こっちのheadは変更しない-->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link href="css/BaseDesignData.css" rel="stylesheet" />
+        <link href="css/side.css" rel="stylesheet" />
+        <?php include 'template/header.php'; ?>
+    </head>
+
+    <head>
+        <!--こっちのheadを変更しない-->
+        <title>メインページ</title>
+    </head>
+
+    <body>
+        <div class="d-flex w-100 min-vh-100">
+            <?php include 'template/side.php';?>
+>>>>>>> ff9a182911c6d247bc4c0c34dba4b33712622196
 
             <!-- メインコンテンツ -->
             <main class="main-content">
+                <!--ここに記載する-->
                 <h1>トップページ</h1>
                 <p>ここに、メインとなるページの内容が生成されます。</p>
 
@@ -75,6 +103,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
             </main>
         </div>
 
+<<<<<<< HEAD
         <!-- テーマ切替ボタン -->
         <button id="theme-toggle-btn" class="btn theme-toggle-btn">
             <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
@@ -90,4 +119,11 @@ $theme = $_COOKIE['theme'] ?? 'light';
         </footer>
 
     </body>
+=======
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    <footer>
+        <?php include 'template/footer.php'; ?>
+    </footer>
+>>>>>>> ff9a182911c6d247bc4c0c34dba4b33712622196
 </html>
