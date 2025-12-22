@@ -74,59 +74,74 @@ $totalPages = ceil($totalCount / $perPage);
                         <?php if ($q->shitu_title && $q->shitu_content): ?>
                             <a href="question_answer.php?shitu_number=<?= htmlspecialchars($q->shitu_number) ?>"
                                 class="list-group-item list-group-item-action mb-2">
-                                <div class="d-flex justify-content-between">
-                                    <h5><?= htmlspecialchars($q->shitu_title) ?></h5>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <?= htmlspecialchars($q->shitu_title) ?>
+
+                                        <?php if ($q->shitu_count > 0): ?>
+                                            <span class="badge bg-primary ms-2">
+                                                <i class="bi bi-check-circle"></i> 回答済み (<?= $q->shitu_count ?>件)
+                                            </span>
+
+
+                                        <?php endif; ?>
+                                    </h5>
+
                                     <?php if (!empty($q->area_name)): ?>
                                         <small class="text-muted"><?= htmlspecialchars($q->area_name) ?></small>
                                     <?php endif; ?>
                                 </div>
+
                                 <p class="mb-1"><?= nl2br(htmlspecialchars($q->shitu_content)) ?></p>
                                 <small class="text-muted">
                                     投稿日: <?= !empty($q->update_at ?? $q->asked_date)
                                                 ? date("Y-m-d H:i:s", strtotime($q->update_at ?? $q->asked_date))
                                                 : '不明' ?>
-
                                 </small>
                             </a>
+
                         <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
 
+
+
             <?php if ($totalPages > 1): ?>
-               
-                    <ul class="pagination justify-content-center">
 
-                        <!-- Previous -->
-                        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                            <?php if ($page <= 1): ?>
-                                <span class="page-link">Previous</span>
+                <ul class="pagination justify-content-center">
+
+                    <!-- Previous -->
+                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                        <?php if ($page <= 1): ?>
+                            <span class="page-link">Previous</span>
+                        <?php else: ?>
+                            <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page - 1 ?>">Previous</a>
+                        <?php endif; ?>
+                    </li>
+
+                    <!-- ページ番号 -->
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= $i == $page ? 'active' : '' ?>" <?= $i == $page ? 'aria-current="page"' : '' ?>>
+                            <?php if ($i == $page): ?>
+                                <span class="page-link"><?= $i ?></span>
                             <?php else: ?>
-                                <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page - 1 ?>">Previous</a>
+                                <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $i ?>"><?= $i ?></a>
                             <?php endif; ?>
                         </li>
+                    <?php endfor; ?>
 
-                        <!-- ページ番号 -->
-                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                            <li class="page-item <?= $i == $page ? 'active' : '' ?>" <?= $i == $page ? 'aria-current="page"' : '' ?>>
-                                <?php if ($i == $page): ?>
-                                    <span class="page-link"><?= $i ?></span>
-                                <?php else: ?>
-                                    <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $i ?>"><?= $i ?></a>
-                                <?php endif; ?>
-                            </li>
-                        <?php endfor; ?>
+                    <!-- Next -->
+                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                        <?php if ($page >= $totalPages): ?>
+                            <span class="page-link">Next</span>
+                        <?php else: ?>
+                            <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page + 1 ?>">Next</a>
+                        <?php endif; ?>
+                    </li>
 
-                        <!-- Next -->
-                        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                            <?php if ($page >= $totalPages): ?>
-                                <span class="page-link">Next</span>
-                            <?php else: ?>
-                                <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page + 1 ?>">Next</a>
-                            <?php endif; ?>
-                        </li>
-
-                    </ul>
+                </ul>
 
             <?php endif; ?>
 
