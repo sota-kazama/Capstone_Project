@@ -13,6 +13,7 @@ if (!empty($questions) && isset($questions[$i])) {
     $question = null;
 }
 
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +31,7 @@ if (!empty($questions) && isset($questions[$i])) {
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
 
-        <?php include 'problem_header.php'; ?>
+        <?php include '../template/header.php'; ?>
     </head>
 
     <head>
@@ -40,7 +41,7 @@ if (!empty($questions) && isset($questions[$i])) {
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'problem_side.php'; ?>
+            <?php include '../template/side.php'; ?>
 
             <main class="main-content">
                 <!--ここに記載する-->

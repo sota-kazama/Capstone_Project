@@ -28,7 +28,7 @@ if (isset($_SESSION['bookmark_q_number'])) {
         />
         <link href="../css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
-        <?php include 'problem_header.php'; ?>
+        <?php include '../template/header.php'; ?>
     </head>
 
     <head>
@@ -38,7 +38,7 @@ if (isset($_SESSION['bookmark_q_number'])) {
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'problem_side.php';?>
+            <?php include '../template/side.php';?>
             <main class="main-content">
                 <!--ここに記載する-->
                 <h1>問題トップページ</h1>

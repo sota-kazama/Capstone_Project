@@ -1,6 +1,5 @@
 <?php
 require_once 'DAO.php';
-
 class BookMark
 {
     public int $user_id; //ユーザーID
@@ -11,15 +10,39 @@ class BookMark
     public string $created_ad; //登録日
     public string $update_at;  //更新日
 }
+<<<<<<< HEAD
+class BookMarkDAO
+{
+=======
 
 class LabelDAO
 {
     // ブックマーク保存（あれば更新）
+>>>>>>> feb7e0d512adf4461934b91ba201d00ae4a9c395
     public function saveBookmark(int $user_id, int $q_number): void
     {
         $dbh = DAO::get_db_connect();
 
         $sql = "
+<<<<<<< HEAD
+        MERGE u_labels AS target
+        USING (SELECT :user_id AS user_id, :q_number AS q_number) AS source
+        ON target.user_id = source.user_id
+           AND target.q_number = source.q_number
+        WHEN MATCHED THEN
+            UPDATE SET
+                bookmark = 1,
+                update_at = GETDATE()
+        WHEN NOT MATCHED THEN
+            INSERT (user_id, q_number, bookmark, created_ad, update_at)
+            VALUES (:user_id, :q_number, 1, GETDATE(), GETDATE());
+        ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
+        $stmt->execute();
+=======
             INSERT INTO u_labels (user_id, q_number, bookmark)
             VALUES (:user_id, :q_number, 1)
             ON DUPLICATE KEY UPDATE
@@ -51,5 +74,6 @@ class LabelDAO
 
         $label = $stmt->fetch();
         return $label instanceof Label ? $label : null;
+>>>>>>> feb7e0d512adf4461934b91ba201d00ae4a9c395
     }
 }
