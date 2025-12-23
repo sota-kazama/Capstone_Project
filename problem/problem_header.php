@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 require_once __DIR__ . '/../helpers/MemberDAO.php';
 
@@ -40,4 +40,4 @@ if (!empty($_SESSION['member'])) {
         <?php endif; ?>
         <hr>
     </body>
-</html>
+</html> -->

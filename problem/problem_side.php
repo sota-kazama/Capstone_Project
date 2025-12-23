@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 $current = basename($_SERVER['PHP_SELF']);
 ?>
 
@@ -36,4 +36,4 @@ $current = basename($_SERVER['PHP_SELF']);
             <?php endif; ?>
         </li>
     </ul>
-</div>
+</div> -->
