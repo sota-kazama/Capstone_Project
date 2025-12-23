@@ -161,3 +161,52 @@ body.dark-mode .hamburger span {
 body.dark-mode .main-content .text-muted {
     color: #99aab5 !important; /* 見やすい明るい色に変更 */
 }
+
+/* ===============================
+   Table (ダークモード)
+=============================== */
+body.dark-mode .table {
+    background-color: #2b2b2b; /* ダークモード用の背景色 */
+    color: #fff; /* 文字色 */
+}
+
+body.dark-mode .table thead th {
+    background-color: #3a3a3a; /* ヘッダーの背景色 */
+}
+
+body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #323232; /* 偶数行の背景色 */
+}
+
+body.dark-mode .table-striped tbody tr:nth-of-type(even) {
+    background-color: #2b2b2b; /* 奇数行の背景色 */
+}
+/* =========================================
+   Dark Theme Colors
+========================================= */
+
+/* Body */
+body.dark-mode {
+    background-color: #2f3136;
+    color: #daddda;
+}
+
+/* テーブル */
+body.dark-mode .table {
+    background-color: #2b2b2b; /* ダークモード用の背景色 */
+    color: #fff; /* 文字色 */
+    border-color: #444; /* ボーダー色 */
+}
+
+body.dark-mode .table thead th {
+    background-color: #3a3a3a; /* ヘッダーの背景色 */
+    color: #daddda; /* ヘッダーのテキスト色 */
+}
+
+body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #323232; /* 奇数行の背景色 */
+}
+
+body.dark-mode .table-striped tbody tr:nth-of-type(even) {
+    background-color: #2b2b2b; /* 偶数行の背景色 */
+}
