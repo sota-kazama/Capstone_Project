@@ -26,13 +26,15 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    <link href="css/BaseDesignData.css" rel="stylesheet" />
-    <link href="css/side.css" rel="stylesheet" />
-    <?php include '../template/header.php'; ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
+    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
+    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
     <title>質問投稿</title>
 </head>
 <body>
+    <?php include '../template/header.php'; ?>
 <div class="d-flex w-100 min-vh-100">
     <div class="d-none d-md-block">
         <?php include '../template/side.php'; ?>

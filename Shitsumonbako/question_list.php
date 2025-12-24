@@ -23,6 +23,9 @@ $questions = $dao->getAllByAreaOrderPage($area_number, $order, $page, $perPage);
 $totalCount = $dao->getCountByArea($area_number);
 $totalPages = ceil($totalCount / $perPage);
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -30,16 +33,18 @@ $totalPages = ceil($totalCount / $perPage);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
-
-    <?php include '../template/header.php'; ?>
+    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
+    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
     <title>質問一覧</title>
 </head>
 
 
 
 <body>
+        <?php include '../template/header.php'; ?>
     <div class="d-flex w-100 min-vh-100">
         <?php include '../template/side.php'; ?>
         <main class="main-content p-4 d-flex flex-column">
