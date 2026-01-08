@@ -30,7 +30,7 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
-        <?php include 'problem_header.php'; ?>
+        <?php include '../template/header.php'; ?>
     </head>
 
     <head>
@@ -40,7 +40,7 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
 
     <body>
         <div class="d-flex w-100 min-vh-100">
-            <?php include 'problem_side.php';?>
+            <?php include '../template/side.php';?>
 
             <main class="main-content">
                 <!--ここに記載する-->
@@ -48,23 +48,12 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                     <h1>問題解説</h1>
 
                     <?php if (isset($member) && strpos($referer, 'problem_response.php') !== false) : ?>
-                        <a href="problem.php" class="ms-auto">
-                            <button type="button" class="btn btn-outline-primary">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="35"
-                                    fill="currentColor"
-                                    class="bi bi-bookmark"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path
-                                        d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"
-                                    />
-                                </svg>
-                            </button>
-                        </a>
+                        <form action="problem.php" method="post" class="ms-auto">
+                            <input type="hidden" name="bookmark_q_number" value="<?= $question->q_number ?>">
+                            <input type="submit" class="btn btn-outline-primary" value="ブックマーク">
+                        </form>
                     <?php endif; ?>
+                    
                 </div>
                 <h2>第<?php echo $question->q_number; ?>問</h2>
                 <h3><?php echo $question->q_content; ?></h3>
@@ -149,6 +138,6 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     <footer>
-        <?php include 'problem_footer.php'; ?>
+        <?php include '../template/footer.php'; ?>
     </footer>
 </html>

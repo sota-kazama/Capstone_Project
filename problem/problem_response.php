@@ -12,8 +12,6 @@ if (!empty($questions) && isset($questions[$i])) {
 } else {
     $question = null;
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -107,6 +105,6 @@ if (!empty($questions) && isset($questions[$i])) {
     </body>
 
     <footer>
-        <?php include 'problem_footer.php'; ?>
+        <?php include '../template/footer.php'; ?>
     </footer>
 </html>
