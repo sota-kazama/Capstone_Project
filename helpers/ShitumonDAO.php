@@ -232,4 +232,97 @@ SQL;
 
         return $stmt->execute();
     }
+
+    // 分野別ページング＋並び順取得
+    public function getAllByAreaOrderPage(?string $area_number, string $order, int $page, int $perPage): array
+    {
+        $dbh = DAO::get_db_connect();
+        $offset = ($page - 1) * $perPage;
+
+        $sql = "SELECT s.*, c.area_name
+                FROM shitumon s
+                LEFT JOIN q_categories c ON s.area_number = c.area_number";
+
+        $params = [];
+        if (!empty($area_number)) {
+            $sql .= " WHERE s.area_number = :area_number";
+            $params[':area_number'] = $area_number;
+        }
+
+        $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+        $sql .= " ORDER BY s.asked_date $order
+                  OFFSET :offset ROWS
+                  FETCH NEXT :limit ROWS ONLY";
+
+        $stmt = $dbh->prepare($sql);
+
+        if (isset($params[':area_number'])) {
+            $stmt->bindValue(':area_number', $params[':area_number'], PDO::PARAM_STR);
+        }
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', (int)$perPage, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $data = [];
+        while ($row = $stmt->fetchObject(Shitumon::class)) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+    // 分野別件数取得
+    public function getCountByArea(?string $area_number): int
+    {
+        $dbh = DAO::get_db_connect();
+
+        if (!empty($area_number)) {
+            $sql = "SELECT COUNT(*) as cnt FROM shitumon WHERE area_number = :area_number";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
+            $stmt->execute();
+        } else {
+            $stmt = $dbh->query("SELECT COUNT(*) as cnt FROM shitumon");
+        }
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$row['cnt'];
+    }
+
+    /**
+ * 指定分野・並び順で最新の1件を取得
+ * @param string|null $area_number 分野番号（nullまたは空で全分野）
+ * @param string $order 'ASC' or 'DESC'
+ * @return Shitumon|null
+ */
+public function getFirstQuestion(?string $area_number = null, string $order = 'DESC'): ?Shitumon
+{
+    $dbh = DAO::get_db_connect();
+    
+    $sql = "SELECT s.*, c.area_name
+            FROM shitumon s
+            LEFT JOIN q_categories c ON s.area_number = c.area_number";
+    
+    $params = [];
+    if (!empty($area_number)) {
+        $sql .= " WHERE s.area_number = :area_number";
+        $params[':area_number'] = $area_number;
+    }
+
+    $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+    $sql .= " ORDER BY s.asked_date $order
+              OFFSET 0 ROWS
+              FETCH NEXT 1 ROWS ONLY";
+
+    $stmt = $dbh->prepare($sql);
+
+    if (isset($params[':area_number'])) {
+        $stmt->bindValue(':area_number', $params[':area_number'], PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    return $stmt->fetchObject(Shitumon::class) ?: null;
+}
+
 }

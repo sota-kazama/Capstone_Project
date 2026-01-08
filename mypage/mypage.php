@@ -48,28 +48,28 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <!-- こっちのheadは変更しない -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <?php include '../template/header.php'; ?>
-</head>
+    <head>
+        <!-- こっちのheadは変更しない -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            rel="stylesheet"
+        />
+        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <link href="../css/side.css" rel="stylesheet" />
+        <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
+        <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+        <?php include '../template/header.php'; ?>
+    </head>
 
-<head>
-    <!-- こっちのheadを変更する -->
-    <title>マイページ</title>
-    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
-    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
-</head>
+    <head>
+        <!-- こっちのheadを変更する -->
+        <title>マイページ</title>
+    </head>
 
-<body>
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
 <div class="d-flex w-100 min-vh-100">
     <div class="d-none d-md-block">
@@ -78,39 +78,22 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
     <main class="main-content container mt-4">
         <h1 class="mt-5">マイページ</h1>
-        <div class="mb-4">
-        <h2>あなたの目標</h2>
-        <?php if ($goal_data && !empty($goal_data->goal)): ?>
-            <div class="d-flex align-items-baseline">
-                <p class="fs-4 me-3"><?= htmlspecialchars($goal_data->goal) ?></p>
-                <?php if ($days_left !== null): ?>
-                    <span class="badge bg-danger">あと<?= $days_left ?>日！</span>
-                <?php endif; ?>
-            </div>
-        <?php else: ?>
-            <p class="text-muted">目標を立ててみましょう！
-            <a href="goal_edit.php" class="btn btn-outline-primary btn-sm">目標を設定する</a></p>
-        <?php endif; ?>
-    </div>
-        <h2>目標達成状況</h2><br>
-        <!-- マイルストーンを表示、達成なら赤マス、未達成なら白マス -->
-        <h2>成績表</h2>
+
         <!-- 正誤表 -->
         <!-- 途中から回答する -->
         <!-- 目標日 -->
     </main>
 </div>
 
-<button id="theme-toggle-btn" class="btn theme-toggle-btn">
-    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
-</button>
+        <button id="theme-toggle-btn" class="btn theme-toggle-btn">
+            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+        </button>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/theme-toggle.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../js/theme-toggle.js"></script>
+    </body>
 
-</body>
-
-<footer>
-<?php include '../template/footer.php'; ?>
-</footer>
+    <footer>
+        <?php include '../template/footer.php'; ?>
+    </footer>
 </html>
