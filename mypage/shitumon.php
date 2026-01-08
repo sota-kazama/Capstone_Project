@@ -28,35 +28,36 @@ $questions = $shitumonDAO->getAllByUser($user_id);
 
 <!DOCTYPE html>
 <html lang="ja">
-<!DOCTYPE html>
-<html lang="ja">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQueryの追加 -->
+    <title>マイページ</title>
     <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
     <link href="../css_theme/toggle-button.css" rel="stylesheet" />
-    <title>あなたの質問箱</title>
 </head>
+
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
+
 <?php include '../template/header.php'; ?>
+
 <div class="d-flex w-100 min-vh-100">
     <!-- サイドバー -->
-    <div class="d-none d-md-block">
+    <aside class="d-none d-md-block">
         <?php include 'side.php'; ?>
-    </div>
+    </aside>
 
     <!-- メインコンテンツ -->
     <main class="main-content container mt-4">
-        <h1 class="mt-5">あなたの投稿した質問</h1>
-        <!-- ユーザーの質問一覧表示 -->
-        <div class="col-md-12">
-            <!-- 質問一覧 -->
-            <table class="table table-bordered table-striped">
-                <thead>
+        <h1 class="mt-5">マイページ</h1>
+
+        <section class="mt-4">
+            <h2>あなたの投稿した質問</h2>
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="table-light">
                     <tr>
                         <th>質問タイトル</th>
                         <th>質問内容</th>
@@ -66,44 +67,32 @@ $questions = $shitumonDAO->getAllByUser($user_id);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    // 質問が存在する場合
-                    if (count($questions) > 0):
-                        foreach ($questions as $question):
-                            // 投稿日時のフォーマットを変更
-                            $askedDate = new DateTime($question->asked_date);
-                            $formattedDate = $askedDate->format('Y/m/d H:i');
+                <?php if (!empty($questions)): ?>
+                    <?php foreach ($questions as $q): 
+                        $askedDate = (new DateTime($q->asked_date))->format('Y/m/d H:i');
                     ?>
-                    <tr id="question-row-<?= $question->shitu_number ?>">
+                    <tr id="question-row-<?= $q->shitu_number ?>">
+                        <td><a href="../Shitsumonbako/question_answer.php?shitu_number=<?= $q->shitu_number ?>"><?= htmlspecialchars($q->shitu_title) ?></a></td>
+                        <td><?= htmlspecialchars($q->shitu_content) ?></td>
+                        <td id="status-<?= $q->shitu_number ?>"><?= $q->reception_status == 1 ? '受付中' : '受付終了' ?></td>
+                        <td><?= $askedDate ?></td>
                         <td>
-                            <!-- 質問タイトルをクリックすると、詳細ページに飛べるリンク -->
-                            <a href="question_answer.php?shitu_number=<?= $question->shitu_number ?>">
-                                <?= htmlspecialchars($question->shitu_title) ?>
-                            </a>
-                        </td>
-                        <td><?= htmlspecialchars($question->shitu_content) ?></td>
-                        <td id="status-<?= $question->shitu_number ?>">
-                            <?= $question->reception_status == 1 ? '受付中' : '受付終了' ?>
-                        </td>
-                        <td><?= $formattedDate ?></td>
-                        <td>
-                            <!-- 受付終了ボタン -->
-                            <?php if ($question->reception_status == 1): ?>
-                                <button class="btn btn-warning end-reception-btn" data-shitu_number="<?= $question->shitu_number ?>">受付終了</button>
+                            <?php if ($q->reception_status == 1): ?>
+                                <button class="btn btn-warning btn-sm end-reception-btn" data-shitu_number="<?= $q->shitu_number ?>">受付終了</button>
                             <?php else: ?>
                                 <span class="text-muted">受付終了済み</span>
                             <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
-                    <?php else: ?>
+                <?php else: ?>
                     <tr>
                         <td colspan="5" class="text-center">投稿した質問はありません。</td>
                     </tr>
-                    <?php endif; ?>
+                <?php endif; ?>
                 </tbody>
             </table>
-        </div>
+        </section>
     </main>
 </div>
 
@@ -114,43 +103,32 @@ $questions = $shitumonDAO->getAllByUser($user_id);
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/theme-toggle.js"></script>
-
 <script>
-// 受付終了ボタンのクリックイベント
-$('.end-reception-btn').click(function() {
-    const shitu_number = $(this).data('shitu_number');
-    
-    $.ajax({
-        type: 'POST',
-        url: 'update_status.php',
-        data: {
-            action: 'end_reception',
-            shitu_number: shitu_number
-        },
-        success: function(response) {
-            // レスポンスをJSONとしてパース
+$(document).ready(function() {
+    // 受付終了ボタン
+    $('.end-reception-btn').click(function() {
+        const shitu_number = $(this).data('shitu_number');
+
+        $.post('update_status.php', { action: 'end_reception', shitu_number }, function(response) {
             const data = JSON.parse(response);
             if (data.success) {
-                // 受付終了が成功したら、受付状態を更新
-                $('#status-' + shitu_number).text('受付終了');
                 alert('受付終了しました');
+                // 成功したらページをリロード
+                location.reload();
             } else {
-                // 処理失敗のメッセージ
                 alert('受付終了に失敗しました: ' + (data.message || '未知のエラー'));
             }
-        },
-        error: function(xhr, status, error) {
-            // AJAX通信自体に失敗した場合
+        }).fail(function() {
             alert('通信に失敗しました。もう一度試してください。');
-        }
+        });
     });
 });
+
 </script>
 
-</body>
-
-<!-- フッター部分 -->
 <footer>
     <?php include '../template/footer.php'; ?>
 </footer>
+
+</body>
 </html>

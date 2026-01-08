@@ -60,14 +60,15 @@ class FieldDAO
 
     /**
      * 分野を更新
+     * area_name は外部キー制約のため更新しない（s_number のみ更新）
      */
-    public function update(string $area_number, string $area_name, int $s_number): bool
+    public function update(string $area_number, int $s_number): bool
     {
         $sql = "UPDATE q_categories
-                SET area_name = ?, s_number = ?, update_at = GETDATE()
+                SET s_number = ?, update_at = GETDATE()
                 WHERE area_number = ?";
         $stmt = $this->dbh->prepare($sql);
-        return $stmt->execute([$area_name, $s_number, $area_number]);
+        return $stmt->execute([$s_number, $area_number]);
     }
 
     /**

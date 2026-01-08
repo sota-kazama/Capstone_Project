@@ -61,6 +61,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
         <link href="../css/side.css" rel="stylesheet" />
         <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
         <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+        <?php include '../template/header.php'; ?>
     </head>
 
     <head>
