@@ -31,11 +31,14 @@ $member = $_SESSION['member'] ?? null;
             <a href="#">マイページ</a>
             <span class="arrow"></span>
             <ul class="submenu">
-                <li><a href="setting.php">アカウント設定</a></li>
+                <li><a href="./mypage.php">マイページトップ</a></li>
+                <li><a href="./config_user.php">アカウント設定</a></li>
+                <li><a href="./goal.php">目標設定</a></li>
+                <li><a href="./results.php">成果登録</a></li>
+                <li><a href="./shitumon.php">質問箱の管理</a></li>
             </ul>
         </li>
         <?php endif; ?>
-
         <!-- 通常メニュー -->
         <li><a href="../problem/problem.php">問題</a></li>
         <li><a href="../book.php">書籍検索</a></li>
