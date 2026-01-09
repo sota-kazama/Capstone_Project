@@ -1,4 +1,6 @@
-/* Hamburger Button */
+/* ===========================
+   ハンバーガーボタン
+=========================== */
 .hamburger {
     position: absolute;
     top: 20px;
@@ -6,53 +8,66 @@
     width: 30px;
     height: 25px;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 1000; /* 他の要素より前面に表示 */
 }
+
 .hamburger span {
     display: block;
     height: 4px;
     margin: 5px 0;
     border-radius: 2px;
-    background: #333;
-    transition: 0.3s;
-}
-.hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-}
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-.hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
+    background: #333; /* 線の色 */
+    transition: 0.3s; /* アニメーション */
 }
 
-/* Side Menu */
+/* ハンバーガーが開いた状態（アクティブ） */
+.hamburger.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg); /* 上の線を斜めに */
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0; /* 中央の線を非表示 */
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg); /* 下の線を斜めに */
+}
+
+/* ===========================
+   サイドメニュー
+=========================== */
 .menu {
     position: fixed;
     top: 0;
     right: 0;
     width: 200px;
     height: 100vh;
-    transform: translateX(100%);
+    transform: translateX(100%); /* 初期状態では画面外に隠す */
     transition: transform 0.3s ease;
     padding: 60px 20px;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* 左側に影 */
     box-sizing: border-box;
     z-index: 900;
 }
+
+/* メニュー表示時 */
 .menu.active {
-    transform: translateX(0);
+    transform: translateX(0); /* 画面内に表示 */
 }
+
+/* メニューリスト */
 .menu ul {
-    list-style: none;
+    list-style: none; /* デフォルトのリストスタイルを消す */
     padding: 0;
     margin: 0;
 }
+
 .menu li {
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* リスト項目の間隔 */
 }
+
 .menu a {
     font-size: 18px;
     font-weight: bold;
-    text-decoration: none;
+    text-decoration: none; /* 下線を消す */
 }

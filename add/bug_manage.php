@@ -1,5 +1,5 @@
 <?php
-require_once '../helpers/UpdateDAO.php';
+require_once '../helpers/BugDAO.php';
 require_once '../helpers/MemberDAO.php';
 
 session_start();
@@ -10,46 +10,42 @@ if (!isset($_SESSION['member'])) {
 }
 
 $theme = $_COOKIE['theme'] ?? 'light';
-$updateDAO = new UpdateDAO();
+$bugDAO = new BugDAO();
 $message = "";
 
 /* ===== POST処理 ===== */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $action = $_POST['action'] ?? '';
 
-    // 追加
     if ($action === 'add') {
-        $up_info = trim($_POST['up_info'] ?? '');
-        if ($up_info === '') {
-            $message = "更新内容を入力してください。";
+        $bug_info = trim($_POST['bug_info'] ?? '');
+        if ($bug_info === '') {
+            $message = "バグ内容を入力してください。";
         } else {
-            $updateDAO->insert($up_info);
-            $message = "更新情報を追加しました。";
+            $bugDAO->insert($bug_info);
+            $message = "バグを追加しました。";
         }
     }
 
-    // 編集
     if ($action === 'edit') {
-        $update_id = (int)$_POST['update_id'];
-        $up_info = trim($_POST['up_info'] ?? '');
-        if ($up_info === '') {
-            $message = "更新内容を入力してください。";
+        $bug_id = (int)$_POST['bug_id'];
+        $bug_info = trim($_POST['bug_info'] ?? '');
+        if ($bug_info === '') {
+            $message = "バグ内容を入力してください。";
         } else {
-            $updateDAO->update($update_id, $up_info);
-            $message = "更新情報を更新しました。";
+            $bugDAO->update($bug_id, $bug_info);
+            $message = "バグ情報を更新しました。";
         }
     }
 
-    // 削除
     if ($action === 'delete') {
-        $update_id = (int)$_POST['update_id'];
-        $updateDAO->delete($update_id);
-        $message = "更新情報を削除しました。";
+        $bug_id = (int)$_POST['bug_id'];
+        $bugDAO->delete($bug_id);
+        $message = "バグを削除しました。";
     }
 }
 
-$updateList = $updateDAO->getAll();
+$bugList = $bugDAO->getAll();
 ?>
 
 <!DOCTYPE html>
@@ -66,9 +62,8 @@ $updateList = $updateDAO->getAll();
     <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css">
     <link href="../css_theme/toggle-button.css" rel="stylesheet">
 
-    <title>更新情報管理</title>
+    <title>バグ管理</title>
 </head>
-
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 <?php include '../template/header2.php'; ?>
 
@@ -77,12 +72,12 @@ $updateList = $updateDAO->getAll();
 
     <main class="main-content flex-grow-1 p-4">
         <div class="d-flex align-items-center mb-3">
-            <h1 class="m-0">更新情報管理</h1>
+            <h1 class="m-0">バグ管理</h1>
         </div>
 
         <!-- 追加フォーム -->
         <div class="card p-4 mt-3">
-            <h4>更新情報追加</h4>
+            <h4>バグ追加</h4>
 
             <?php if ($message): ?>
                 <div class="alert alert-info mt-3">
@@ -94,8 +89,8 @@ $updateList = $updateDAO->getAll();
                 <input type="hidden" name="action" value="add">
 
                 <div class="mb-3">
-                    <label class="form-label">更新内容</label>
-                    <textarea name="up_info" class="form-control" rows="4" required></textarea>
+                    <label class="form-label">バグ内容</label>
+                    <textarea name="bug_info" class="form-control" rows="4" required></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">
@@ -106,44 +101,44 @@ $updateList = $updateDAO->getAll();
 
         <!-- 一覧 -->
         <div class="card p-4 mt-5">
-            <h4>更新情報一覧</h4>
+            <h4>バグ一覧</h4>
 
-            <?php if (empty($updateList)): ?>
-                <p class="text-muted mt-3">更新情報はまだありません。</p>
+            <?php if (empty($bugList)): ?>
+                <p class="text-muted mt-3">バグ情報はまだありません。</p>
             <?php else: ?>
                 <table class="table table-striped align-middle mt-3">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>更新内容</th>
-                            <th>作成日</th>
+                            <th>バグ内容</th>
+                            <th>登録日</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($updateList as $update): ?>
+                    <?php foreach ($bugList as $bug): ?>
                         <tr>
-                            <td><?= htmlspecialchars($update->update_id) ?></td>
+                            <td><?= htmlspecialchars($bug->bug_id) ?></td>
 
                             <!-- 編集 -->
                             <td>
                                 <form method="post" class="d-flex gap-2">
                                     <input type="hidden" name="action" value="edit">
-                                    <input type="hidden" name="update_id" value="<?= $update->update_id ?>">
-                                    <textarea name="up_info" class="form-control" rows="2"><?= htmlspecialchars($update->up_info) ?></textarea>
+                                    <input type="hidden" name="bug_id" value="<?= $bug->bug_id ?>">
+                                    <textarea name="bug_info" class="form-control" rows="2"><?= htmlspecialchars($bug->bug_info) ?></textarea>
                                     <button class="btn btn-success btn-sm">
                                         <i class="bi bi-check-lg"></i>
                                     </button>
                                 </form>
                             </td>
 
-                            <td><?= htmlspecialchars($update->created_ad) ?></td>
+                            <td><?= htmlspecialchars($bug->created_at) ?></td>
 
                             <!-- 削除 -->
                             <td>
                                 <form method="post" onsubmit="return confirm('本当に削除しますか？');">
                                     <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="update_id" value="<?= $update->update_id ?>">
+                                    <input type="hidden" name="bug_id" value="<?= $bug->bug_id ?>">
                                     <button class="btn btn-danger btn-sm">
                                         <i class="bi bi-trash"></i>
                                     </button>

@@ -1,6 +1,6 @@
-/* =========================
-   ハンバーガー
-========================= */
+/* =========================================
+   ハンバーガーボタン
+========================================= */
 .hamburger {
     width: 36px;
     height: 28px;
@@ -11,13 +11,13 @@
     z-index: 1200;
 
     display: flex; /* 常に表示 */
-    flex-direction: column;
+    flex-direction: column; /* 縦並び */
     justify-content: space-between;
 }
 
 .hamburger span {
     height: 4px;
-    background: #333;
+    background: #333; /* 線の色 */
     border-radius: 2px;
 
     /* GPU最適化 */
@@ -25,19 +25,20 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
 }
 
+/* ハンバーガーが開いた状態（アクティブ） */
 .hamburger.active span:nth-child(1) {
     transform: translateY(12px) rotate(45deg);
 }
 .hamburger.active span:nth-child(2) {
-    opacity: 0;
+    opacity: 0; /* 真ん中の線を消す */
 }
 .hamburger.active span:nth-child(3) {
     transform: translateY(-12px) rotate(-45deg);
 }
 
-/* =========================
-   メニュー（右スライド）
-========================= */
+/* =========================================
+   メニュー（右からスライド）
+========================================= */
 .menu {
     position: fixed;
     top: 0;
@@ -46,31 +47,31 @@
     height: 100vh;
     box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
 
-    /* 初期状態 */
+    /* 初期状態（画面外） */
     transform: translate3d(100%, 0, 0);
     opacity: 0;
+    pointer-events: none;
 
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
-
     will-change: transform, opacity;
+
     z-index: 1100;
     padding-top: 70px;
-
-    pointer-events: none;
     overscroll-behavior: contain; /* iOS対策 */
 }
 
+/* メニュー表示状態 */
 .menu.active {
     transform: translate3d(0, 0, 0);
     opacity: 1;
     pointer-events: auto;
 }
 
-/* =========================
+/* =========================================
    メニューリスト
-========================= */
+========================================= */
 .menu ul {
-    list-style: none;
+    list-style: none; /* デフォルトのリストマークを消す */
     margin: 0;
     padding: 0;
 }
@@ -85,26 +86,28 @@
     color: #333;
     text-decoration: none;
     display: block;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; /* タップハイライト除去 */
+    background-color: var(--bg-menu);
+    color: inherit;
 }
 
-/* =========================
-   サブメニュー（軽量）
-========================= */
+/* =========================================
+   サブメニュー（軽量アコーディオン）
+========================================= */
 .submenu {
-    max-height: 0;
+    max-height: 0; /* 非表示 */
     overflow: hidden;
     transition: max-height 0.3s ease;
     background: #f9f9f9;
 }
 
 .menu li.active > .submenu {
-    max-height: 500px; /* 十分大きければOK */
+    max-height: 500px; /* 展開時の高さ（十分大きければOK） */
 }
 
-/* =========================
-   矢印
-========================= */
+/* =========================================
+   矢印アイコン
+========================================= */
 .menu li > .arrow {
     position: absolute;
     right: 20px;
@@ -119,13 +122,14 @@
     transition: transform 0.25s ease;
 }
 
+/* 展開時の矢印 */
 .menu li.active > .arrow {
     transform: translateY(-50%) rotate(45deg);
 }
 
-/* =========================
+/* =========================================
    オーバーレイ
-========================= */
+========================================= */
 .overlay {
     position: fixed;
     inset: 0;
@@ -138,11 +142,8 @@
     z-index: 1000;
 }
 
+/* オーバーレイ表示時 */
 .overlay.active {
     opacity: 1;
     pointer-events: auto;
-}
-.menu a {
-    background-color: var(--bg-menu);
-    color: inherit;
 }

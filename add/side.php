@@ -12,6 +12,7 @@ $menus = [
     ['file' => 's_problem_register.php','label' => '問題分野管理ページ'],
     ['file' => 'shitumon.php',          'label' => '質問箱管理ページ'],
     ['file' => 'update_info.php',       'label' => '更新情報ページ'],
+    ['file' => 'bug_manage.php',       'label' => 'バグ記載ページ'],
     ['file' => '../mypage/mypage.php',  'label' => 'マイページトップ'],
 ];
 ?>

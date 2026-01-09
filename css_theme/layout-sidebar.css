@@ -1,35 +1,52 @@
+/* =========================================
+   ページ全体 & メイン領域
+========================================= */
 body {
-    float: left;
-}
-main {
-    height: 100vh;
-    max-height: 100vh;
-    overflow-x: auto;
-    overflow-y: hidden;
+    float: left; /* 横方向に要素を左に寄せる */
 }
 
+main {
+    height: 100vh; /* 画面全体の高さ */
+    max-height: 100vh; /* 最大高さも同じに設定 */
+    overflow-x: auto; /* 横スクロールが必要な場合はスクロール */
+    overflow-y: hidden; /* 縦スクロールを非表示 */
+}
+
+/* =========================================
+   サイドバー トグルボタン
+========================================= */
 .btn-toggle {
     padding: 0.25rem 0.5rem;
     font-weight: 600;
-    background-color: transparent;
+    background-color: transparent; /* 背景なし */
 }
+
+/* トグル矢印（ボタン前に表示） */
 .btn-toggle::before {
     width: 1.25em;
-    content: "";
-    transform-origin: 0.5em 50%;
-    transition: 0.35s;
+    content: ""; /* 擬似要素の内容 */
+    transform-origin: 0.5em 50%; /* 回転の基準点 */
+    transition: 0.35s; /* アニメーション */
 }
+
+/* 展開状態の矢印回転 */
 .btn-toggle[aria-expanded="true"]::before {
     transform: rotate(90deg);
 }
 
+/* =========================================
+   スクロール可能領域
+========================================= */
 .scrollarea {
-    overflow-y: auto;
+    overflow-y: auto; /* 縦スクロールを有効にする */
 }
 
+/* =========================================
+   サイドバー配置
+========================================= */
 #side {
     position: absolute;
     top: 30px;
     left: 0;
-    width: 100px;
+    width: 100px; /* サイドバー幅 */
 }

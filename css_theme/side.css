@@ -1,83 +1,89 @@
 /*
- * 基本的なカラースキームを CSS 変数として定義
- * これらを変更するだけで、サイトのテーマを簡単に切り替えられます
+ * =========================================
+ * カラースキーム（テーマ用 CSS 変数）
+ * これらを変更するだけでテーマ色を簡単に切り替え可能
+ * =========================================
  */
 :root {
     /* サイドバーの背景色 */
     --sidebar-bg-color: #91acd1;
 
-    /* サイドバー内のテキスト/リンクのデフォルト色 */
-    --link-color: #2f3438; /* 例: ダークグレー */
+    /* サイドバー内リンク・テキストのデフォルト色 */
+    --link-color: #2f3438; /* ダークグレー例 */
 
-    /* サイドバー内のホバー時のリンク色 */
-    --link-hover-color: #0d6efd; /* 例: ブルー */
+    /* サイドバー内リンクのホバー色 */
+    --link-hover-color: #0d6efd; /* ブルー例 */
 
-    /* アクティブなリンクの背景色 */
+    /* アクティブリンクの背景色 */
     --active-link-bg-color: #7287a5;
 
-    /* アクティブなリンクのテキスト色 */
+    /* アクティブリンクの文字色 */
     --active-link-text-color: #ffffff;
 
-    /* アイコンの色（デフォルトのリンク色と同じ） */
+    /* アイコン色（通常のリンク色と同じ） */
     --icon-color: #3a4046;
 
-    /* 境界線の色（必要であれば） */
+    /* 境界線の色（必要な場合に使用） */
     --border-color: #dee2e6;
 }
 
-/* サイドバーのカスタムカラー設定 */
+/* =========================================
+   サイドバー用カスタムカラー
+========================================= */
 .custom-sidebar-color {
-    background-color: var(--sidebar-bg-color) !important;
-    color: var(--link-color);
+    background-color: var(--sidebar-bg-color) !important; /* サイドバー背景色 */
+    color: var(--link-color); /* 文字色 */
 }
 
-/* ナビゲーションリンクのスタイル */
+/* =========================================
+   ナビゲーションリンク
+========================================= */
 .nav-link {
-    color: var(--link-color);
+    color: var(--link-color); /* デフォルト文字色 */
 }
 
-/* ホバー・フォーカス時のナビゲーションリンク */
+/* ホバーまたはフォーカス時 */
 .nav-link:hover,
 .nav-link:focus {
-    /* color: var(--link-hover-color); */
-    background-color: #ffffff; /* ホバー時の軽い背景 */
+    /* color: var(--link-hover-color); */ /* 必要に応じて有効化 */
+    background-color: #ffffff; /* 軽いホバー背景 */
 }
 
-/* アクティブなナビゲーションリンクのスタイル */
+/* アクティブなリンク */
 .nav-link.active {
     background-color: var(--active-link-bg-color) !important;
     color: var(--active-link-text-color) !important;
 }
 
-/* アクティブなリンク内のアイコンカラー */
+/* アクティブリンク内のアイコン色 */
 .nav-link.active i {
     color: var(--active-link-text-color);
 }
 
-/* 非アクティブリンクのアイコンカラー */
+/* 非アクティブリンク内のアイコン色 */
 .nav-link:not(.active) i {
     color: var(--icon-color);
 }
 
-/* その他のリンクテキスト強調表示 */
+/* 重要なリンクテキストの強調 */
 .link-body-emphasis {
     color: var(--link-color) !important;
 }
 
-/* 背景色のカスタム設定 */
+/* 背景色のカスタム設定（半透明など） */
 .bg-body-tertiary {
     background-color: #86a0c488 !important;
 }
 
-/*
- * .nav-pills スタイルの調整
- * アクティブでない .nav-link に対して文字色を設定
- */
+/* =========================================
+   nav-pills 用スタイル調整
+========================================= */
+/* 非アクティブリンクの文字色 */
 .nav-pills .nav-link:not(.active) {
-    color: #333; /* 非アクティブ時の文字色（例：濃いグレー） */
+    color: #333; /* 濃いグレー */
 }
 
-/* アクティブな .nav-pills のリンクに確実に適用させるため詳細度を上げる */
+/* アクティブリンクの文字色を確実に上書き */
 .nav-pills .nav-link.active {
     color: white !important;
 }

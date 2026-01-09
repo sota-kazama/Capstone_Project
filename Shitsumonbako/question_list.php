@@ -2,6 +2,9 @@
 require_once '../helpers/ShitumonDAO.php';
 require_once '../helpers/DAO.php';
 
+// PHPでテーマ取得（Cookieが無ければlight）
+$theme = $_COOKIE['theme'] ?? 'light';
+
 // DAO生成
 $dao = new ShitumonDAO();
 
@@ -22,30 +25,33 @@ $fixedQuestion = $dao->getByNumber(131);
 // 質問一覧取得（固定表示を除外）
 $questions = $dao->getAllByAreaOrderPage($area_number, $order, $page, $perPage);
 
-// 総件数（固定表示を除外する場合は+1で計算する場合あり）
+// 総件数
 $totalCount = $dao->getCountByArea($area_number);
 $totalPages = ceil($totalCount / $perPage);
 ?>
 
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css_theme/base.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
     <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
     <link href="../css_theme/toggle-button.css" rel="stylesheet" />
     <title>質問一覧</title>
 </head>
 
-<body>
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 <?php include '../template/header.php'; ?>
+
 <div class="d-flex w-100 min-vh-100">
-    <?php include '../template/side.php'; ?>
+    <div class="d-none d-md-block">
+        <?php include '../template/side.php'; ?>
+    </div>
+
     <main class="main-content p-4 d-flex flex-column">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -70,13 +76,13 @@ $totalPages = ceil($totalCount / $perPage);
             </select>
         </form>
 
-        <div class="list-group">
+        <div class="d-flex flex-column gap-2">
 
             <!-- 固定表示（shitu_number=131） -->
             <?php if ($fixedQuestion): ?>
                 <a href="question_answer.php?shitu_number=<?= htmlspecialchars($fixedQuestion->shitu_number) ?>"
-                   class="list-group-item list-group-item-action mb-2 border border-primary">
-                    <div class="d-flex justify-content-between align-items-center">
+                   class="list-group-item list-group-item-action mb-2 border border-primary p-3 rounded shadow-sm text-decoration-none">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <h5 class="mb-0">
                             <?= htmlspecialchars($fixedQuestion->shitu_title) ?>
                             <?php if ($fixedQuestion->shitu_count > 0): ?>
@@ -98,15 +104,15 @@ $totalPages = ceil($totalCount / $perPage);
                 </a>
             <?php endif; ?>
 
-            <!-- 通常の質問一覧（固定表示と重複させない） -->
+            <!-- 通常の質問一覧 -->
             <?php if (empty($questions)): ?>
-                <p>まだ質問はありません。</p>
+                <div class="alert alert-info">まだ質問はありません。</div>
             <?php else: ?>
                 <?php foreach ($questions as $q): ?>
                     <?php if ($q->shitu_number != 131): ?>
                         <a href="question_answer.php?shitu_number=<?= htmlspecialchars($q->shitu_number) ?>"
-                           class="list-group-item list-group-item-action mb-2">
-                            <div class="d-flex justify-content-between align-items-center">
+                           class="list-group-item list-group-item-action mb-2 p-3 rounded shadow-sm text-decoration-none">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h5 class="mb-0">
                                     <?= htmlspecialchars($q->shitu_title) ?>
                                     <?php if ($q->shitu_count > 0): ?>
@@ -129,11 +135,12 @@ $totalPages = ceil($totalCount / $perPage);
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
+
         </div>
 
         <!-- ページネーション -->
         <?php if ($totalPages > 1): ?>
-            <ul class="pagination justify-content-center">
+            <ul class="pagination justify-content-center mt-4">
                 <!-- Previous -->
                 <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
                     <?php if ($page <= 1): ?>
@@ -167,11 +174,18 @@ $totalPages = ceil($totalCount / $perPage);
 
     </main>
 </div>
+
+<!-- テーマ切替ボタン -->
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+</button>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+<script src="../js/theme-toggle.js"></script>
 
 <footer>
     <?php include '../template/footer.php'; ?>
 </footer>
 
+</body>
 </html>
