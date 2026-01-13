@@ -1,15 +1,22 @@
+/* =========================================
+   ログインページ
+========================================= */
+
+/* ログイン画面全体 */
 .login-body {
-    background-color: #f8f9fa;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    background-color: #f8f9fa; /* 背景色（ライトグレー） */
+    height: 100vh; /* 画面全体の高さ */
+    margin: 0; /* デフォルトマージンをリセット */
+
+    display: flex; /* フレックスボックス */
+    justify-content: center; /* 横方向中央揃え */
+    align-items: center; /* 縦方向中央揃え */
+    flex-direction: column; /* アイテムを縦方向に並べる */
 }
 
+/* ログインフォームのコンテナ */
 .login-container {
-    width: 100%;
-    max-width: 450px;
-    margin: 0 auto;
+    width: 100%; /* 幅100% */
+    max-width: 450px; /* 最大幅450px */
+    margin: 0 auto; /* 水平方向中央揃え */
 }

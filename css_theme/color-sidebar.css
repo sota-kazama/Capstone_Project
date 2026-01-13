@@ -1,29 +1,34 @@
+/* ========== カスタムプロパティ（テーマカラー） ========== */
 :root {
-    --sidebar-bg-color: #91acd1;
-    --link-color: #2f3438;
-    --link-hover-color: #0d6efd;
-    --active-link-bg-color: #7287a5;
-    --active-link-text-color: #ffffff;
-    --icon-color: #3a4046;
-    --border-color: #dee2e6;
+    --sidebar-bg-color: #91acd1; /* サイドバーの背景色 */
+    --link-color: #2f3438; /* 通常リンクの文字色 */
+    --link-hover-color: #0d6efd; /* ホバー時のリンク色 */
+    --active-link-bg-color: #7287a5; /* アクティブリンクの背景色 */
+    --active-link-text-color: #ffffff; /* アクティブリンクの文字色 */
+    --icon-color: #3a4046; /* アイコン色 */
+    --border-color: #dee2e6; /* 境界線の色 */
 }
 
+/* ========== サイドバーのカスタム色 ========== */
 .custom-sidebar-color {
-    background-color: var(--sidebar-bg-color) !important;
-    color: var(--link-color);
+    background-color: var(--sidebar-bg-color) !important; /* 背景色を上書き */
+    color: var(--link-color); /* 文字色を設定 */
 }
 
+/* ========== ナビゲーションリンク ========== */
 .nav-link {
-    color: var(--link-color);
+    color: var(--link-color); /* 通常時のリンク色 */
 }
+
 .nav-link:hover {
-    background-color: #fff;
+    background-color: #fff; /* ホバー時の背景色 */
 }
 
 .nav-link.active {
-    background-color: var(--active-link-bg-color) !important;
-    color: var(--active-link-text-color) !important;
+    background-color: var(--active-link-bg-color) !important; /* アクティブリンク背景色 */
+    color: var(--active-link-text-color) !important; /* アクティブリンク文字色 */
 }
+
 .nav-link.active i {
-    color: var(--active-link-text-color);
+    color: var(--active-link-text-color); /* アクティブリンクのアイコン色 */
 }

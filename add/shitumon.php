@@ -10,12 +10,11 @@ if (!isset($_SESSION['member'])) {
     exit;
 }
 
-// テーマ（Cookie なければ light）
+// テーマ
 $theme = $_COOKIE['theme'] ?? 'light';
 
 // ログインユーザー
 $member = $_SESSION['member'];
-$user_id = $member->user_id;
 
 // DAO
 $shitumonDAO = new ShitumonDAO();
@@ -32,6 +31,7 @@ $questions = $shitumonDAO->getAll();
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
     <link href="../css/BaseDesignData.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
     <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
@@ -41,23 +41,24 @@ $questions = $shitumonDAO->getAll();
 </head>
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
-
-<?php include '../template/header.php'; ?>
+<?php include '../template/header2.php'; ?>
 
 <div class="d-flex w-100 min-vh-100">
+    <?php include 'side.php'; ?>
 
-    <!-- サイドバー -->
-    <div class="d-none d-md-block">
-        <?php include 'side.php'; ?>
-    </div>
+    <main class="main-content flex-grow-1 p-4">
+        <div class="d-flex align-items-center mb-3">
+            <h1 class="m-0">質問箱の管理</h1>
+        </div>
 
-    <!-- メイン -->
-    <main class="main-content container mt-4">
-        <h1 class="mt-5">投稿された質問一覧</h1>
-        <h2 class="text-danger">※ 不適切な質問以外は削除しないでください。</h2>
+        <div class="alert alert-warning">
+            ※ 不適切な質問以外は削除しないでください。
+        </div>
 
-        <div class="col-md-12 mt-4">
-            <table class="table table-bordered table-striped">
+        <div class="card p-4 mt-3">
+            <h4>投稿された質問一覧</h4>
+
+            <table class="table table-striped align-middle mt-3">
                 <thead>
                     <tr>
                         <th>質問タイトル</th>
@@ -68,7 +69,6 @@ $questions = $shitumonDAO->getAll();
                     </tr>
                 </thead>
                 <tbody>
-
                 <?php if (count($questions) > 0): ?>
                     <?php foreach ($questions as $question): ?>
                         <?php
@@ -88,7 +88,7 @@ $questions = $shitumonDAO->getAll();
                             <td><?= $formattedDate ?></td>
                             <td>
                                 <button
-                                    class="btn btn-danger delete-question-btn"
+                                    class="btn btn-sm btn-danger delete-question-btn"
                                     data-shitu_number="<?= $question->shitu_number ?>">
                                     削除
                                 </button>
@@ -100,7 +100,6 @@ $questions = $shitumonDAO->getAll();
                         <td colspan="5" class="text-center">投稿された質問はありません。</td>
                     </tr>
                 <?php endif; ?>
-
                 </tbody>
             </table>
         </div>
@@ -108,7 +107,7 @@ $questions = $shitumonDAO->getAll();
 </div>
 
 <!-- テーマ切替 -->
-<button id="theme-toggle-btn" class="btn theme-toggle-btn">
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
     <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
 </button>
 
@@ -116,7 +115,7 @@ $questions = $shitumonDAO->getAll();
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/theme-toggle.js"></script>
 
-<!-- 削除用JS（削除後に自動更新） -->
+<!-- 削除処理 -->
 <script>
 $('.delete-question-btn').click(function () {
     const shitu_number = $(this).data('shitu_number');
@@ -128,7 +127,7 @@ $('.delete-question-btn').click(function () {
     $.ajax({
         type: 'POST',
         url: 'update_status.php',
-        dataType: 'json', // ★ 重要
+        dataType: 'json',
         data: {
             action: 'delete',
             shitu_number: shitu_number
@@ -136,7 +135,7 @@ $('.delete-question-btn').click(function () {
         success: function (data) {
             if (data.success) {
                 alert('質問を削除しました');
-                location.reload(); // ← 必ず実行される
+                location.reload();
             } else {
                 alert('削除に失敗しました');
             }
@@ -149,10 +148,8 @@ $('.delete-question-btn').click(function () {
 });
 </script>
 
-
-</body>
-
 <footer>
-    <?php include '../template/footer.php'; ?>
+<?php include '../template/footer.php'; ?>
 </footer>
+</body>
 </html>

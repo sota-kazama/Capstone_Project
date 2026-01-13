@@ -23,7 +23,7 @@ $isMypage = str_contains($_SERVER['SCRIPT_NAME'], '/mypage/');
     <?php if ($isMypage) : ?>
         <?php include __DIR__ . '/../mypage/hamburger.php'; ?>
 
-    <?php elseif ($userName !== null) : ?>
+    <?php else : ?>
         <?php include __DIR__ . '/hamburger.php'; ?>
     <?php endif; ?>
 

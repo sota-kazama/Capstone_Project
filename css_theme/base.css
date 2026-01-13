@@ -1,4 +1,4 @@
-/* ========== Base Layout & Typography ========== */
+/* ========== 基本レイアウトとタイポグラフィ ========== */
 body {
     font-family: PlemolJP;
     margin: 0;
@@ -22,7 +22,7 @@ html {
     padding: 20px;
 }
 
-/* Navigation */
+/* ========== ナビゲーション ========== */
 nav {
     position: fixed;
     top: 24px;
@@ -38,7 +38,7 @@ li a {
     text-decoration: none;
 }
 
-/* Right-top icons */
+/* ========== 右上アイコン ========== */
 #link,
 #login,
 #logout {
@@ -65,19 +65,20 @@ li a {
     height: 17px;
 }
 
-/* Footer */
+/* ========== フッター ========== */
 .footerlinks {
     display: flex;
     justify-content: center;
     gap: 80px;
     margin-bottom: 10px;
 }
+
 .footerlinks a {
     font-size: 10px;
     text-decoration: none;
 }
 
-/* Logout button */
+/* ========== ログアウトボタン ========== */
 .logout-btn {
     padding: 6px 12px;
     border-radius: 4px;
@@ -85,11 +86,12 @@ li a {
     margin-left: 5px;
     transition: background-color 0.3s;
 }
+
 .logout-btn:hover {
     background-color: #787575;
 }
 
-/* Theme Toggle Button (右下) */
+/* ========== テーマ切替ボタン（右下） ========== */
 #theme-toggle-btn {
     position: fixed;
     bottom: 20px;
@@ -109,21 +111,23 @@ li a {
     z-index: 9999;
     transition: 0.3s;
 }
+
 #theme-toggle-btn:hover {
     filter: brightness(0.9);
 }
+
 body.dark-mode #theme-toggle-btn {
     background-color: #333;
     color: #f0f0f0;
 }
 
-/* 日付と本文の間のスペースを調整 */
+/* ========== 日付と本文の間のスペース調整 ========== */
 .update-info .d-flex {
     margin-bottom: 0; /* 日付と本文の間の余白をなくす */
 }
 
 .update-info small {
-    margin-bottom: 0; /* 小さな日付部分のマージンを消す */
+    margin-bottom: 0; /* 小さい日付部分のマージンを消す */
 }
 
 .update-info p {

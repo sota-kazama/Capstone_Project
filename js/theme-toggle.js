@@ -14,25 +14,26 @@ function toggleTheme() {
     const icon = document.getElementById("theme-icon");
     const body = document.body;
 
-    const currentHref = themeLink.getAttribute("href");
+    // 現在のテーマを body のクラスから判定
+    const isDark = body.classList.contains("dark-mode");
     let newTheme;
 
-    if (currentHref.includes("light.css")) {
-        // ダークへ
-        themeLink.href = "../css_theme/dark.css";
-        body.classList.remove("light-mode");
-        body.classList.add("dark-mode");
-        icon.classList.remove("bi-moon");
-        icon.classList.add("bi-sun");
-        newTheme = "dark";
-    } else {
-        // ライトへ
+    if (isDark) {
+        // ダーク → ライト
         themeLink.href = "../css_theme/light.css";
         body.classList.remove("dark-mode");
         body.classList.add("light-mode");
         icon.classList.remove("bi-sun");
         icon.classList.add("bi-moon");
         newTheme = "light";
+    } else {
+        // ライト → ダーク
+        themeLink.href = "../css_theme/dark.css";
+        body.classList.remove("light-mode");
+        body.classList.add("dark-mode");
+        icon.classList.remove("bi-moon");
+        icon.classList.add("bi-sun");
+        newTheme = "dark";
     }
 
     updateServerTheme(newTheme);
