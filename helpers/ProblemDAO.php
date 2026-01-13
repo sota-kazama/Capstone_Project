@@ -100,5 +100,15 @@ class ProblemDAO
         $stmt = $this->pdo->query("SELECT * FROM questions ORDER BY question_id ASC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    //指定された分野の全問題取得
+    public function getProblem($area_number): array
+    {
+        $sql = "SELECT * FROM question_data WHERE area_number = :area_number";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 

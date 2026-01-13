@@ -23,13 +23,13 @@ class QuestionDAO
     public function getAll(): array
     {
         $dbh = DAO::get_db_connect();
-        $sql = "SELECT * FROM question_data ORDER BY q_number";
+        $sql = "SELECT * FROM question_data where ORDER BY q_number";
         $stmt = $dbh->query($sql);
 
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Question');
         return $stmt->fetchAll();
     }
-
+    
     /** 新規問題を追加（登録日・更新日を現在日時で設定） */
     public function insert(array $q): int
     {

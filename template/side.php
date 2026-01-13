@@ -29,6 +29,15 @@ $current = basename($_SERVER['PHP_SELF']);
                 書籍検索
             </a>
         </li>
+               <li>
+            <a
+                href="<?= BASE_URL ?>/testpage.php"
+                class="nav-link <?= $current === 'testpage.php' ? 'active' : 'link-body-emphasis' ?>"
+            >
+                <i class="bi bi-check2-square"></i>
+                test
+            </a>
+        </li>
 
         <?php if(isset($member)) : ?>
             <li>
