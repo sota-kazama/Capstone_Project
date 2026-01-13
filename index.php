@@ -71,7 +71,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
             <!-- 不具合報告セクション -->
             <div class="card p-4">
-                <h4 class="mb-3">不具合報告</h4>
+                <h4 class="mb-3">今確認されている不具合</h4>
 
                 <?php
                     $bugDAO = new BugDAO();
