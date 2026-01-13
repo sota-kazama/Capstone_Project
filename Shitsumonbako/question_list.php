@@ -1,43 +1,33 @@
 <?php
-require_once '../helpers/MemberDAO.php';
-require_once '../helpers/u_goalsDAO.php';
+require_once '../helpers/ShitumonDAO.php';
+require_once '../helpers/DAO.php';
 
-session_start();
-
-// 未ログインの場合
-if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
-    exit;
-}
-
-$member = $_SESSION['member'];
-$GoalsDAO = new GoalsDAO();
-$goal_data = $GoalsDAO->getGoalByUserId($member->user_id);
-
-// 入力値保持（POSTの場合）
-$goal_value = $_POST['goal'] ?? ($goal_data->goal ?? '');
-$milestone_value = $_POST['mile_stone'] ?? ($goal_data->mile_stone ?? '');
-
-// 目標日を YYYY-MM-DD 形式に変換して表示
-$goal_date_value = '';
-if (!empty($_POST['goal_date'])) {
-    $goal_date_value = $_POST['goal_date'];
-} elseif (!empty($goal_data->goal_date)) {
-    $dateObj = new DateTime($goal_data->goal_date);
-    $goal_date_value = $dateObj->format('Y-m-d');
-}
-
-// 残り日数計算
-$days_left = null;
-if ($goal_date_value) {
-    $today = new DateTime();
-    $target_date = new DateTime($goal_date_value);
-    $interval = $today->diff($target_date);
-    $days_left = $target_date > $today ? $interval->days : 0;
-}
-
-// テーマ（Cookie なければ light）
+// PHPでテーマ取得（Cookieが無ければlight）
 $theme = $_COOKIE['theme'] ?? 'light';
+
+// DAO生成
+$dao = new ShitumonDAO();
+
+// 分野・並び順・ページ取得
+$area_number = $_GET['area_number'] ?? '';
+$order       = $_GET['order'] ?? 'DESC';
+$order       = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+$page        = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+$perPage     = 10; // 1ページ10件
+
+// 分野一覧取得
+$stmt = DAO::get_db_connect()->query("SELECT area_number, area_name FROM q_categories ORDER BY area_name ASC");
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 固定表示する質問（shitu_number=131）
+$fixedQuestion = $dao->getByNumber(131);
+
+// 質問一覧取得（固定表示を除外）
+$questions = $dao->getAllByAreaOrderPage($area_number, $order, $page, $perPage);
+
+// 総件数
+$totalCount = $dao->getCountByArea($area_number);
+$totalPages = ceil($totalCount / $perPage);
 ?>
 
 <!DOCTYPE html>
@@ -45,100 +35,157 @@ $theme = $_COOKIE['theme'] ?? 'light';
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css_theme/base.css" rel="stylesheet" />
     <link href="../css/side.css" rel="stylesheet" />
     <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
     <link href="../css_theme/toggle-button.css" rel="stylesheet" />
-
-    <title>目標登録</title>
-
-    <style>
-        .char-count { font-weight: bold; }
-        .char-count.exceed { color: red; }
-        @media (min-aspect-ratio: 16/9) {
-            .goal-form { display: flex; gap: 2rem; }
-            .goal-form .form-left { flex: 1; }
-            .goal-form .form-right { flex: 1; }
-        }
-    </style>
+    <title>質問一覧</title>
 </head>
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
-    <div class="d-flex w-100 min-vh-100">
-        <!-- サイドバー -->
-        <div class="d-none d-md-block">
-            <?php include 'side.php'; ?>
-        </div>
+<?php include '../template/header.php'; ?>
 
-        <!-- メイン -->
-        <main class="main-content flex-grow-1 p-4">
-            <h1 class="mt-5">目標登録</h1>
-
-            <form method="POST" action="save_goal.php" class="goal-form mt-4">
-                <!-- 左側：目標・マイルストーン -->
-                <div class="form-left">
-                    <div class="mb-3">
-                        <label for="goal" class="form-label">目標</label>
-                        <textarea id="goal" name="goal" class="form-control" rows="3" maxlength="100"><?= htmlspecialchars($goal_value) ?></textarea>
-                        <div class="text-end char-count" id="goal-count">0 / 100</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="mile_stone" class="form-label">中間目標（マイルストーン）</label>
-                        <textarea id="mile_stone" name="mile_stone" class="form-control" rows="3" maxlength="100"><?= htmlspecialchars($milestone_value) ?></textarea>
-                        <div class="text-end char-count" id="milestone-count">0 / 100</div>
-                    </div>
-                </div>
-
-                <!-- 右側：目標日 -->
-                <div class="form-right">
-                    <label for="goal_date_input" class="form-label">目標日</label>
-                    <input type="date" id="goal_date_input" name="goal_date"
-                           class="form-control"
-                           value="<?= htmlspecialchars($goal_date_value) ?>">
-                    <?php if ($days_left !== null): ?>
-                        <p class="mt-2">残り日数: <?= $days_left ?>日</p>
-                    <?php endif; ?>
-                </div>
-
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">保存</button>
-                </div>
-            </form>
-        </main>
+<div class="d-flex w-100 min-vh-100">
+    <div class="d-none d-md-block">
+        <?php include '../template/side.php'; ?>
     </div>
 
-    <!-- テーマ切替 -->
-    <button id="theme-toggle-btn" class="btn theme-toggle-btn">
-        <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
-    </button>
+    <main class="main-content p-4 d-flex flex-column">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // 文字数カウント
-        function setupCharCount(id, counterId) {
-            const input = document.getElementById(id);
-            const counter = document.getElementById(counterId);
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>質問一覧</h1>
+            <a href="question_post.php" class="btn btn-primary">新しい質問</a>
+        </div>
 
-            function update() {
-                const len = input.value.length;
-                counter.textContent = `${len} / 100`;
-                counter.classList.toggle('exceed', len > 100);
-            }
+        <!-- 並び順・分野選択 -->
+        <form method="get" class="mb-4 d-flex gap-2">
+            <select name="area_number" class="form-select" onchange="this.form.submit()">
+                <option value="">全分野</option>
+                <?php foreach ($categories as $cat): ?>
+                    <option value="<?= htmlspecialchars($cat['area_number']) ?>" <?= $cat['area_number'] == $area_number ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($cat['area_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
-            input.addEventListener('input', update);
-            update(); // 初期表示
-        }
+            <select name="order" class="form-select" onchange="this.form.submit()">
+                <option value="DESC" <?= $order === 'DESC' ? 'selected' : '' ?>>新しい順</option>
+                <option value="ASC" <?= $order === 'ASC' ? 'selected' : '' ?>>古い順</option>
+            </select>
+        </form>
 
-        setupCharCount('goal', 'goal-count');
-        setupCharCount('mile_stone', 'milestone-count');
-    </script>
-</body>
+        <div class="d-flex flex-column gap-2">
+
+            <!-- 固定表示（shitu_number=131） -->
+            <?php if ($fixedQuestion): ?>
+                <a href="question_answer.php?shitu_number=<?= htmlspecialchars($fixedQuestion->shitu_number) ?>"
+                   class="list-group-item list-group-item-action mb-2 border border-primary p-3 rounded shadow-sm text-decoration-none">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="mb-0">
+                            <?= htmlspecialchars($fixedQuestion->shitu_title) ?>
+                            <?php if ($fixedQuestion->shitu_count > 0): ?>
+                                <span class="badge bg-primary ms-2">
+                                    <i class="bi bi-check-circle"></i> 回答済み (<?= $fixedQuestion->shitu_count ?>件)
+                                </span>
+                            <?php endif; ?>
+                        </h5>
+                        <?php if (!empty($fixedQuestion->area_name)): ?>
+                            <small class="text-muted"><?= htmlspecialchars($fixedQuestion->area_name) ?></small>
+                        <?php endif; ?>
+                    </div>
+                    <p class="mb-1"><?= nl2br(htmlspecialchars($fixedQuestion->shitu_content)) ?></p>
+                    <small class="text-muted">
+                        投稿日: <?= !empty($fixedQuestion->update_at ?? $fixedQuestion->asked_date)
+                            ? date("Y-m-d H:i:s", strtotime($fixedQuestion->update_at ?? $fixedQuestion->asked_date))
+                            : '不明' ?>
+                    </small>
+                </a>
+            <?php endif; ?>
+
+            <!-- 通常の質問一覧 -->
+            <?php if (empty($questions)): ?>
+                <div class="alert alert-info">まだ質問はありません。</div>
+            <?php else: ?>
+                <?php foreach ($questions as $q): ?>
+                    <?php if ($q->shitu_number != 131): ?>
+                        <a href="question_answer.php?shitu_number=<?= htmlspecialchars($q->shitu_number) ?>"
+                           class="list-group-item list-group-item-action mb-2 p-3 rounded shadow-sm text-decoration-none">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">
+                                    <?= htmlspecialchars($q->shitu_title) ?>
+                                    <?php if ($q->shitu_count > 0): ?>
+                                        <span class="badge bg-primary ms-2">
+                                            <i class="bi bi-check-circle"></i> 回答済み (<?= $q->shitu_count ?>件)
+                                        </span>
+                                    <?php endif; ?>
+                                </h5>
+                                <?php if (!empty($q->area_name)): ?>
+                                    <small class="text-muted"><?= htmlspecialchars($q->area_name) ?></small>
+                                <?php endif; ?>
+                            </div>
+                            <p class="mb-1"><?= nl2br(htmlspecialchars($q->shitu_content)) ?></p>
+                            <small class="text-muted">
+                                投稿日: <?= !empty($q->update_at ?? $q->asked_date)
+                                    ? date("Y-m-d H:i:s", strtotime($q->update_at ?? $q->asked_date))
+                                    : '不明' ?>
+                            </small>
+                        </a>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div>
+
+        <!-- ページネーション -->
+        <?php if ($totalPages > 1): ?>
+            <ul class="pagination justify-content-center mt-4">
+                <!-- Previous -->
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <?php if ($page <= 1): ?>
+                        <span class="page-link">Previous</span>
+                    <?php else: ?>
+                        <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page - 1 ?>">Previous</a>
+                    <?php endif; ?>
+                </li>
+
+                <!-- ページ番号 -->
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="page-item <?= $i == $page ? 'active' : '' ?>" <?= $i == $page ? 'aria-current="page"' : '' ?>>
+                        <?php if ($i == $page): ?>
+                            <span class="page-link"><?= $i ?></span>
+                        <?php else: ?>
+                            <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $i ?>"><?= $i ?></a>
+                        <?php endif; ?>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Next -->
+                <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                    <?php if ($page >= $totalPages): ?>
+                        <span class="page-link">Next</span>
+                    <?php else: ?>
+                        <a class="page-link" href="?area_number=<?= htmlspecialchars($area_number) ?>&order=<?= $order ?>&page=<?= $page + 1 ?>">Next</a>
+                    <?php endif; ?>
+                </li>
+            </ul>
+        <?php endif; ?>
+
+    </main>
+</div>
+
+<!-- テーマ切替ボタン -->
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/theme-toggle.js"></script>
 
 <footer>
     <?php include '../template/footer.php'; ?>
 </footer>
+
+</body>
 </html>
