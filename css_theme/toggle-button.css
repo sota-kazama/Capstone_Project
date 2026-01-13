@@ -1,4 +1,6 @@
-/* テーマ切替ボタン（右下固定） */
+/* =========================================
+   テーマ切替ボタン（右下固定）
+========================================= */
 .theme-toggle-btn {
     position: fixed;
     bottom: 20px;
@@ -17,14 +19,16 @@
     font-size: 1.2rem;
     cursor: pointer;
 
-    /* ライトモードのデフォルトカラー */
+    /* デフォルト（ライトモード） */
     background-color: #f0f0f0;
     color: #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
-/* ライトモード */
+/* -------------------------
+   ライトモードの設定
+------------------------- */
 @media (prefers-color-scheme: light) {
     .theme-toggle-btn {
         background-color: #f0f0f0;
@@ -41,7 +45,9 @@
     }
 }
 
-/* ダークモード */
+/* -------------------------
+   ダークモードの設定
+------------------------- */
 @media (prefers-color-scheme: dark) {
     .theme-toggle-btn {
         background-color: #333;

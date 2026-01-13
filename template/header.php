@@ -14,10 +14,18 @@ if (is_array($member) && isset($member['user_name'])) {
 } elseif (is_object($member) && isset($member->user_name)) {
     $userName = $member->user_name;
 }
+
+$isMypage = str_contains($_SERVER['SCRIPT_NAME'], '/mypage/');
 ?>
 
 <header>
-    <?php include __DIR__ . '/hamburger.php'; ?>
+
+    <?php if ($isMypage) : ?>
+        <?php include __DIR__ . '/../mypage/hamburger.php'; ?>
+
+    <?php else : ?>
+        <?php include __DIR__ . '/hamburger.php'; ?>
+    <?php endif; ?>
 
     <a href="<?= BASE_URL ?>/index.php">
         <img src="<?= BASE_URL ?>/images/icon2.png" alt="サイトのロゴ" />

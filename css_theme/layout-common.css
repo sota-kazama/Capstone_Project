@@ -1,11 +1,12 @@
 /* =========================================
-   Base Layout & Typography
+   基本レイアウト & タイポグラフィ
 ========================================= */
 body {
-    font-family: PlemolJP;
+    margin: 0;
+    font-family: PlemolJP, Arial, sans-serif;
 }
 
-/* Main layout */
+/* メインレイアウト */
 .main {
     display: flex;
     float: right;
@@ -17,7 +18,7 @@ body {
     padding: 20px;
 }
 
-/* Navigation */
+/* ナビゲーション */
 nav {
     position: fixed;
     top: 24px;
@@ -25,7 +26,7 @@ nav {
     z-index: 10;
 }
 
-/* Navigation links */
+/* ナビリンク */
 li a {
     display: block;
     padding: 8px;
@@ -34,16 +35,16 @@ li a {
     text-decoration: none;
 }
 
-/* Right top icons */
+/* 右上アイコン */
 #link,
 #login,
 #logout {
-    text-align: right;
     position: absolute;
     top: 20px;
+    text-align: right;
 }
 
-/* Specific positions */
+/* 個別位置指定 */
 #link {
     right: 125px;
     width: 38px;
@@ -63,7 +64,7 @@ li a {
     height: 17px;
 }
 
-/* Footer layout */
+/* フッター */
 .footerlinks {
     display: flex;
     justify-content: center;
@@ -76,7 +77,7 @@ li a {
     text-decoration: none;
 }
 
-/* Logout button layout */
+/* ログアウトボタン */
 .logout-btn {
     padding: 6px 12px;
     border-radius: 4px;
@@ -86,30 +87,25 @@ li a {
 }
 
 /* =========================================
-   Theme Toggle Overlay Button (右下)
+   テーマ切替ボタン（右下固定）
 ========================================= */
 #theme-toggle-btn {
     position: fixed;
-    bottom: 20px; /* 下から20pxに固定 */
-    right: 20px; /* 右から20pxに固定 */
+    bottom: 20px;
+    right: 20px;
     width: 46px;
     height: 46px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-size: 22px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-
     background-color: #f0f0f0; /* ライト初期 */
     color: #333;
-
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     z-index: 9999;
-
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -122,12 +118,9 @@ body.dark-mode #theme-toggle-btn {
     filter: brightness(0.9);
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
-/* ハンバーガーボタンの位置 */
+/* =========================================
+   ハンバーガーメニュー
+========================================= */
 .hamburger {
     position: absolute;
     top: 20px;
@@ -136,6 +129,10 @@ body {
     height: 25px;
     cursor: pointer;
     z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .hamburger span {
@@ -146,7 +143,7 @@ body {
     transition: 0.3s;
 }
 
-/* ボタンがアクティブなとき（クリック時） */
+/* ハンバーガーアクティブ状態 */
 .hamburger.active span:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
 }
@@ -159,45 +156,15 @@ body {
     transform: translateY(-9px) rotate(-45deg);
 }
 
-/* メニュー */
-.hamburger {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 30px;
-    height: 25px;
-    cursor: pointer;
-    z-index: 1000;
-}
-
-.hamburger span {
-    display: block;
-    height: 4px;
-    margin: 5px 0;
-    border-radius: 2px;
-    transition: 0.3s;
-}
-
-/* ボタンがアクティブなとき（クリック時） */
-.hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-}
-
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-}
-
-/* メニュー */
+/* =========================================
+   サイドメニュー（右スライド）
+========================================= */
 .menu {
+    position: fixed;
     top: 0;
     right: 0;
     width: 200px;
     height: 100vh;
-    /* background-color 削除 */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
     transform: translateX(100%);
     transition: transform 0.3s ease;
@@ -210,10 +177,11 @@ body {
     transform: translateX(0);
 }
 
+/* メニューリスト */
 .menu ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 .menu li {
@@ -221,10 +189,10 @@ body {
 }
 
 .menu a {
-    text-decoration: none;
-    /* color 削除 */
     font-weight: bold;
     font-size: 18px;
+    text-decoration: none;
+    display: block;
 }
 
 .menu.active ul {

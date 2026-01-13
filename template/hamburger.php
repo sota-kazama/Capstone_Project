@@ -15,7 +15,7 @@
         <?php if (isset($member)) : ?>
             <li><a href="<?= BASE_URL ?>/board.php">掲示板</a></li>
             <li><a href="<?= BASE_URL ?>/mypage.php">マイページ</a></li>
-            <li><a href="<?= BASE_URL ?>/question_list.php">質問箱</a></li>
+            <li><a href="<?= BASE_URL ?>/Shitsumonbako/question_list.php">質問箱</a></li>
         <?php endif; ?>
     </ul>
 </nav>

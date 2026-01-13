@@ -1,75 +1,47 @@
 <?php
-// 現在のページファイル名を取得
-$current = basename($_SERVER['PHP_SELF']);
+// 現在のページ名を取得（サブディレクトリ対応）
+$current = basename($_SERVER['SCRIPT_NAME']);
+
+// サイドメニュー定義
+$menus = [
+    ['file' => 'admin_main.php',        'label' => '管理者トップ'],
+    ['file' => 'edit_account.php',      'label' => 'アカウント情報編集'],
+    ['file' => 'create_book.php',       'label' => '図書登録ページ'],
+    ['file' => 'shikaku_manage.php',    'label' => '資格登録ページ'],
+    ['file' => 'm_problem_register.php','label' => '問題管理ページ'],
+    ['file' => 's_problem_register.php','label' => '問題分野管理ページ'],
+    ['file' => 'shitumon.php',          'label' => '質問箱管理ページ'],
+    ['file' => 'update_info.php',       'label' => '更新情報ページ'],
+    ['file' => 'bug_manage.php',       'label' => 'バグ記載ページ'],
+    ['file' => '../mypage/mypage.php',  'label' => 'マイページトップ'],
+];
 ?>
 
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary"
-    style="width: 280px; height: 1617px;">
+     style="width:280px; min-height:100vh;">
 
     <ul class="nav nav-pills flex-column mb-auto">
 
-        <li>
-            <a href="admin_main.php"
-                class="nav-link <?= $current === 'admin_main.php' ? 'active' : 'link-body-emphasis' ?>">
-                管理者トップ
-            </a>
-        </li>
+        <?php foreach ($menus as $menu): ?>
+            <?php
+                $isActive = basename($menu['file']) === $current;
+            ?>
+            <li class="nav-item">
+                <a href="<?= htmlspecialchars($menu['file'], ENT_QUOTES, 'UTF-8') ?>"
+                   class="nav-link <?= $isActive ? 'active' : 'link-body-emphasis' ?>"
+                   <?= $isActive ? 'aria-current="page"' : '' ?>>
+                    <?= htmlspecialchars($menu['label'], ENT_QUOTES, 'UTF-8') ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
 
-        <li>
-            <a href="edit_account.php"
-                class="nav-link <?= $current === 'edit_account.php' ? 'active' : 'link-body-emphasis' ?>">
-                アカウント情報編集
-            </a>
-        </li>
-
-        <li>
-            <a href="create_book.php"
-                class="nav-link <?= $current === 'create_book.php' ? 'active' : 'link-body-emphasis' ?>">
-                図書登録ページ
-            </a>
-        </li>
-
-        <li>
-            <a href="shikaku_manage.php"
-                class="nav-link <?= $current === 'shikaku_manage.php' ? 'active' : 'link-body-emphasis' ?>">
-                資格登録ページ
-            </a>
-        </li>
-
-        <li>
-            <a href="m_problem_register.php"
-                class="nav-link <?= $current === 'm_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
-                問題管理ページ
-            </a>
-        </li>
-
-        <li>
-            <a href="s_problem_register.php"
-                class="nav-link <?= $current === 's_problem_register.php' ? 'active' : 'link-body-emphasis' ?>">
-                問題分野管理ページ
-            </a>
-        </li>
-
-        <li>
-            <a href="update_info.php"
-                class="nav-link <?= $current === 'update_info.php' ? 'active' : 'link-body-emphasis' ?>">
-                更新情報ページ
-            </a>
-        </li>
-
-        <li>
-            <a href="../mypage/mypage.php"
-                class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>">
-                マイページトップ
-            </a>
-        </li>
-
-        <li>
+        <li class="nav-item mt-3">
             <a href="../logout.php"
-                class="nav-link <?= $current === 'logout.php' ? 'active' : 'link-body-emphasis' ?>"
-                onclick="return confirm('本当にログアウトしますか？');">
+               class="nav-link link-body-emphasis"
+               onclick="return confirm('本当にログアウトしますか？');">
                 ログアウト
             </a>
         </li>
+
     </ul>
 </div>

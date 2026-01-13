@@ -1,45 +1,49 @@
+/* =========================================
+   ログインページ 共通スタイル
+========================================= */
+
 /* 画面全体の背景設定 */
 .login-body {
     height: 100vh; /* 画面全体の高さ */
-    margin: 0; /* 余白リセット */
+    margin: 0; /* デフォルト余白をリセット */
     display: flex; /* フレックスボックスで配置制御 */
-    justify-content: center; /* 横方向の中央寄せ */
-    align-items: center; /* 縦方向の中央寄せ */
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center; /* 縦方向の中央揃え */
     flex-direction: column; /* 上下に積む（ログインフォーム＋登録ボックス） */
 }
 
-/* ログイン全体の枠 */
+/* ログインフォーム全体の枠 */
 .login-container {
-    width: 100%;
-    max-width: 450px;
-    margin: 0 auto;
+    width: 100%; /* 幅100% */
+    max-width: 450px; /* 最大幅450px */
+    margin: 0 auto; /* 水平方向中央揃え */
 }
 
-/* ログインフォーム */
+/* ログインフォームのボックス */
 .login-box {
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+    border-radius: 8px; /* 角丸 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 影 */
+    padding: 30px; /* 内側余白 */
 }
 
 /* タイトル */
 .login-title {
-    text-align: center;
-    margin-bottom: 25px;
+    text-align: center; /* 中央揃え */
+    margin-bottom: 25px; /* 下の余白 */
 }
 
-/* 各項目の間隔 */
+/* 各フォーム項目の間隔 */
 .form-group {
     margin-bottom: 15px;
 }
 
-/* ボタン中央寄せ */
+/* ボタン配置 */
 .button-area {
-    text-align: center;
-    margin-top: 15px;
+    text-align: center; /* 中央寄せ */
+    margin-top: 15px; /* 上の余白 */
 }
 
-/* ボタンの幅 */
+/* ログインボタンの幅 */
 .login-btn {
     width: 150px;
 }
@@ -50,11 +54,11 @@
     font-size: 0.9em;
 }
 
-/* 新規登録の案内枠 */
+/* 新規登録の案内ボックス */
 .signup-box {
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 20px;
-    margin-top: 20px;
+    border-radius: 8px; /* 角丸 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 影 */
+    text-align: center; /* 中央揃え */
+    padding: 20px; /* 内側余白 */
+    margin-top: 20px; /* 上の余白 */
 }

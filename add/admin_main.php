@@ -24,53 +24,57 @@ $stats = [
 $message = ""; // メッセージ変数を初期化
 ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet"
+    />
 
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-            rel="stylesheet"
-        />
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
 
-        <link href="../css/BaseDesignData.css" rel="stylesheet" />
-        <link href="../css/side.css" rel="stylesheet" />
+    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
+    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
 
-        <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
+    <title>管理者トップ</title>
+</head>
 
-        <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
+<?php include '../template/header2.php'; ?>
 
-        <title>管理者トップ</title>
-    </head>
-    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
-        <?php include '../template/header2.php'; ?>
+<div class="d-flex w-100 min-vh-100">
+    <?php include 'side.php'; ?>
 
-        <div class="d-flex w-100 min-vh-100">
-            <?php include 'side.php'; ?>
-
-            <main class="main-content container mt-4">
-                <div class="card mt-5 p-4">
-                    <h4>システム情報</h4>
-                    <p>管理トップページです。サイドバーから各管理機能に移動してください。</p>
-                </div>
-            </main>
+    <main class="main-content flex-grow-1 p-4">
+        <div class="d-flex align-items-center mb-3">
+            <h1 class="m-0">管理者トップ</h1>
         </div>
 
-        <button id="theme-toggle-btn" class="btn theme-toggle-btn">
-            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
-        </button>
+        <div class="card p-4 mt-3">
+            <h4>システム情報</h4>
+            <p class="mb-0">
+                管理トップページです。<br />
+                サイドバーから各管理機能に移動してください。
+            </p>
+        </div>
+    </main>
+</div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+</button>
 
-        <script src="../js/theme-toggle.js"></script>
-    </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/theme-toggle.js"></script>
+</body>
 
-    <footer>
-        <?php include '../template/footer.php'; ?>
-    </footer>
+<footer>
+<?php include '../template/footer.php'; ?>
+</footer>
 </html>

@@ -30,7 +30,7 @@ if (!empty($questions) && isset($questions[$i])) {
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="../css/side.css" rel="stylesheet" />
 
-        <?php include 'problem_header.php'; ?>
+        <?php include '../template/header.php'; ?>
     </head>
 
     <head>
@@ -115,6 +115,6 @@ if (!empty($questions) && isset($questions[$i])) {
     </body>
 
     <footer>
-        <?php include 'problem_footer.php'; ?>
+        <?php include '../template/footer.php'; ?>
     </footer>
 </html>

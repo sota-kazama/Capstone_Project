@@ -1,31 +1,43 @@
+/* ===========================
+   アイコン / シャドウ / カード
+=========================== */
+
+/* 大サイズの特徴アイコン */
 .feature-icon {
     width: 4rem;
     height: 4rem;
-    border-radius: 0.75rem;
+    border-radius: 0.75rem; /* 角丸 */
 }
+
+/* 小サイズの特徴アイコン */
+.feature-icon-small {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* 正方形アイコン */
 .icon-square {
     width: 3rem;
     height: 3rem;
     border-radius: 0.75rem;
 }
 
+/* ========== テキストシャドウ ========== */
 .text-shadow-1 {
     text-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
 }
+
 .text-shadow-2 {
     text-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
 }
+
 .text-shadow-3 {
     text-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
 }
 
+/* ========== カード背景画像 ========== */
 .card-cover {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.feature-icon-small {
-    width: 3rem;
-    height: 3rem;
+    background-position: center; /* 中央配置 */
+    background-repeat: no-repeat; /* 繰り返しなし */
+    background-size: cover; /* カバーサイズ */
 }

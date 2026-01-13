@@ -1,77 +1,90 @@
 /* =========================================
-   Light Theme Colors
+   ライトテーマ カラー設定
 ========================================= */
 
-/* Body */
+/* -------------------------
+   ページ全体
+------------------------- */
 body {
-    background-color: #ffffff;
-    color: black;
+    background-color: #ffffff; /* 背景色 */
+    color: black; /* 基本文字色 */
 }
 
-/* Navigation link */
+/* -------------------------
+   ナビゲーションリンク
+------------------------- */
 li a {
-    background-color: #ffffff;
-    color: #464646;
+    background-color: #ffffff; /* 背景色 */
+    color: #464646; /* 文字色 */
 }
 
 li a:hover {
-    background-color: #f2f2f2;
-    color: #000000;
+    background-color: #f2f2f2; /* ホバー時背景色 */
+    color: #000000; /* ホバー時文字色 */
 }
 
-/* Footer links */
+/* -------------------------
+   フッターリンク
+------------------------- */
 .footerlinks a {
-    color: #a2a0a0;
+    color: #a2a0a0; /* 通常文字色 */
 }
 
 .footerlinks a:hover {
-    color: #000000;
+    color: #000000; /* ホバー文字色 */
 }
 
-/* Logout button */
+/* -------------------------
+   ログアウトボタン
+------------------------- */
 .logout-btn {
-    background-color: #cfcfd2;
-    color: white;
+    background-color: #cfcfd2; /* 背景色 */
+    color: white; /* 文字色 */
 }
 
 .logout-btn:hover {
-    background-color: #787575;
+    background-color: #787575; /* ホバー時背景色 */
 }
 
-/* ====== 入力フォーム ====== */
+/* -------------------------
+   入力フォーム
+------------------------- */
 .form-control {
-    background-color: #ffffff;
-    color: #000;
-    border-color: #ccc;
+    background-color: #ffffff; /* 背景色 */
+    color: #000; /* 文字色 */
+    border-color: #ccc; /* 枠線色 */
 }
 
 .form-control::placeholder {
-    color: #666;
+    color: #666; /* プレースホルダー文字色 */
 }
 
+/* プライマリボタン */
 .btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: #0d6efd; /* 背景色 */
+    border-color: #0d6efd; /* 枠線色 */
 }
 
-/* ====== テーブル ====== */
+/* -------------------------
+   テーブル
+------------------------- */
 .table {
-    background-color: #fff;
-    color: #000;
+    background-color: #fff; /* 背景色 */
+    color: #000; /* 文字色 */
 }
 
 .table thead th {
-    background-color: #f1f1f1;
-    color: #333;
+    background-color: #f1f1f1; /* ヘッダー背景色 */
+    color: #333; /* ヘッダー文字色 */
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #fafafa;
+    background-color: #fafafa; /* 偶数行背景色 */
 }
 
-/* ===============================
-   ハンバーガー（ライト専用）
-=============================== */
+/* -------------------------
+   ハンバーガーメニュー（ライト専用）
+------------------------- */
 body:not(.dark-mode) .hamburger span {
-    background-color: #333;
+    background-color: #333; /* バー色 */
 }

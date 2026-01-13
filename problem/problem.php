@@ -88,6 +88,6 @@ if (isset($_SESSION['bookmark_q_number'])) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     <footer>
-        <?php include 'problem_footer.php'; ?>
+        <?php include '../template/footer.php'; ?>
     </footer>
 </html>

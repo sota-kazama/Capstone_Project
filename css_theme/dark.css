@@ -1,27 +1,26 @@
 /* =========================================
-   Dark Theme Colors
+   ダークテーマカラー
 ========================================= */
 
+/* ========== カスタムプロパティ（テーマ変数） ========== */
 body.dark-mode {
-    /* Base */
-    --bg-body: #2f3136;
-    --bg-main: #36393f;
-    --text-main: #daddda;
+    /* ベース */
+    --bg-body: #2f3136; /* ページ全体の背景色 */
+    --bg-main: #36393f; /* メインコンテンツ背景色 */
+    --text-main: #daddda; /* メインテキスト色 */
 
-    /* Sidebar / Menu */
-    --bg-sidebar: #2b2d31;
-    --bg-sidebar-active: #40444b;
-    --bg-sidebar-hover: #4f545c;
-    --text-sidebar: #b9bbbe;
-    --text-sidebar-active: #ffffff;
+    /* サイドバー / メニュー */
+    --bg-sidebar: #2b2d31; /* サイドバー背景色 */
+    --bg-sidebar-active: #40444b; /* アクティブリンク背景色 */
+    --bg-sidebar-hover: #4f545c; /* ホバー時背景色 */
+    --text-sidebar: #b9bbbe; /* サイドバーリンク色 */
+    --text-sidebar-active: #ffffff; /* アクティブリンク文字色 */
 
     /* UI */
-    --border-default: #444;
+    --border-default: #444; /* 共通ボーダー色 */
 }
 
-/* ===============================
-   Body & Main Content
-=============================== */
+/* ========== Body & Main Content ========== */
 body.dark-mode {
     background-color: var(--bg-body);
     color: var(--text-main);
@@ -32,38 +31,29 @@ body.dark-mode .main-content {
     color: var(--text-main);
 }
 
-/* ===============================
-   サイドバーリンク（通常）
-=============================== */
+/* ========== サイドバーリンク（通常 / ホバー / アクティブ） ========== */
 body.dark-mode li a,
 body.dark-mode .nav-link {
-    color: var(--text-sidebar);
+    color: var(--text-sidebar); /* 通常リンク色 */
 }
 
-/* Hover */
 body.dark-mode li a:hover,
 body.dark-mode .nav-link:hover {
-    background-color: var(--bg-sidebar-hover);
-    color: var(--text-sidebar-active);
+    background-color: var(--bg-sidebar-hover); /* ホバー背景色 */
+    color: var(--text-sidebar-active); /* ホバー文字色 */
 }
 
-/* ===============================
-   ★ アクティブ
-=============================== */
 body.dark-mode .nav-link.active {
-    background-color: var(--bg-sidebar-active) !important;
-    color: var(--text-sidebar-active) !important;
+    background-color: var(--bg-sidebar-active) !important; /* アクティブ背景 */
+    color: var(--text-sidebar-active) !important; /* アクティブ文字色 */
     font-weight: 600;
 }
 
-/* アクティブ時アイコン */
 body.dark-mode .nav-link.active i {
-    color: var(--text-sidebar-active);
+    color: var(--text-sidebar-active); /* アクティブアイコン色 */
 }
 
-/* ===============================
-   Footer
-=============================== */
+/* ========== Footer ========== */
 body.dark-mode .footerlinks a {
     color: #72767d;
 }
@@ -72,9 +62,7 @@ body.dark-mode .footerlinks a:hover {
     color: #ffffff;
 }
 
-/* ===============================
-   Logout
-=============================== */
+/* ========== ログアウトボタン ========== */
 body.dark-mode .logout-btn {
     background-color: #4f545c;
     color: #ffffff;
@@ -84,9 +72,7 @@ body.dark-mode .logout-btn:hover {
     background-color: #6b6f75;
 }
 
-/* ===============================
-   Form
-=============================== */
+/* ========== フォーム ========== */
 body.dark-mode .form-control {
     background-color: #333;
     color: #fff;
@@ -102,9 +88,7 @@ body.dark-mode .btn-primary {
     border-color: #4a90e2;
 }
 
-/* ===============================
-   Card
-=============================== */
+/* ========== カード ========== */
 body.dark-mode .card {
     background-color: #3a3a3a;
     border: 1px solid var(--border-default);
@@ -116,97 +100,45 @@ body.dark-mode .card-header {
     border-bottom: 1px solid var(--border-default);
 }
 
-/* ===============================
-   Table
-=============================== */
+/* ========== テーブル ========== */
 body.dark-mode .table {
     background-color: #2b2b2b;
     color: #fff;
+    border-color: var(--border-default);
 }
 
 body.dark-mode .table thead th {
     background-color: #3a3a3a;
+    color: var(--text-main);
 }
 
 body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
     background-color: #323232;
 }
 
-/* ===============================
-   Alert
-=============================== */
+body.dark-mode .table-striped tbody tr:nth-of-type(even) {
+    background-color: #2b2b2b;
+}
+
+/* ========== アラート ========== */
 body.dark-mode .alert-info {
     background-color: #40444b;
     color: #99aab5;
     border-color: #4f545c;
 }
 
-/* ===============================
-   Login / Signup
-=============================== */
+/* ========== ログイン / サインアップ ========== */
 body.dark-mode .login-box,
 body.dark-mode .signup-box {
     background-color: #383a3f;
 }
 
-/* ===============================
-   Hamburger
-=============================== */
+/* ========== ハンバーガーアイコン ========== */
 body.dark-mode .hamburger span {
     background-color: #ffffff;
 }
-/* ===============================
-   更新情報の日付（ダークモード）
-=============================== */
+
+/* ========== 更新情報の日付 ========== */
 body.dark-mode .main-content .text-muted {
     color: #99aab5 !important; /* 見やすい明るい色に変更 */
-}
-
-/* ===============================
-   Table (ダークモード)
-=============================== */
-body.dark-mode .table {
-    background-color: #2b2b2b; /* ダークモード用の背景色 */
-    color: #fff; /* 文字色 */
-}
-
-body.dark-mode .table thead th {
-    background-color: #3a3a3a; /* ヘッダーの背景色 */
-}
-
-body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #323232; /* 偶数行の背景色 */
-}
-
-body.dark-mode .table-striped tbody tr:nth-of-type(even) {
-    background-color: #2b2b2b; /* 奇数行の背景色 */
-}
-/* =========================================
-   Dark Theme Colors
-========================================= */
-
-/* Body */
-body.dark-mode {
-    background-color: #2f3136;
-    color: #daddda;
-}
-
-/* テーブル */
-body.dark-mode .table {
-    background-color: #2b2b2b; /* ダークモード用の背景色 */
-    color: #fff; /* 文字色 */
-    border-color: #444; /* ボーダー色 */
-}
-
-body.dark-mode .table thead th {
-    background-color: #3a3a3a; /* ヘッダーの背景色 */
-    color: #daddda; /* ヘッダーのテキスト色 */
-}
-
-body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #323232; /* 奇数行の背景色 */
-}
-
-body.dark-mode .table-striped tbody tr:nth-of-type(even) {
-    background-color: #2b2b2b; /* 偶数行の背景色 */
 }
