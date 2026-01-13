@@ -17,7 +17,7 @@ $member = $_SESSION['member'];
 $GoalsDAO = new GoalsDAO();
 $goal_data = $GoalsDAO->getGoalByUserId($member->user_id);
 
-// // 目標日までの日数計算
+// 目標日までの日数計算
 // $goal_date = null; //初期値
 // if ($goal_data === null) {
 //     $goal_date = '目標が設定されていません';
@@ -89,7 +89,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
             </div>
         <?php else: ?>
             <p class="text-muted">目標を立ててみましょう！
-            <a href="goal_edit.php" class="btn btn-outline-primary btn-sm">目標を設定する</a></p>
+            <a href="goal.php" class="btn btn-outline-primary btn-sm">目標を設定する</a></p>
         <?php endif; ?>
     </div>
         <h2>目標達成状況</h2><br>
