@@ -12,8 +12,8 @@ $current = basename($_SERVER['PHP_SELF']);
     <ul class="nav nav-pills flex-column mb-auto">
         <li>
             <a
-                href="<?= BASE_URL ?>/problem/problem.php"
-                class="nav-link <?= $current === 'problem.php' ? 'active' : 'link-body-emphasis' ?>"
+                href="<?= BASE_URL ?>/problem/category_select.php"
+                class="nav-link <?= $current === 'category_select.php' ? 'active' : 'link-body-emphasis' ?>"
             >
                 <i class="bi bi-check2-square"></i>
                 問題
