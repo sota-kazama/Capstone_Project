@@ -14,7 +14,7 @@ $member = $_SESSION['member'];
 
 // DBからログインユーザーの目標を取得
 $GoalsDAO = new GoalsDAO();
-$goal_data = $GoalsDAO->getGoalByUserId($member->user_id);
+$goal_data = $GoalsDAO->getGoalByGoalId($member->user_id);
 $answers_count = $member->u_answers_count;
 $correct_count = $member->u_correct_count;
 
@@ -73,13 +73,11 @@ $theme = $_COOKIE['theme'] ?? 'light';
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 <div class="d-flex w-100 min-vh-100">
-    <div class="d-none d-md-block">
-        <?php include 'side.php'; ?>
-    </div>
+    <?php include 'side.php'; ?>
 
-    <main class="main-content container mt-4">
+    <main class="main-content flex-grow-1 p-4">
         <h1 class="mt-5">マイページ</h1>
 
         <div class="mb-4">
@@ -106,39 +104,39 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
         <!-- 成績表（円グラフ） -->
         <?php if ($answers_count > 0): ?>
-    <h2>成績表</h2>
-    <p>回答数：<?= htmlspecialchars($answers_count, ENT_QUOTES, 'UTF-8') ?> 問</p>
-    <p>正解数：<?= htmlspecialchars($correct_count, ENT_QUOTES, 'UTF-8') ?> 問</p>
+            <h2>成績表</h2>
+            <p>回答数：<?= htmlspecialchars($answers_count, ENT_QUOTES, 'UTF-8') ?> 問</p>
+            <p>正解数：<?= htmlspecialchars($correct_count, ENT_QUOTES, 'UTF-8') ?> 問</p>
 
-    <canvas id="scoreChart" width="300" height="300"></canvas>
+            <canvas id="scoreChart" style="width: 12.5%; height: 12.5%;"></canvas>  <!-- サイズをレスポンシブで変更 -->
 
-    <script>
-        const answered = <?= (int)$answers_count ?>;
-        const correct = <?= (int)$correct_count ?>;
-        const incorrect = answered - correct;
+            <script>
+                const answered = <?= (int)$answers_count ?>;
+                const correct = <?= (int)$correct_count ?>;
+                const incorrect = answered - correct;
 
-        const ctx = document.getElementById('scoreChart').getContext('2d');
+                const ctx = document.getElementById('scoreChart').getContext('2d');
 
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['正解', '不正解'],
-                datasets: [{
-                    data: [correct, incorrect],
-                    backgroundColor: ['#dc3545', '#adb5bd']
-                }]
-            },
-            options: {
-                cutout: '65%',
-                plugins: {
-                    legend: { position: 'bottom' }
-                }
-            }
-        });
-    </script>
-<?php else: ?>
-    <p>回答履歴がありません。問題を解いて成績を記録しましょう！</p>
-<?php endif; ?>
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['正解', '不正解'],
+                        datasets: [{
+                            data: [correct, incorrect],
+                            backgroundColor: ['#dc3545', '#adb5bd']
+                        }]
+                    },
+                    options: {
+                        cutout: '65%',
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            </script>
+        <?php else: ?>
+            <p>回答履歴がありません。問題を解いて成績を記録しましょう！</p>
+        <?php endif; ?>
 
         <!-- 途中から回答 -->
         <?php if(!empty($member->question_hold)): ?>
@@ -185,7 +183,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
     </main>
 </div>
 
-<button id="theme-toggle-btn" class="btn theme-toggle-btn">
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
     <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
 </button>
 
