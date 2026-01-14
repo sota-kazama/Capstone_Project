@@ -3,22 +3,20 @@ require_once 'DAO.php';
 
 class Goals
 {
-    public int $goal_id;          // 目標ID
-    public int $user_id;          // ユーザーID
-    public ?string $goal;         // 目標
-    public ?string $mile_stone;   // 中間目標(マイルストーン)
-    public ?string $goal_date;    // 目標日
-    public ?string $result;       // 成果
-    public ?string $created_at;   // 作成日時
-    public ?string $updated_at;   // 更新日時
+    public int $goal_id;
+    public int $user_id;
+    public ?string $goal;
+    public ?string $mile_stone;
+    public ?string $goal_date;
+    public ?string $result;
+    public ?string $created_at;
+    public ?string $updated_at;
 }
 
 class GoalsDAO
 {
-    /**
-     * ユーザーの目標を1件取得
-     */
-    public function getGoalByUserId(int $user_id): ?Goals
+    // ユーザーの目標一覧を取得（複数件）
+    public function getGoalsByUserId(int $user_id): array
     {
         $dbh = DAO::get_db_connect();
         $sql = "
@@ -33,18 +31,40 @@ class GoalsDAO
                 update_at AS updated_at
             FROM u_goals
             WHERE user_id = ?
+            ORDER BY created_ad DESC
         ";
         $stmt = $dbh->prepare($sql);
         $stmt->execute([$user_id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Goals');
-        $goal_data = $stmt->fetch();
-
-        return $goal_data ?: null;
+        return $stmt->fetchAll();
     }
 
-    /**
-     * 目標を新規登録
-     */
+    // 目標IDで単一目標取得
+    public function getGoalByGoalId(int $goal_id): ?Goals
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            SELECT
+                goal_id,
+                user_id,
+                goal,
+                mile_stone,
+                goal_date,
+                result,
+                created_ad AS created_at,
+                update_at AS updated_at
+            FROM u_goals
+            WHERE goal_id = ?
+        ";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute([$goal_id]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Goals');
+        $goal = $stmt->fetch();
+
+        return $goal ?: null;
+    }
+
+    // 新規登録
     public function insert(
         int $user_id,
         ?string $goal,
@@ -67,9 +87,7 @@ class GoalsDAO
         return $stmt->execute([$user_id, $goal, $mile_stone, $goal_date]);
     }
 
-    /**
-     * 目標を更新
-     */
+    // 更新
     public function update(
         int $goal_id,
         ?string $goal,
@@ -92,9 +110,7 @@ class GoalsDAO
         return $stmt->execute([$goal, $mile_stone, $goal_date, $result, $goal_id]);
     }
 
-    /**
-     * 目標を削除
-     */
+    // 削除
     public function delete(int $goal_id): bool
     {
         $dbh = DAO::get_db_connect();
