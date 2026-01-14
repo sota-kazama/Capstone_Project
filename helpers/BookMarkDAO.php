@@ -23,4 +23,21 @@ class BookMarkDAO
         $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function insertBookmark(int $q_number): void
+    {
+        $dbh = DAO::get_db_connect();
+        // INSERT時に access_date も設定する場合は、SQLに追加が必要です
+        $sql = "INSERT INTO u_labels (q_number, bookmark, created_ad, update_at)
+                VALUES ()";
+
+        $stmt = $dbh->prepare($sql);
+
+
+        $stmt->bindValue(':mail_address', $member->mail_address, PDO::PARAM_STR);
+        $stmt->bindValue(':user_name', $member->user_name, PDO::PARAM_STR);
+        $stmt->bindValue(':pass_word', $password, PDO::PARAM_STR);
+
+        $stmt->execute();
+    }
 }
