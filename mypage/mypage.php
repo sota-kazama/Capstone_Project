@@ -108,7 +108,9 @@ $theme = $_COOKIE['theme'] ?? 'light';
             <p>回答数：<?= htmlspecialchars($answers_count, ENT_QUOTES, 'UTF-8') ?> 問</p>
             <p>正解数：<?= htmlspecialchars($correct_count, ENT_QUOTES, 'UTF-8') ?> 問</p>
 
-            <canvas id="scoreChart" style="width: 12.5%; height: 12.5%;"></canvas>  <!-- サイズをレスポンシブで変更 -->
+            <div style="position: relative; width: 100%; max-width: 500px;">
+                <canvas id="scoreChart"></canvas>
+            </div>
 
             <script>
                 const answered = <?= (int)$answers_count ?>;
@@ -130,7 +132,10 @@ $theme = $_COOKIE['theme'] ?? 'light';
                         cutout: '65%',
                         plugins: {
                             legend: { position: 'bottom' }
-                        }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        aspectRatio: 1
                     }
                 });
             </script>
