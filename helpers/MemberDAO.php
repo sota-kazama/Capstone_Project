@@ -7,8 +7,8 @@ class Member
     public string $user_name;        // ユーザーネーム
     public string $mail_address;     // メールアドレス
     public string $pass_word;        // パスワード
-    public int $u_correct_count;     // ユーザー正答数カウント
-    public int $u_answers_count;     // 回答数カウント
+    public ?int $u_correct_count;     // ユーザー正答数カウント
+    public ?int $u_answers_count;     // 回答数カウント
     public ?string $created_ad;      // 作成日時
     public ?string $update_at;       // 更新日時
     public ?string $access_date;     // 最終アクセス日
