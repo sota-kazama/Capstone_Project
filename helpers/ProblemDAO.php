@@ -15,23 +15,7 @@ class Category
 
 class ProblemDAO
 {
-    private PDO $pdo;
 
-    public function __construct() {
-        try {
-            // SQL Server に接続する DSN
-            $serverName = 'localhost'; // 必要に応じて SSMS のサーバー名に変更
-            $dbName = 'your_db';       // データベース名
-            $username = 'your_username'; // SQL Server のユーザー名
-            $password = 'your_password'; // SQL Server のパスワード
-
-            $dsn = "sqlsrv:Server=$serverName;Database=$dbName";
-            $this->pdo = new PDO($dsn, $username, $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die('DB接続エラー: ' . $e->getMessage());
-        }
-    }
 
     // ===================== 分野管理 =====================
 
@@ -58,7 +42,7 @@ class ProblemDAO
                 FROM q_categories c
                 LEFT JOIN Shikaku s ON c.s_number = s.s_number
                 ORDER BY c.area_number";
-                $categories = [];
+        $categories = [];
         while ($row = $stmt->fetchObject('Category')) {
             $categories[] = $row;
         }
@@ -104,11 +88,14 @@ class ProblemDAO
     //指定された分野の全問題取得
     public function getProblem($area_number): array
     {
-        $sql = "SELECT * FROM question_data WHERE area_number = :area_number";
-        $stmt = $this->pdo->prepare($sql);
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT q_number FROM q_middle WHERE area_number = :area_number";
+        $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
 }
 

@@ -1,7 +1,9 @@
 <?php
 require_once '../helpers/QuestionDAO.php';
+require_once '../helpers/ProblemDAO.php';
 
 $dao = new QuestionDAO();
+$dao2 = new ProblemDAO();
 
 // ブックマーク保存
 if (isset($_POST['bookmark_q_number'])) {
@@ -12,6 +14,11 @@ if (isset($_POST['bookmark_q_number'])) {
 $bookmarkQuestion = null;
 if (isset($_SESSION['bookmark_q_number'])) {
     $bookmarkQuestion = $dao->findById($_SESSION['bookmark_q_number']);
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $area_number = $_POST['area_number'] ?? '';
+    $dao2->getProblem($area_number);
 }
 ?>
 
