@@ -3,6 +3,7 @@
 require_once 'config.php';
 require_once 'DAO.php';
 
+
 class Category
 {
     public string $area_number;    // 分野番号（VARCHAR）
@@ -94,6 +95,34 @@ class ProblemDAO
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    //配列を文字列に変換
+    public function getProblemString($area_number): string
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT q_number FROM q_middle WHERE area_number = :area_number";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // 配列で取得
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // q_number だけを抜き出す
+        $qNumbers = array_column($result, 'q_number');
+
+        // 文字列に変換
+        return implode('_', $qNumbers);
+        
+    }
+    //分野名取得
+    public function getProblemName(): array
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT area_number FROM q_categories";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
 

@@ -1,6 +1,7 @@
 <?php
 require_once 'DAO.php';
 
+
 class Question
 {
     public int $q_number;
@@ -21,15 +22,6 @@ class QuestionDAO
 {
     /** 全問題を取得 */
     public function getAll(): array
-    {
-        $dbh = DAO::get_db_connect();
-        $sql = "SELECT * FROM question_data ORDER BY q_number";
-        $stmt = $dbh->query($sql);
-
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Question');
-        return $stmt->fetchAll();
-    }
-    public function changeIndex(): array
     {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM question_data ORDER BY q_number";
@@ -151,16 +143,6 @@ class QuestionDAO
     {
         $dbh = DAO::get_db_connect();
         return (int)$dbh->query("SELECT SCOPE_IDENTITY()")->fetchColumn();
-    }
-
-    //分野名取得
-    public function getProblemName(): array
-    {
-        $dbh = DAO::get_db_connect();
-        $sql = "SELECT area_number FROM q_categories";
-        $stmt = $dbh->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
     
 

@@ -1,19 +1,12 @@
 <?php
 require_once './helpers/QuestionDAO.php';
+$questionDAO = new QuestionDAO();
+$question = array();
+$member = $questionDAO->getAll();
 
-session_start();
-
-
-
-
-        $questionDAO = new QuestionDAO();
-        $question = array();
-        $member = $questionDAO->getAll();
-        // $member2 = $questionDAO->insertData($question);
-        print_r($member);
-        $array = [1, 2, 3, 4];
-$str = implode('_', $array);
-        print($str);
-
+$names = array_column($member, 'q_number');
+$string = implode('_', $names);
+echo $string;
+var_dump($string);
 
 ?>

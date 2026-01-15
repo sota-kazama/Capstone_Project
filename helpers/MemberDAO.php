@@ -263,4 +263,11 @@ class MemberDAO
 
         return $stmt->execute();
     }
+
+    //未回答問題を格納
+    public function updateQuestionHold($user_id,$question_hold) {
+        $dbh = DAO::get_db_connect();
+        $sql = "update master_user set question_hold = :question_hold where user_id = :user_id";
+
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 require_once '../helpers/QuestionDAO.php';
-
-$dao = new QuestionDAO();
+require_once '../helpers/ProblemDAO.php';
+$dao = new ProblemDAO();
 $category = $dao->getProblemName();
 
 ?>
