@@ -64,6 +64,31 @@ class GoalsDAO
         return $goal ?: null;
     }
 
+    public function getLatestGoalByUserId(int $user_id): ?Goals
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            SELECT
+                goal_id,
+                user_id,
+                goal,
+                mile_stone,
+                goal_date,
+                result,
+                created_ad AS created_at,
+                update_at AS updated_at
+            FROM u_goals
+            WHERE user_id = ?
+            ORDER BY created_ad ASC
+        ";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute([$user_id]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Goals');
+        $goal = $stmt->fetch();
+
+        return $goal ?: null;
+    }
+
     // 新規登録
     public function insert(
         int $user_id,

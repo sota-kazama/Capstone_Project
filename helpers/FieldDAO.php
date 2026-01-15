@@ -3,12 +3,12 @@ require_once 'DAO.php';
 
 class Field
 {
-    public string $area_number;
-    public string $area_name;
-    public int $s_number;
-    public ?string $created_ad;
-    public ?string $update_at;
-    public ?string $s_name; // JOINで資格名も取得するため
+    public string $area_number; // 分野番号
+    public string $area_name;   // 分野名
+    public int $s_number;       // 資格番号（外部キー）
+    public ?string $created_ad; // 登録日
+    public ?string $update_at;  // 更新日
+    public ?string $s_name;     // JOINで資格名取得用
 }
 
 class FieldDAO
@@ -17,12 +17,10 @@ class FieldDAO
 
     public function __construct()
     {
-        $this->dbh = DAO::get_db_connect();
+        $this->dbh = DAO::get_db_connect(); // DB接続
     }
 
-    /**
-     * 分野一覧を取得
-     */
+    // 分野一覧を取得
     public function getAll(): array
     {
         $sql = "SELECT f.area_number, f.area_name, f.s_number,
@@ -47,9 +45,7 @@ class FieldDAO
         return $list;
     }
 
-    /**
-     * 分野を追加
-     */
+    // 分野を追加
     public function insert(string $area_number, string $area_name, int $s_number): bool
     {
         $sql = "INSERT INTO q_categories (area_number, area_name, s_number, created_ad, update_at)
@@ -58,10 +54,7 @@ class FieldDAO
         return $stmt->execute([$area_number, $area_name, $s_number]);
     }
 
-    /**
-     * 分野を更新
-     * area_name は外部キー制約のため更新しない（s_number のみ更新）
-     */
+    // 分野を更新（area_name は更新せず s_number のみ更新）
     public function update(string $area_number, int $s_number): bool
     {
         $sql = "UPDATE q_categories
@@ -71,9 +64,7 @@ class FieldDAO
         return $stmt->execute([$s_number, $area_number]);
     }
 
-    /**
-     * 分野を削除
-     */
+    // 分野を削除
     public function delete(string $area_number): bool
     {
         $sql = "DELETE FROM q_categories WHERE area_number = ?";
@@ -81,4 +72,3 @@ class FieldDAO
         return $stmt->execute([$area_number]);
     }
 }
-?>

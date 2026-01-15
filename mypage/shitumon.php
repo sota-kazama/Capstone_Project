@@ -18,7 +18,7 @@ $member = $_SESSION['member'];
 
 // ShitumonDAOインスタンス
 $shitumonDAO = new ShitumonDAO();
-$user_id = $member->user_id;
+$user_id      = $member->user_id;
 
 // ユーザーの質問一覧取得
 $questions = $shitumonDAO->getAllByUser($user_id);
@@ -27,18 +27,18 @@ $questions = $shitumonDAO->getAllByUser($user_id);
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <!-- カスタムCSS -->
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
-    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+    <link href="../css/BaseDesignData.css" rel="stylesheet">
+    <link href="../css/side.css" rel="stylesheet">
+    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css">
+    <link href="../css_theme/toggle-button.css" rel="stylesheet">
 
     <title>マイページ</title>
 
@@ -62,7 +62,8 @@ $questions = $shitumonDAO->getAllByUser($user_id);
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
-        .question-card th, .question-card td {
+        .question-card th,
+        .question-card td {
             vertical-align: middle;
         }
 
@@ -137,40 +138,40 @@ $questions = $shitumonDAO->getAllByUser($user_id);
                         </tr>
                     </thead>
                     <tbody>
-                    <?php if (!empty($questions)): ?>
-                        <?php foreach ($questions as $q): 
-                            $askedDate = (new DateTime($q->asked_date))->format('Y/m/d H:i');
-                            $statusClass = $q->reception_status == 1 ? 'status-open' : 'status-closed';
-                        ?>
-                        <tr id="question-row-<?= $q->shitu_number ?>">
-                            <td class="question-title">
-                                <a href="../Shitsumonbako/question_answer.php?shitu_number=<?= $q->shitu_number ?>">
-                                    <?= htmlspecialchars($q->shitu_title) ?>
-                                </a>
-                            </td>
-                            <td><?= htmlspecialchars($q->shitu_content) ?></td>
-                            <td>
-                                <span class="status-badge <?= $statusClass ?>">
-                                    <?= $q->reception_status == 1 ? '受付中' : '受付終了' ?>
-                                </span>
-                            </td>
-                            <td><?= $askedDate ?></td>
-                            <td>
-                                <?php if ($q->reception_status == 1): ?>
-                                    <button class="btn btn-warning btn-sm end-reception-btn" data-shitu_number="<?= $q->shitu_number ?>">
-                                        受付終了
-                                    </button>
-                                <?php else: ?>
-                                    <span class="text-muted">受付終了済み</span>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">投稿した質問はありません。</td>
-                        </tr>
-                    <?php endif; ?>
+                        <?php if (!empty($questions)): ?>
+                            <?php foreach ($questions as $q): 
+                                $askedDate   = (new DateTime($q->asked_date))->format('Y/m/d H:i');
+                                $statusClass = $q->reception_status == 1 ? 'status-open' : 'status-closed';
+                            ?>
+                                <tr id="question-row-<?= $q->shitu_number ?>">
+                                    <td class="question-title">
+                                        <a href="../Shitsumonbako/question_answer.php?shitu_number=<?= $q->shitu_number ?>">
+                                            <?= htmlspecialchars($q->shitu_title) ?>
+                                        </a>
+                                    </td>
+                                    <td><?= htmlspecialchars($q->shitu_content) ?></td>
+                                    <td>
+                                        <span class="status-badge <?= $statusClass ?>">
+                                            <?= $q->reception_status == 1 ? '受付中' : '受付終了' ?>
+                                        </span>
+                                    </td>
+                                    <td><?= $askedDate ?></td>
+                                    <td>
+                                        <?php if ($q->reception_status == 1): ?>
+                                            <button class="btn btn-warning btn-sm end-reception-btn" data-shitu_number="<?= $q->shitu_number ?>">
+                                                受付終了
+                                            </button>
+                                        <?php else: ?>
+                                            <span class="text-muted">受付終了済み</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">投稿した質問はありません。</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -183,9 +184,11 @@ $questions = $shitumonDAO->getAllByUser($user_id);
     <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
 </button>
 
+<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/theme-toggle.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 $(document).ready(function() {
     $('.end-reception-btn').click(function() {
