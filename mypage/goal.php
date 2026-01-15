@@ -10,39 +10,42 @@ if (!isset($_SESSION['member'])) {
     exit;
 }
 
-$member = $_SESSION['member'];
+$member        = $_SESSION['member'];
 $error_message = null;
-$mode = $_GET['mode'] ?? 'list'; // list / add / edit
-$GoalsDAO = new GoalsDAO();
+$mode          = $_GET['mode'] ?? 'list'; // list / add / edit
+$GoalsDAO      = new GoalsDAO();
 
 /* =========================
    POST処理
 ========================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     // 削除処理
     if (isset($_POST['delete_goal_id'])) {
         $delete_goal_id = (int)$_POST['delete_goal_id'];
-        $result = $GoalsDAO->delete($delete_goal_id);
+        $result         = $GoalsDAO->delete($delete_goal_id);
 
         if ($result) {
             header('Location: goal.php');
             exit;
         } else {
             $error_message = '削除に失敗しました。';
-            $mode = 'list';
+            $mode          = 'list';
         }
+
+    // 追加 / 更新処理
     } else {
-        $goal = $_POST['goal'] ?? '';
+        $goal       = $_POST['goal'] ?? '';
         $mile_stone = $_POST['mile_stone'] ?? '';
-        $goal_date = $_POST['goal_date'] ?? '';
-        $goal_id = $_POST['goal_id'] ?? null;
+        $goal_date  = $_POST['goal_date'] ?? '';
+        $goal_id    = $_POST['goal_id'] ?? null;
 
         if (empty($goal)) {
             $error_message = '目標を入力してください。';
-            $mode = $goal_id ? 'edit' : 'add';
+            $mode          = $goal_id ? 'edit' : 'add';
         } elseif (mb_strlen($goal) > 100 || mb_strlen($mile_stone) > 100) {
             $error_message = '文字数は100文字以内で入力してください。';
-            $mode = $goal_id ? 'edit' : 'add';
+            $mode          = $goal_id ? 'edit' : 'add';
         } else {
             if ($goal_id) {
                 // 更新処理
@@ -68,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             } else {
                 $error_message = '保存に失敗しました。';
-                $mode = $goal_id ? 'edit' : 'add';
+                $mode          = $goal_id ? 'edit' : 'add';
             }
         }
     }
@@ -91,27 +94,32 @@ $theme = $_COOKIE['theme'] ?? 'light';
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
-    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css/BaseDesignData.css" rel="stylesheet">
+    <link href="../css/side.css" rel="stylesheet">
+    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css">
+    <link href="../css_theme/toggle-button.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <title>目標管理</title>
     <?php include '../template/header.php'; ?>
 </head>
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
+
 <div class="d-flex w-100 min-vh-100">
 
+    <!-- サイドバー -->
     <div class="d-none d-md-block">
         <?php include 'side.php'; ?>
     </div>
 
+    <!-- メインコンテンツ -->
     <main class="main-content flex-grow-1 p-4">
 
         <!-- 一覧表示 -->
@@ -160,6 +168,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
             <h1 class="mt-5"><?= $mode === 'edit' ? '目標更新' : '目標登録' ?></h1>
 
             <div class="card p-4 mt-3">
+
                 <?php if ($error_message): ?>
                     <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
                 <?php endif; ?>
@@ -203,10 +212,12 @@ $theme = $_COOKIE['theme'] ?? 'light';
     </main>
 </div>
 
+<!-- テーマ切替ボタン -->
 <button id="theme-toggle-btn" class="btn theme-toggle-btn">
     <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
 </button>
 
+<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/theme-toggle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -247,9 +258,8 @@ flatpickr("#calendar", {
 </script>
 <?php endif; ?>
 
-</body>
-
 <footer>
     <?php include '../template/footer.php'; ?>
 </footer>
+</body>
 </html>

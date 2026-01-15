@@ -11,10 +11,8 @@ class Shikaku
 
 class ShikakuDAO
 {
-    /**
-     * 資格一覧を取得
-     */
-    public function getAll()
+    /** 資格一覧を取得 */
+    public function getAll(): array
     {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT s_number, s_name, created_ad, update_at FROM shikaku ORDER BY s_number";
@@ -27,9 +25,7 @@ class ShikakuDAO
         return $data;
     }
 
-    /**
-     * 資格を追加
-     */
+    /** 資格を追加 */
     public function insert(string $s_name): bool
     {
         $dbh = DAO::get_db_connect();
@@ -40,9 +36,7 @@ class ShikakuDAO
         return $stmt->execute();
     }
 
-    /**
-     * 資格を更新
-     */
+    /** 資格を更新 */
     public function update(int $s_number, string $s_name): bool
     {
         $dbh = DAO::get_db_connect();
@@ -53,9 +47,7 @@ class ShikakuDAO
         return $stmt->execute();
     }
 
-    /**
-     * 資格を削除
-     */
+    /** 資格を削除 */
     public function delete(int $s_number): bool
     {
         $dbh = DAO::get_db_connect();
@@ -65,4 +57,3 @@ class ShikakuDAO
         return $stmt->execute();
     }
 }
-?>
