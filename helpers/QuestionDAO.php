@@ -143,30 +143,18 @@ class QuestionDAO
         return (int)$dbh->query("SELECT SCOPE_IDENTITY()")->fetchColumn();
     }
 
-/** 問題を検索（問題文・出典） */
-public function search(string $keyword): array
+    public function findQuestionById(int $q_number)
 {
     $dbh = DAO::get_db_connect();
-
-    $sql = "
-        SELECT *
-        FROM question_data
-        WHERE q_content LIKE ?
-           OR q_source LIKE ?
-        ORDER BY q_number DESC
-    ";
-
+    $sql = "SELECT * FROM question_data WHERE q_number = :q_number";
     $stmt = $dbh->prepare($sql);
-    $kw = '%' . $keyword . '%';
-    $stmt->bindValue(1, $kw, PDO::PARAM_STR);
-    $stmt->bindValue(2, $kw, PDO::PARAM_STR);
+    $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
     $stmt->execute();
 
-    $stmt->setFetchMode(PDO::FETCH_CLASS, 'Question'); // ここを追加してオブジェクト取得
-    return $stmt->fetchAll();
+    return $stmt->fetch(PDO::FETCH_OBJ);
 }
 
-
+    
 
 }
 ?>
