@@ -1,5 +1,6 @@
 <?php
-require_once './helpers/MemberDAO.php';
+require_once '../helpers/MemberDAO.php';
+require_once '../helpers/u_goalsDAO.php';
 
 
 //セッションを開始する
@@ -22,7 +23,7 @@ $member = $_SESSION['member'];
         />
         <link href="css/BaseDesignData.css" rel="stylesheet" />
         <link href="css/side.css" rel="stylesheet" />
-        <?php include 'template/header.php'; ?>
+        <?php include '../template/header.php'; ?>
     </head>
 
     <head>
