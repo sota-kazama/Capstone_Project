@@ -21,7 +21,7 @@ $correct_count = $member->u_correct_count;
 // 目標日までの日数計算
 $days_left  = null;
 $goal_status = '';
-$is_past    = false;
+$is_past     = false;
 
 if ($goal_data && !empty($goal_data->goal_date)) {
     $today = new DateTime();
@@ -30,14 +30,17 @@ if ($goal_data && !empty($goal_data->goal_date)) {
     $target_date = new DateTime($goal_data->goal_date);
     $target_date->setTime(0, 0, 0);
 
-    $interval = $today->diff($target_date);
-
-    if ($target_date < $today) {
+    // 比較演算子で条件分岐を整理
+    if ($today > $target_date) {
+        // 今日が目標日より後の場合
         $goal_status = 'お疲れさまでした！';
         $is_past = true;
-    } elseif ($target_date == $today) {
+    } elseif ($today == $target_date) {
+        // 今日が目標日の場合
         $goal_status = '最終日！';
     } else {
+        // 今日が目標日より前の場合
+        $interval = $today->diff($target_date);
         $days_left   = $interval->days;
         $goal_status = 'あと' . $days_left . '日！';
     }
@@ -118,7 +121,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
                             <div class="mt-3">
                                 <?php if ($is_past): ?>
-                                    <a href="result_record.php" class="btn btn-primary btn-sm">
+                                    <a href="results.php" class="btn btn-primary btn-sm">
                                         結果を記録する
                                     </a>
                                 <?php else: ?>
