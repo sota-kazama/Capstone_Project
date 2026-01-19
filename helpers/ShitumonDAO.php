@@ -234,43 +234,69 @@ SQL;
     }
 
     // 分野別ページング＋並び順取得
-    public function getAllByAreaOrderPage(?string $area_number, string $order, int $page, int $perPage): array
-    {
-        $dbh = DAO::get_db_connect();
-        $offset = ($page - 1) * $perPage;
+   public function getAllByAreaOrderPage(?string $area_number, string $order, int $page, int $perPage): array
+{
+    $dbh = DAO::get_db_connect();
+    $offset = ($page - 1) * $perPage;
 
-        $sql = "SELECT s.*, c.area_name
-                FROM shitumon s
-                LEFT JOIN q_categories c ON s.area_number = c.area_number";
+    $sql = "
+        SELECT
+            s.shitu_number,
+            s.shitu_title,
+            s.shitu_content,
+            s.reception_status,
+            s.asked_date,
+            s.update_at,
+            s.area_number,
+            s.area_name,
+            s.user_id,
+            s.s_number,
+            COUNT(a.ans_number) AS shitu_count
+        FROM shitumon s
+        LEFT JOIN shitu_answer a
+            ON s.shitu_number = a.shitu_number
+    ";
 
-        $params = [];
-        if (!empty($area_number)) {
-            $sql .= " WHERE s.area_number = :area_number";
-            $params[':area_number'] = $area_number;
-        }
-
-        $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
-        $sql .= " ORDER BY s.asked_date $order
-                  OFFSET :offset ROWS
-                  FETCH NEXT :limit ROWS ONLY";
-
-        $stmt = $dbh->prepare($sql);
-
-        if (isset($params[':area_number'])) {
-            $stmt->bindValue(':area_number', $params[':area_number'], PDO::PARAM_STR);
-        }
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-        $stmt->bindValue(':limit', (int)$perPage, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        $data = [];
-        while ($row = $stmt->fetchObject(Shitumon::class)) {
-            $data[] = $row;
-        }
-
-        return $data;
+    if (!empty($area_number)) {
+        $sql .= " WHERE s.area_number = :area_number";
     }
+
+    $sql .= "
+        GROUP BY
+            s.shitu_number,
+            s.shitu_title,
+            s.shitu_content,
+            s.reception_status,
+            s.asked_date,
+            s.update_at,
+            s.area_number,
+            s.area_name,
+            s.user_id,
+            s.s_number
+        ORDER BY s.asked_date $order
+        OFFSET :offset ROWS
+        FETCH NEXT :limit ROWS ONLY
+    ";
+
+    $stmt = $dbh->prepare($sql);
+
+    if (!empty($area_number)) {
+        $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
+    }
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', (int)$perPage, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    $data = [];
+    while ($row = $stmt->fetchObject(Shitumon::class)) {
+        $row->shitu_count = (int)$row->shitu_count;
+        $data[] = $row;
+    }
+
+    return $data;
+}
+
 
     // 分野別件数取得
     public function getCountByArea(?string $area_number): int
