@@ -142,6 +142,18 @@ class QuestionDAO
         $dbh = DAO::get_db_connect();
         return (int)$dbh->query("SELECT SCOPE_IDENTITY()")->fetchColumn();
     }
+
+    public function findQuestionById(int $q_number)
+{
+    $dbh = DAO::get_db_connect();
+    $sql = "SELECT * FROM question_data WHERE q_number = :q_number";
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_OBJ);
+}
+
     
 
 }

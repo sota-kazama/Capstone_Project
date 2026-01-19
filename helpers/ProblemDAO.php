@@ -83,17 +83,10 @@ class ProblemDAO
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 指定された分野の全問題取得
-    public function getProblem(string $area_number): array
-    {
-        $sql = "SELECT q_number FROM q_middle WHERE area_number = :area_number";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    //配列を文字列に変換
-    public function getProblemString($area_number): string
+    /**
+     * 指定分野の問題IDを _ 区切り文字列で取得
+     */
+    public function getProblemIdString(string $area_number): string
     {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT q_number FROM q_middle WHERE area_number = :area_number";
@@ -101,16 +94,32 @@ class ProblemDAO
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
         $stmt->execute();
 
-        // 配列で取得
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // q_number だけを抜き出す
-        $qNumbers = array_column($result, 'q_number');
-
-        // 文字列に変換
-        return implode('_', $qNumbers);
-        
+        return implode('_', $result);
     }
+
+    /**
+     * 次の問題を取得し、残り問題文字列を返す
+     */
+    public function shiftProblem(string $problemString): array
+    {
+        if ($problemString === '') {
+            return [
+                'current'   => null,
+                'remaining' => ''
+            ];
+        }
+
+        $problems = explode('_', $problemString);
+        $current  = array_shift($problems);
+
+        return [
+            'current'   => $current,
+            'remaining' => implode('_', $problems)
+        ];
+    }
+    
     //分野名取得
     public function getProblemName(): array
     {
@@ -121,6 +130,21 @@ class ProblemDAO
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    /**
+     * 指定分野の問題ID一覧を取得
+     */
+    public function getProblemIdsByArea(string $area_number): array
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT q_number
+                FROM q_middle
+                WHERE area_number = :area_number
+                ORDER BY q_number";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
+        $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
 }
 

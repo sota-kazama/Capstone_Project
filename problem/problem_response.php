@@ -1,17 +1,48 @@
 <?php
+require_once '../helpers/MemberDAO.php';
+require_once '../helpers/ProblemDAO.php';
 require_once '../helpers/QuestionDAO.php';
 
-$dao = new QuestionDAO();
-$questions = $dao->getAll();
-
-$i = isset($_GET['i']) ? intval($_GET['i']) : 0;
-
-// 問題が存在するかチェック
-if (!empty($questions) && isset($questions[$i])) {
-    $question = $questions[$i];
-} else {
-    $question = null;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+
+$member = $_SESSION['member'] ?? null;
+$area_number = $_SESSION['area_number'];
+
+$dao = new ProblemDAO();
+$dao2 = new MemberDAO();
+$dao3 = new QuestionDAO();
+
+if (!isset($_SESSION['problem_ids'])) {
+    $_SESSION['problem_ids'] = $dao->getProblemIdsByArea($area_number);
+    $index = 0;
+}
+$index = $_SESSION['current_index'];
+$problemIds = $_SESSION['problem_ids'];
+
+$question = null;
+
+if (isset($problemIds[$index+1])) {
+    $question = $dao->findQuestionById((int)$problemIds[$index]);
+    $_SESSION['current_index']++;
+}
+
+// 初回：問題ID文字列を作成
+if (!isset($_SESSION['problem_string'])) {
+    $_SESSION['problem_string'] = $dao->getProblemIdString($area_number);
+} else {
+// 次の問題を取得
+    $shifted = $dao->shiftProblem($_SESSION['problem_string']);
+
+    $currentProblemId = $shifted['current'];
+    $_SESSION['problem_string'] = $shifted['remaining'];
+}
+
+if (isset($member)) {
+    $dao2->updateUserProblem($member->user_id, $_SESSION['problem_string']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -54,8 +85,13 @@ if (!empty($questions) && isset($questions[$i])) {
                     <?php endif; ?>
                 </div>
 
-                <h2>第<?php echo $question->q_number; ?>問</h2>
-                <h3><?php echo $question->q_content; ?></h3>
+            <?php if ($question !== null): ?>
+                <h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>
+                <h3><?= htmlspecialchars($question->q_content) ?></h3>
+            <?php else: ?>
+                <h2>この分野の問題は終了しました</h2>
+            <?php endif; ?>
+
 
                 <table class="table">
                     <thead>
