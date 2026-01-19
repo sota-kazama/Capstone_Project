@@ -1,11 +1,12 @@
-/* ========== 基本レイアウトとタイポグラフィ ========== */
+/* ================= 基本レイアウト & タイポグラフィ ================= */
 body {
-    font-family: PlemolJP;
+    font-family: PlemolJP, "Noto Sans JP", sans-serif;
     margin: 0;
     min-height: 100vh;
     min-height: -webkit-fill-available;
-    background-color: #ffffff;
-    color: #000;
+    background-color: var(--bg-color, #ffffff);
+    color: var(--text-color, #000);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 html {
@@ -22,7 +23,28 @@ html {
     padding: 20px;
 }
 
-/* ========== ナビゲーション ========== */
+/* ================= カラーテーマ ================= */
+body.light-mode {
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-color: #212529;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --btn-bg: #0d6efd;
+    --btn-color: #ffffff;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --input-bg: #2a2a2a;
+    --input-border: #555;
+    --btn-bg: #0d6efd;
+    --btn-color: #ffffff;
+}
+
+/* ================= ナビゲーション ================= */
 nav {
     position: fixed;
     top: 24px;
@@ -38,7 +60,7 @@ li a {
     text-decoration: none;
 }
 
-/* ========== 右上アイコン ========== */
+/* ================= 右上アイコン ================= */
 #link,
 #login,
 #logout {
@@ -53,19 +75,17 @@ li a {
     height: 50px;
     cursor: pointer;
 }
-
 #login {
     right: 125px;
     width: 20px;
     height: 20px;
 }
-
 #logout {
     right: 65px;
     height: 17px;
 }
 
-/* ========== フッター ========== */
+/* ================= フッター ================= */
 .footerlinks {
     display: flex;
     justify-content: center;
@@ -78,7 +98,7 @@ li a {
     text-decoration: none;
 }
 
-/* ========== ログアウトボタン ========== */
+/* ================= ログアウトボタン ================= */
 .logout-btn {
     padding: 6px 12px;
     border-radius: 4px;
@@ -91,7 +111,7 @@ li a {
     background-color: #787575;
 }
 
-/* ========== テーマ切替ボタン（右下） ========== */
+/* ================= テーマ切替ボタン（右下） ================= */
 #theme-toggle-btn {
     position: fixed;
     bottom: 20px;
@@ -104,8 +124,8 @@ li a {
     font-size: 22px;
     border-radius: 50%;
     border: none;
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: var(--btn-bg, #f0f0f0);
+    color: var(--btn-color, #333);
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     z-index: 9999;
@@ -116,21 +136,88 @@ li a {
     filter: brightness(0.9);
 }
 
-body.dark-mode #theme-toggle-btn {
-    background-color: #333;
-    color: #f0f0f0;
+/* ================= カード ================= */
+.card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-/* ========== 日付と本文の間のスペース調整 ========== */
+/* ================= テーブル ================= */
+table.table {
+    background-color: var(--card-bg);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+table.table th,
+table.table td {
+    vertical-align: middle;
+}
+
+table.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+body.dark-mode table.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ================= フォーム ================= */
+input.form-control,
+select.form-select {
+    border-radius: 0.5rem;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+input.form-control:focus,
+select.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* ================= ボタン ================= */
+.btn-primary {
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    border-radius: 0.5rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* ================= 日付・本文スペース ================= */
 .update-info .d-flex {
-    margin-bottom: 0; /* 日付と本文の間の余白をなくす */
+    margin-bottom: 0;
 }
-
 .update-info small {
-    margin-bottom: 0; /* 小さい日付部分のマージンを消す */
+    margin-bottom: 0;
+}
+.update-info p {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-.update-info p {
-    margin-top: 0; /* 本文の上の余白をなくす */
-    margin-bottom: 0; /* 本文の下の余白もなくす */
+/* ================= レスポンシブ ================= */
+@media (max-width: 768px) {
+    .card form.row.g-3 {
+        flex-direction: column;
+    }
+    .card form.row.g-3 .col-md-3,
+    .card form.row.g-3 .col-md-4,
+    .card form.row.g-3 .col-md-2 {
+        width: 100%;
+    }
 }

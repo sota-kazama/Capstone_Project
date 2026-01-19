@@ -4,160 +4,210 @@ require_once '../helpers/MemberDAO.php';
 
 session_start();
 
-// ログイン確認
 if (!isset($_SESSION['member'])) {
     header('Location: login.php');
     exit;
 }
 
 $member = $_SESSION['member'];
-
 $dao = new BookDAO();
+
 $message = '';
 $error = '';
-
-// ★ テーマ設定の追加 (前回の要望に基づき追加)
 $theme = $_COOKIE['theme'] ?? 'light';
 
-// ★ 全件取得（一覧表示用）
+/* 一覧 */
 $books = $dao->getAllBooks();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+/* 検索 */
+$isSearching = false;
+$searchResults = [];
+
+if (isset($_GET['search'])) {
+    $keyword = trim($_GET['keyword'] ?? '');
+    if ($keyword !== '') {
+        $searchResults = $dao->searchBooks($keyword);
+        $isSearching = true;
+    }
+}
+
+/* 登録 */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     try {
-        $book_code 	= $_POST['book_code'] ?? '';
-        $book_name 	= $_POST['book_name'] ?? '';
-        $sakusya 	= $_POST['sakusya'] ?? '';
-        $syuppan 	= $_POST['syuppan'] ?? '';
+        $book_code = $_POST['book_code'] ?? '';
+        $book_name = $_POST['book_name'] ?? '';
+        $sakusya   = $_POST['sakusya'] ?? '';
+        $syuppan   = $_POST['syuppan'] ?? '';
 
         if ($book_code === '' || $book_name === '' || $sakusya === '' || $syuppan === '') {
-            throw new Exception("全ての項目を入力してください。");
+            throw new Exception('全ての項目を入力してください。');
         }
 
-        $success = $dao->insertBook($book_code, $book_name, $sakusya, $syuppan);
-
-        if ($success) {
-            $message = "書籍を登録しました。";
-
-            // 登録後に最新一覧を再取得
+        if ($dao->insertBook($book_code, $book_name, $sakusya, $syuppan)) {
+            $message = '書籍を登録しました。';
             $books = $dao->getAllBooks();
-
         } else {
-            $error = "登録に失敗しました。";
+            $error = '登録に失敗しました。';
         }
-
     } catch (Exception $e) {
-        $error = "エラー: " . $e->getMessage();
+        $error = $e->getMessage();
     }
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-            rel="stylesheet"
-        />
-        <link href="../css/BaseDesignData.css" rel="stylesheet" />
-        <link href="../css/side.css" rel="stylesheet" />
+<head>
+<meta charset="utf-8">
+<title>書籍登録</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/BaseDesignData.css" rel="stylesheet">
+<link href="../css/side.css" rel="stylesheet">
+<link id="theme-css" href="../css_theme/<?= $theme ?>.css" rel="stylesheet">
+</head>
 
-        <link id="theme-css" href="../css_theme/<?= $theme ?>.css" rel="stylesheet" />
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
+    <?php include '../template/header2.php'; ?>
+<div class="d-flex min-vh-100">
+<?php include 'side.php'; ?>
 
-        <link href="../css_theme/toggle-button.css" rel="stylesheet" />
+<main class="flex-grow-1 p-4">
 
-        <?php include '../template/header2.php'; ?>
-        <title>書籍登録</title>
-    </head>
+<h1>書籍登録</h1>
 
-    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
-        <div class="d-flex w-100 min-vh-100">
-            <?php include 'side.php'; ?>
+<?php if ($message): ?>
+<div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
+<?php endif; ?>
 
-            <main class="main-content flex-grow-1 p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <h1 class="m-0">書籍登録</h1>
-                    <a href="book_search.php" class="btn btn-secondary ms-auto">書籍検索</a>
-                </div>
+<?php if ($error): ?>
+<div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+<?php endif; ?>
 
-                <?php if ($message): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
-                <?php endif; ?>
+<!-- ================= 新規登録 ================= -->
+<div class="card p-4 mt-4">
+<h4>書籍新規登録</h4>
 
-                <?php if ($error): ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-                <?php endif; ?>
+<form method="POST">
+<input type="hidden" name="register">
 
-                <div class="card p-4 mt-3">
-                    <h4>書籍新規登録フォーム</h4>
+<div class="mb-3">
+<label>ISBN-13</label>
+<input type="text" name="book_code" class="form-control" required>
+</div>
 
-                    <form method="POST">
-                        <div class="mb-3">
-                            <label class="form-label">ISBN-13コード</label>
-                            <input type="text" class="form-control" name="book_code" maxlength="14" required />
-                        </div>
+<div class="mb-3">
+<label>書籍名</label>
+<input type="text" name="book_name" class="form-control" required>
+</div>
 
-                        <div class="mb-3">
-                            <label class="form-label">書籍名</label>
-                            <input type="text" class="form-control" name="book_name" maxlength="50" required />
-                        </div>
+<div class="mb-3">
+<label>作者</label>
+<input type="text" name="sakusya" class="form-control" required>
+</div>
 
-                        <div class="mb-3">
-                            <label class="form-label">作者名</label>
-                            <input type="text" class="form-control" name="sakusya" maxlength="50" required />
-                        </div>
+<div class="mb-3">
+<label>出版社</label>
+<input type="text" name="syuppan" class="form-control" required>
+</div>
 
-                        <div class="mb-3">
-                            <label class="form-label">出版社名</label>
-                            <input type="text" class="form-control" name="syuppan" maxlength="50" required />
-                        </div>
+<button class="btn btn-primary">登録</button>
+</form>
+</div>
 
-                        <button type="submit" class="btn btn-primary">登録</button>
-                    </form>
-                </div>
 
-                <div class="card p-4 mt-5">
-                    <h4>書籍一覧</h4>
 
-                    <table class="table table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th>ISBNコード</th>
-                                <th>書籍名</th>
-                                <th>作者</th>
-                                <th>出版社</th>
-                                <th>登録日</th>
-                                <th>更新日</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($books as $b): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($b->book_code) ?></td>
-                                <td><?= htmlspecialchars($b->book_name) ?></td>
-                                <td><?= htmlspecialchars($b->sakusya) ?></td>
-                                <td><?= htmlspecialchars($b->syuppan) ?></td>
-                                <td><?= htmlspecialchars($b->created_ad) ?></td>
-                                <td><?= htmlspecialchars($b->update_at) ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </main>
-        </div>
+<!-- ================= 検索結果 ================= -->
+<?php if ($isSearching): ?>
+<div class="card p-4 mt-4">
+<h4>検索結果（<?= count($searchResults) ?>件）</h4>
 
-        <button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
-            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
-        </button>
+<table class="table table-striped mt-3">
+<thead>
+<tr>
+<th>ISBN</th>
+<th>書籍名</th>
+<th>作者</th>
+<th>出版社</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($searchResults as $b): ?>
+<tr>
+<td><?= htmlspecialchars($b->book_code) ?></td>
+<td><?= htmlspecialchars($b->book_name) ?></td>
+<td><?= htmlspecialchars($b->sakusya) ?></td>
+<td><?= htmlspecialchars($b->syuppan) ?></td>
+<td>
+<a href="book_edit.php?code=<?= $b->book_code ?>" class="btn btn-sm btn-warning">編集</a>
+<a href="book_delete.php?code=<?= $b->book_code ?>"
+   class="btn btn-sm btn-danger"
+   onclick="return confirm('削除しますか？');">削除</a>
+</td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+</div>
+<?php endif; ?>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- ================= 検索（← 登録の下） ================= -->
+<div class="card p-4 mt-5">
+<h4>書籍検索</h4>
 
-        <script src="../js/theme-toggle.js"></script>
-    </body>
+<form method="GET" class="d-flex gap-2">
+<input type="text" name="keyword" class="form-control"
+       value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>"
+       placeholder="ISBN・書籍名・作者・出版社">
+<button class="btn btn-secondary" name="search">検索</button>
+</form>
+</div>
 
-    <footer><?php include '../template/footer.php'; ?></footer>
+<!-- ================= 一覧（検索中は最小） ================= -->
+<div class="card p-4 mt-5">
+<h4>
+書籍一覧
+<button class="btn btn-sm btn-outline-secondary ms-2"
+        data-bs-toggle="collapse"
+        data-bs-target="#bookList">
+表示切替
+</button>
+</h4>
+
+<div id="bookList" class="collapse <?= $isSearching ? '' : 'show' ?>">
+<table class="table table-striped mt-3">
+<thead>
+<tr>
+<th>ISBN</th>
+<th>書籍名</th>
+<th>作者</th>
+<th>出版社</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($books as $b): ?>
+<tr>
+<td><?= htmlspecialchars($b->book_code) ?></td>
+<td><?= htmlspecialchars($b->book_name) ?></td>
+<td><?= htmlspecialchars($b->sakusya) ?></td>
+<td><?= htmlspecialchars($b->syuppan) ?></td>
+<td>
+<a href="book_edit.php?code=<?= $b->book_code ?>" class="btn btn-sm btn-warning">編集</a>
+<a href="book_delete.php?code=<?= $b->book_code ?>"
+   class="btn btn-sm btn-danger"
+   onclick="return confirm('削除しますか？');">削除</a>
+</td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+</div>
+</div>
+
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
