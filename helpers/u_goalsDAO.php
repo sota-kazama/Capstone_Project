@@ -7,6 +7,10 @@ class Goals
     public int $user_id;
     public ?string $goal;
     public ?string $mile_stone;
+    public ?string $mile_stone2;
+    public ?string $mile_stone3;
+    public ?string $mile_stone4;
+    public ?string $mile_stone5;
     public ?string $goal_date;
     public ?string $result;
     public ?string $created_at;
@@ -25,6 +29,10 @@ class GoalsDAO
                 user_id,
                 goal,
                 mile_stone,
+                mile_stone2,
+                mile_stone3,
+                mile_stone4,
+                mile_stone5,
                 goal_date,
                 result,
                 created_ad AS created_at,
@@ -49,6 +57,10 @@ class GoalsDAO
                 user_id,
                 goal,
                 mile_stone,
+                mile_stone2,
+                mile_stone3,
+                mile_stone4,
+                mile_stone5,
                 goal_date,
                 result,
                 created_ad AS created_at,
@@ -73,6 +85,10 @@ class GoalsDAO
                 user_id,
                 goal,
                 mile_stone,
+                mile_stone2,
+                mile_stone3,
+                mile_stone4,
+                mile_stone5,
                 goal_date,
                 result,
                 created_ad AS created_at,
@@ -89,11 +105,14 @@ class GoalsDAO
         return $goal ?: null;
     }
 
-    // 新規登録
     public function insert(
         int $user_id,
         ?string $goal,
         ?string $mile_stone,
+        ?string $mile_stone2,
+        ?string $mile_stone3,
+        ?string $mile_stone4,
+        ?string $mile_stone5,
         ?string $goal_date
     ): bool {
         $dbh = DAO::get_db_connect();
@@ -102,14 +121,29 @@ class GoalsDAO
                 user_id,
                 goal,
                 mile_stone,
+                mile_stone2,
+                mile_stone3,
+                mile_stone4,
+                mile_stone5,
                 goal_date,
-                created_ad,
-                update_at
+                created_ad, -- ここがカラム名
+                update_at   -- ここがカラム名
             )
-            VALUES (?, ?, ?, ?, GETDATE(), GETDATE())
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())
         ";
         $stmt = $dbh->prepare($sql);
-        return $stmt->execute([$user_id, $goal, $mile_stone, $goal_date]);
+        
+        // プレースホルダ (?) は合計 8個 なので、配列の中身も 8個 に合わせます
+        return $stmt->execute([
+            $user_id, 
+            $goal, 
+            $mile_stone, 
+            $mile_stone2, 
+            $mile_stone3, 
+            $mile_stone4, 
+            $mile_stone5, 
+            $goal_date
+        ]);
     }
 
     // 更新
@@ -117,6 +151,10 @@ class GoalsDAO
         int $goal_id,
         ?string $goal,
         ?string $mile_stone,
+        ?string $mile_stone2,
+        ?string $mile_stone3,
+        ?string $mile_stone4,
+        ?string $mile_stone5,
         ?string $goal_date,
         ?string $result
     ): bool {
@@ -126,13 +164,17 @@ class GoalsDAO
             SET
                 goal = ?,
                 mile_stone = ?,
+                mile_stone2 = ?,
+                mile_stone3 = ?,
+                mile_stone4 = ?,
+                mile_stone5 = ?,
                 goal_date = ?,
                 result = ?,
                 update_at = GETDATE()
             WHERE goal_id = ?
         ";
         $stmt = $dbh->prepare($sql);
-        return $stmt->execute([$goal, $mile_stone, $goal_date, $result, $goal_id]);
+        return $stmt->execute([$goal, $mile_stone, $mile_stone2, $mile_stone3, $mile_stone4, $mile_stone5, $goal_date, $result, $goal_id]);
     }
 
     // 削除
