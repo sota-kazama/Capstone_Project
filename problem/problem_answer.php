@@ -1,8 +1,23 @@
 <?php
+require_once '../helpers/MemberDAO.php';
+require_once '../helpers/ProblemDAO.php';
 require_once '../helpers/QuestionDAO.php';
 
-$dao = new QuestionDAO();
-$questions = $dao->getAll();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $answer = $_POST['answer'] ?? '';
+    $wrong = $_POST['wrong'] ?? '';
+}
+$member = $_SESSION['member'] ?? null;
+$area_number = $_SESSION['area_number'];
+
+$dao = new ProblemDAO();
+$dao2 = new MemberDAO();
+$dao3 = new QuestionDAO();
+
+$questions = $dao->getQuestionsByArea($area_number);
 
 $i = isset($_GET['i']) ? intval($_GET['i']) : 0;
 
@@ -10,9 +25,7 @@ $i = isset($_GET['i']) ? intval($_GET['i']) : 0;
 if (!empty($questions) && isset($questions[$i])) {
     $question = $questions[$i];
 } else {
-    // 最終問題を超えたら終了ページへ飛ばすなど
-    header("Location: problem_result.php");
-    exit;
+    $question = null;
 }
 $referer = $_SERVER['HTTP_REFERER'] ?? '';
 ?>
@@ -56,20 +69,58 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                     
                 </div>
                 <h2>第<?php echo $question->q_number; ?>問</h2>
-                <h3><?php echo $question->q_content; ?></h3>
+                <h3><?= htmlspecialchars($question->q_content) ?></h3>
 
                 <table class="table">
                     <thead>
                         <tr>
                             <th style="width: 10%">選択肢</th>
-                            <th></th>
+                            <th>問題文</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <?php if($answer==='A') : ?>
+                                <td><a class="btn btn-success" role="button">A</a></td>
+                                <td><?= $question->answer_content?></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">A</a></td>
+                                <td></td>                                
+                            <?php endif;?>
+                        </tr>
+                        <tr>
+                            <?php if($answer==='B') : ?>
+                                <td><a class="btn btn-success" role="button">B</a></td>
+                                <td><?= $question->answer_content?></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">B</a></td>
+                                <td><?= $question->wrong_answer1?></td>
+                            <?php endif;?>
+                        </tr>
+                        <tr>
+                            <?php if($answer==='C') : ?>
+                                <td><a class="btn btn-success" role="button">C</a></td>
+                                <td><?= $question->answer_content?></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">C</a></td>
+                                <td><?= $question->wrong_answer2?></td>                                
+                            <?php endif;?>
+                        </tr>
+                        <tr>
+                            <?php if($answer==='D') : ?>
+                                <td><a class="btn btn-success" role="button">D</a></td>
+                                <td><?= $question->answer_content?></td>
+                            <?php else :?>
+                                <td><a class="btn btn-danger" role="button">D</a></td>
+                                <td><?= $question->wrong_answer3?></td>
+                            <?php endif;?>
+                        </tr>
+                    </tbody>
+                                        <!-- <tbody>
+                        <tr>
                             <?php if($question->answer_content == "a") : ?>
                                 <td><a class="btn btn-success" role="button">A</a></td>
-                                <td></td>
+                                <td><?php $question->answer_content?></td>
                             <?php else :?>
                                 <td><a class="btn btn-danger" role="button">A</a></td>
                                 <td></td>                                
@@ -102,7 +153,7 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                                 <td></td>
                             <?php endif;?>
                         </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
                 <div class="d-flex flex-wrap justify-content-center">
                     <div style="width: 13rem">
@@ -132,6 +183,8 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                     <button type="button" class="btn btn-outline-danger" disabled>3</button>
                 </div>
                 <?php endif; ?>
+                <div class="container">        <!-- 全体を囲むコンテナ -->
+  
             </main>
         </div>
 
