@@ -182,5 +182,15 @@ class MemberDAO
 
         return $stmt->execute();
     }
+
+    //問題格納
+    public function updateUserProblem(int $user_id, string $question_hold) {
+        $dbh = DAO::get_db_connect();
+        $sql = "update master_user set question_hold = :question_hold where user_id = :user_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':question_hold', $question_hold, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
 }
 ?>

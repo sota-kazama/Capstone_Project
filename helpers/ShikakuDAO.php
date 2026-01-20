@@ -56,4 +56,26 @@ class ShikakuDAO
         $stmt->bindValue(1, $s_number, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+/** 資格を検索 */
+public function search(string $keyword): array
+{
+    $dbh = DAO::get_db_connect();
+
+    $sql = "SELECT s_number, s_name, created_ad, update_at
+            FROM shikaku
+            WHERE s_name LIKE ?
+            ORDER BY s_number";
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(1, '%' . $keyword . '%', PDO::PARAM_STR);
+    $stmt->execute();
+
+    $data = [];
+    while ($row = $stmt->fetchObject('Shikaku')) {
+        $data[] = $row;
+    }
+    return $data;
+}
+
 }

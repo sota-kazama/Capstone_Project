@@ -5,6 +5,7 @@ require_once '../helpers/MemberDAO.php';
 
 session_start();
 
+// ログインチェック
 if (!isset($_SESSION['member'])) {
     header('Location: login.php');
     exit;
@@ -22,6 +23,9 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
 // 資格一覧
 $shikakuList = $shikakuDAO->getAll();
+
+// --- 検索処理 ---
+$searchKeyword = trim($_GET['search'] ?? '');
 
 // --- POST処理 ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -62,7 +66,14 @@ if (isset($_GET['msg'])) {
     $message = $_GET['msg'];
 }
 
+// 分野一覧取得（検索対応）
 $fields = $fieldDAO->getAll();
+if ($searchKeyword !== '') {
+    $fields = array_filter($fields, function($f) use ($searchKeyword) {
+        return mb_stripos($f->area_name, $searchKeyword) !== false
+            || mb_stripos($f->s_name ?? '', $searchKeyword) !== false;
+    });
+}
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +107,18 @@ $fields = $fieldDAO->getAll();
             <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
+        <!-- 検索フォーム -->
         <div class="card p-4 mt-3">
+            <form method="get" class="d-flex gap-2">
+                <input type="text" name="search" class="form-control" placeholder="分野名または資格名で検索"
+                       value="<?= htmlspecialchars($searchKeyword) ?>" />
+                <button type="submit" class="btn btn-outline-primary">検索</button>
+                <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn btn-outline-secondary">リセット</a>
+            </form>
+        </div>
+
+        <!-- 新規登録フォーム -->
+        <div class="card p-4 mt-4">
             <h4>新しい分野を登録</h4>
 
             <form method="post" class="row g-3 mt-1">
@@ -122,6 +144,7 @@ $fields = $fieldDAO->getAll();
             </form>
         </div>
 
+        <!-- 分野一覧 -->
         <div class="card p-4 mt-4">
             <h4>登録済み分野一覧</h4>
 
@@ -179,6 +202,7 @@ $fields = $fieldDAO->getAll();
     </main>
 </div>
 
+<!-- テーマ切替ボタン -->
 <button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
     <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
 </button>

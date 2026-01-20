@@ -6,13 +6,13 @@ $current = basename($_SERVER['SCRIPT_NAME']);
 $menus = [
     ['file' => 'admin_main.php',        'label' => '管理者トップ'],
     ['file' => 'edit_account.php',      'label' => 'アカウント情報編集'],
-    ['file' => 'create_book.php',       'label' => '図書登録ページ'],
-    ['file' => 'shikaku_manage.php',    'label' => '資格登録ページ'],
-    ['file' => 'm_problem_register.php','label' => '問題管理ページ'],
-    ['file' => 's_problem_register.php','label' => '問題分野管理ページ'],
-    ['file' => 'shitumon.php',          'label' => '質問箱管理ページ'],
-    ['file' => 'update_info.php',       'label' => '更新情報ページ'],
-    ['file' => 'bug_manage.php',       'label' => 'バグ記載ページ'],
+    ['file' => 'create_book.php',       'label' => '図書登録'],
+    ['file' => 'shikaku_manage.php',    'label' => '資格登録'],
+    ['file' => 'm_problem_register.php','label' => '問題管理'],
+    ['file' => 's_problem_register.php','label' => '問題分野管理'],
+    ['file' => 'shitumon.php',          'label' => '質問箱管理'],
+    ['file' => 'update_info.php',       'label' => '更新情報'],
+    ['file' => 'bug_manage.php',       'label' => 'バグ記載'],
     ['file' => '../mypage/mypage.php',  'label' => 'マイページトップ'],
 ];
 ?>

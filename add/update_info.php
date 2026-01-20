@@ -127,17 +127,31 @@ $updateList = $updateDAO->getAll();
 
                             <!-- 編集 -->
                             <td>
-                                <form method="post" class="d-flex gap-2">
-                                    <input type="hidden" name="action" value="edit">
-                                    <input type="hidden" name="update_id" value="<?= $update->update_id ?>">
-                                    <textarea name="up_info" class="form-control" rows="2"><?= htmlspecialchars($update->up_info) ?></textarea>
-                                    <button class="btn btn-success btn-sm">
-                                        <i class="bi bi-check-lg"></i>
-                                    </button>
-                                </form>
-                            </td>
+    <form method="post" class="d-flex flex-column gap-2">
+        <input type="hidden" name="action" value="edit">
+        <input type="hidden" name="update_id" value="<?= $update->update_id ?>">
 
-                            <td><?= htmlspecialchars($update->created_ad) ?></td>
+        <!-- 現在の画像 -->
+        <?php
+            $imagePath = '../uploads/' . $update->image_path;
+        ?>
+
+        <?php if (!empty($update->image_path) && file_exists($imagePath)): ?>
+            <img src="<?= htmlspecialchars($imagePath) ?>"
+                 alt="現在の画像"
+                 style="max-width:150px; height:auto; border:1px solid #ccc;">
+        <?php else: ?>
+            <p class="text-muted mb-0">画像が登録されていません</p>
+        <?php endif; ?>
+
+        <!-- 更新内容 -->
+        <textarea name="up_info" class="form-control" rows="2"><?= htmlspecialchars($update->up_info) ?></textarea>
+
+        <button class="btn btn-success btn-sm align-self-start">
+            <i class="bi bi-check-lg"></i>
+        </button>
+    </form>
+</td>
 
                             <!-- 削除 -->
                             <td>
