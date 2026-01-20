@@ -61,13 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 <meta charset="utf-8">
 <title>書籍登録</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../css/BaseDesignData.css" rel="stylesheet">
-<link href="../css/side.css" rel="stylesheet">
-<link id="theme-css" href="../css_theme/<?= $theme ?>.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="../css_theme/base.css" rel="stylesheet">
+<link href="../css_theme/side.css" rel="stylesheet">
+<link
+    id="theme-css"
+    href="../css_theme/<?= htmlspecialchars($theme) ?>.css"
+    rel="stylesheet"
+>
+<link href="../css_theme/toggle-button.css" rel="stylesheet">
 </head>
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
-    <?php include '../template/header2.php'; ?>
+<?php include '../template/header2.php'; ?>
 <div class="d-flex min-vh-100">
 <?php include 'side.php'; ?>
 
@@ -114,44 +120,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 </form>
 </div>
 
-
-
 <!-- ================= 検索結果 ================= -->
 <?php if ($isSearching): ?>
 <div class="card p-4 mt-4">
 <h4>検索結果（<?= count($searchResults) ?>件）</h4>
 
-<table class="table table-striped mt-3">
-<thead>
-<tr>
-<th>ISBN</th>
-<th>書籍名</th>
-<th>作者</th>
-<th>出版社</th>
-<th>操作</th>
-</tr>
-</thead>
-<tbody>
+<div class="list-group mt-3">
 <?php foreach ($searchResults as $b): ?>
-<tr>
-<td><?= htmlspecialchars($b->book_code) ?></td>
-<td><?= htmlspecialchars($b->book_name) ?></td>
-<td><?= htmlspecialchars($b->sakusya) ?></td>
-<td><?= htmlspecialchars($b->syuppan) ?></td>
-<td>
-<a href="book_edit.php?code=<?= $b->book_code ?>" class="btn btn-sm btn-warning">編集</a>
-<a href="book_delete.php?code=<?= $b->book_code ?>"
-   class="btn btn-sm btn-danger"
-   onclick="return confirm('削除しますか？');">削除</a>
-</td>
-</tr>
+    <div class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="flex-grow-1 me-3">
+            <strong><?= htmlspecialchars($b->book_code) ?>:</strong>
+            <div>書籍名: <?= htmlspecialchars($b->book_name) ?></div>
+            <div>作者: <?= htmlspecialchars($b->sakusya) ?></div>
+            <div>出版社: <?= htmlspecialchars($b->syuppan) ?></div>
+        </div>
+        <div class="text-end">
+            <a href="book_edit.php?code=<?= $b->book_code ?>" class="btn btn-sm btn-warning mb-1">編集</a>
+            <a href="book_delete.php?code=<?= $b->book_code ?>"
+               class="btn btn-sm btn-danger"
+               onclick="return confirm('削除しますか？');">削除</a>
+        </div>
+    </div>
 <?php endforeach; ?>
-</tbody>
-</table>
+</div>
 </div>
 <?php endif; ?>
 
-<!-- ================= 検索（← 登録の下） ================= -->
+<!-- ================= 検索 ================= -->
 <div class="card p-4 mt-5">
 <h4>書籍検索</h4>
 
@@ -163,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 </form>
 </div>
 
-<!-- ================= 一覧（検索中は最小） ================= -->
+<!-- ================= 一覧 ================= -->
 <div class="card p-4 mt-5">
 <h4>
 書籍一覧
@@ -175,33 +170,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 </h4>
 
 <div id="bookList" class="collapse <?= $isSearching ? '' : 'show' ?>">
-<table class="table table-striped mt-3">
-<thead>
-<tr>
-<th>ISBN</th>
-<th>書籍名</th>
-<th>作者</th>
-<th>出版社</th>
-<th>操作</th>
-</tr>
-</thead>
-<tbody>
+<div class="list-group mt-3">
 <?php foreach ($books as $b): ?>
-<tr>
-<td><?= htmlspecialchars($b->book_code) ?></td>
-<td><?= htmlspecialchars($b->book_name) ?></td>
-<td><?= htmlspecialchars($b->sakusya) ?></td>
-<td><?= htmlspecialchars($b->syuppan) ?></td>
-<td>
-<a href="book_edit.php?code=<?= $b->book_code ?>" class="btn btn-sm btn-warning">編集</a>
-<a href="book_delete.php?code=<?= $b->book_code ?>"
-   class="btn btn-sm btn-danger"
-   onclick="return confirm('削除しますか？');">削除</a>
-</td>
-</tr>
+    <div class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="flex-grow-1 me-3">
+            <strong><?= htmlspecialchars($b->book_code) ?>:</strong>
+            <div>書籍名: <?= htmlspecialchars($b->book_name) ?></div>
+            <div>作者: <?= htmlspecialchars($b->sakusya) ?></div>
+            <div>出版社: <?= htmlspecialchars($b->syuppan) ?></div>
+        </div>
+        <div class="text-end">
+            <a href="book_edit.php?code=<?= $b->book_code ?>" class="btn btn-sm btn-warning mb-1">編集</a>
+            <a href="book_delete.php?code=<?= $b->book_code ?>"
+               class="btn btn-sm btn-danger"
+               onclick="return confirm('削除しますか？');">削除</a>
+        </div>
+    </div>
 <?php endforeach; ?>
-</tbody>
-</table>
 </div>
 </div>
 

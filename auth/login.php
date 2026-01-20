@@ -60,58 +60,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <head>
         <meta charset="utf-8" />
         <title>ログイン</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-            rel="stylesheet"
-        />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+        <link href="../css_theme/base.css" rel="stylesheet">
         <link rel="stylesheet" href="../css_theme/LoginDesign.css" />
-
-<?php include '../template/header2.php'; ?>
-
-<link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
-<link href="../css_theme/toggle-button.css" rel="stylesheet" />
+        <?php include '../template/header2.php'; ?>
+        <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
+        <link href="../css_theme/toggle-button.css" rel="stylesheet" />
 
     </head>
-    <body class="login-body">
-        <div class="login-container">
-            <form action="" method="POST" class="login-box">
-                <h3 class="login-title">ログイン</h3>
+    <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
-                <?php if (!empty($errs) && isset($errs[0])): ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($errs[0], ENT_QUOTES, 'UTF-8') ?></div>
-                <?php endif; ?>
-                <div class="form-group">
-                    <label>メールアドレス</label>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <main class="w-100" style="max-width: 420px;">
+        <div class="card p-4 shadow-sm">
+            <h3 class="text-center mb-4">ログイン</h3>
+
+            <?php if (!empty($errs) && isset($errs[0])): ?>
+                <div class="alert alert-danger">
+                    <?= htmlspecialchars($errs[0], ENT_QUOTES, 'UTF-8') ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">メールアドレス</label>
                     <input
                         type="email"
                         name="mail_address"
                         class="form-control"
                         value="<?= htmlspecialchars($mail_address, ENT_QUOTES, 'UTF-8') ?>"
                         required
-                    />
-                    <div class="error-text"><?= @$errs['mail_address'] ?></div>
+                    >
+                    <div class="text-danger small"><?= $errs['mail_address'] ?? '' ?></div>
                 </div>
-                <div class="form-group">
-                    <label>パスワード</label>
-                    <input type="password" name="pass_word" class="form-control" required />
-                    <div class="error-text"><?= @$errs['pass_word'] ?></div>
+
+                <div class="mb-3">
+                    <label class="form-label">パスワード</label>
+                    <input type="password" name="pass_word" class="form-control" required>
+                    <div class="text-danger small"><?= $errs['pass_word'] ?? '' ?></div>
                 </div>
-                <div class="button-area">
-                    <input type="submit" value="ログイン" class="btn btn-primary login-btn" />
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        ログイン
+                    </button>
                 </div>
             </form>
-
-            <div class="signup-box">
-                <h5>初めての利用の方</h5>
-                <p>ログインするには会員登録が必要です。</p>
-                <a href="signup.php" class="btn btn-outline-secondary">新規会員登録はこちら</a>
-            </div>
         </div>
-        <button id="theme-toggle-btn" class="btn theme-toggle-btn">
-            <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
-        </button>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../js/theme-toggle.js"></script>
-    </body>
+
+        <div class="card mt-3 p-3 text-center">
+            <h6>初めての利用の方</h6>
+            <p class="mb-2 small">ログインするには会員登録が必要です。</p>
+            <a href="signup.php" class="btn btn-outline-secondary btn-sm">
+                新規会員登録はこちら
+            </a>
+        </div>
+    </main>
+</div>
+
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/theme-toggle.js"></script>
+</body>
+
+<footer>
+<?php include '../template/footer.php'; ?>
+</footer>
 </html>

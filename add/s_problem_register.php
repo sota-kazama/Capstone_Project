@@ -80,21 +80,21 @@ if ($searchKeyword !== '') {
 <html lang="ja">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
-    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
-
     <title>問題分野管理</title>
-    <?php include '../template/header2.php'; ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css_theme/base.css" rel="stylesheet">
+    <link href="../css_theme/side.css" rel="stylesheet">
+    <link
+        id="theme-css"
+        href="../css_theme/<?= htmlspecialchars($theme) ?>.css"
+        rel="stylesheet"
+    >
+    <link href="../css_theme/toggle-button.css" rel="stylesheet">
 </head>
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
+<?php include '../template/header2.php'; ?>
 <div class="d-flex w-100 min-vh-100">
     <?php include 'side.php'; ?>
 
@@ -148,33 +148,18 @@ if ($searchKeyword !== '') {
         <div class="card p-4 mt-4">
             <h4>登録済み分野一覧</h4>
 
-            <table class="table table-striped align-middle mt-3">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>分野コード</th>
-                        <th>分野名</th>
-                        <th>資格名</th>
-                        <th>作成日時</th>
-                        <th>更新日時</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($fields as $index => $field): ?>
-                    <tr>
-                        <form method="post">
-                            <td><?= $index + 1 ?></td>
-                            <td>
-                                <input type="text" name="area_code" class="form-control"
-                                       value="<?= htmlspecialchars($field->area_number) ?>" readonly />
-                            </td>
-                            <td>
-                                <input type="text" name="field_name" class="form-control"
+            <div class="list-group mt-3">
+                <?php foreach ($fields as $index => $field): ?>
+                    <form method="post" class="list-group-item d-flex justify-content-between align-items-start mb-1">
+                        <div class="flex-grow-1 me-3">
+                            <div><strong>#<?= $index + 1 ?>: <?= htmlspecialchars($field->area_number) ?></strong></div>
+                            <div>分野名: 
+                                <input type="text" name="field_name" class="form-control form-control-sm d-inline w-auto"
                                        value="<?= htmlspecialchars($field->area_name) ?>" />
-                            </td>
-                            <td>
-                                <select name="s_name" class="form-select" required>
+                            </div>
+                            <div>
+                                資格: 
+                                <select name="s_name" class="form-select form-select-sm d-inline w-auto" required>
                                     <?php foreach ($shikakuList as $s): ?>
                                         <option value="<?= htmlspecialchars($s->s_name) ?>"
                                             <?= ($field->s_number === $s->s_number) ? 'selected' : '' ?>>
@@ -182,22 +167,21 @@ if ($searchKeyword !== '') {
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-                            </td>
-                            <td><?= htmlspecialchars($field->created_ad ?? '') ?></td>
-                            <td><?= htmlspecialchars($field->update_at ?? '') ?></td>
-                            <td class="d-flex gap-1">
-                                <button type="submit" name="update" class="btn btn-sm btn-success">更新</button>
-                                <button type="submit" name="delete"
-                                        class="btn btn-sm btn-danger"
-                                        onclick="return confirm('削除しますか？');">
-                                    削除
-                                </button>
-                            </td>
-                        </form>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                            </div>
+                            <div class="text-muted small">
+                                作成日時: <?= htmlspecialchars($field->created_ad ?? '') ?> |
+                                更新日時: <?= htmlspecialchars($field->update_at ?? '') ?>
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" name="update" class="btn btn-sm btn-success mb-1">更新</button>
+                            <button type="submit" name="delete" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('削除しますか？');">削除</button>
+                        </div>
+                    </form>
+                <?php endforeach; ?>
+            </div>
         </div>
     </main>
 </div>
