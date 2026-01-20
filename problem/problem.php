@@ -1,10 +1,15 @@
 <?php
-require_once '../helpers/QuestionDAO.php';
+require_once '../helpers/MemberDAO.php';
 require_once '../helpers/ProblemDAO.php';
 
-$dao = new QuestionDAO();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$member = $_SESSION['member'] ?? null;
+
+$dao = new MemberDAO();
 $dao2 = new ProblemDAO();
-$area_number = '';
 
 // ブックマーク保存
 if (isset($_POST['bookmark_q_number'])) {
@@ -18,12 +23,13 @@ if (isset($_SESSION['bookmark_q_number'])) {
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $area_number = $_POST['area_number'] ?? '';
+    $_SESSION['area_number'] = $_POST['area_number'] ?? '';
 }
 
-$problemString = $dao2->getProblemString($area_number);
+$problemString = $dao2->getProblemIdString($_SESSION['area_number']);
 
 echo $problemString;
+
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +62,7 @@ echo $problemString;
                 <div class="grid gap-3">
                     <div class="d-flex flex-wrap justify-content-center p-2 g-col-6 gap-4">
                         <div style="width: 20rem;">
-                            <a href="problem_response.php" class="btn btn-outline-primary w-100">問題開始(<?php echo $area_number?>)</a>
+                            <a href="problem_response.php" class="btn btn-outline-primary w-100">問題開始(<?php echo $_SESSION['area_number']?>)</a>
                         </div>
                         <?php if ($bookmarkQuestion !== null) : ?>
                             <div style="width: 20rem;">
