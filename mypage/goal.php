@@ -16,7 +16,7 @@ $mode          = $_GET['mode'] ?? 'list'; // list / add / edit
 $GoalsDAO      = new GoalsDAO();
 
 /* =========================
-   POST処理
+POST処理
 ========================= */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -37,6 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $goal       = $_POST['goal'] ?? '';
         $mile_stone = $_POST['mile_stone'] ?? '';
+        $mile_stone2 = $_POST['mile_stone2'] ?? '';
+        $mile_stone3 = $_POST['mile_stone3'] ?? '';
+        $mile_stone4 = $_POST['mile_stone4'] ?? '';
+        $mile_stone5 = $_POST['mile_stone5'] ?? '';
         $goal_date  = $_POST['goal_date'] ?? '';
         $goal_id    = $_POST['goal_id'] ?? null;
 
@@ -53,6 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $goal_id,
                     $goal,
                     $mile_stone,
+                    $mile_stone2,
+                    $mile_stone3,
+                    $mile_stone4,
+                    $mile_stone5,
                     $goal_date,
                     null
                 );
@@ -62,6 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $member->user_id,
                     $goal,
                     $mile_stone,
+                    $mile_stone2,
+                    $mile_stone3,
+                    $mile_stone4,
+                    $mile_stone5,
                     $goal_date
                 );
             }
@@ -142,21 +154,42 @@ $theme = $_COOKIE['theme'] ?? 'light';
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($goals as $goal): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($goal->goal) ?></td>
-                                <td><?= htmlspecialchars($goal->mile_stone) ?></td>
-                                <td><?= htmlspecialchars($goal->goal_date) ?></td>
-                                <td>
-                                    <a href="?mode=edit&goal_id=<?= $goal->goal_id ?>" class="btn btn-warning btn-sm">編集</a>
-                                    <form method="post" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
-                                        <input type="hidden" name="delete_goal_id" value="<?= $goal->goal_id ?>">
-                                        <button type="submit" class="btn btn-danger btn-sm">削除</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
+    <?php foreach ($goals as $goal): ?>
+        <tr>
+            <td><?= htmlspecialchars($goal->goal) ?></td>
+
+            <td>
+                <div><strong>1:</strong> <?= htmlspecialchars($goal->mile_stone) ?></div>
+                
+                <?php if (!empty($goal->mile_stone2)): ?>
+                    <div><strong>2:</strong> <?= htmlspecialchars($goal->mile_stone2) ?></div>
+                <?php endif; ?>
+
+                <?php if (!empty($goal->mile_stone3)): ?>
+                    <div><strong>3:</strong> <?= htmlspecialchars($goal->mile_stone3) ?></div>
+                <?php endif; ?>
+
+                <?php if (!empty($goal->mile_stone4)): ?>
+                    <div><strong>4:</strong> <?= htmlspecialchars($goal->mile_stone4) ?></div>
+                <?php endif; ?>
+
+                <?php if (!empty($goal->mile_stone5)): ?>
+                    <div><strong>5:</strong> <?= htmlspecialchars($goal->mile_stone5) ?></div>
+                <?php endif; ?>
+            </td>
+
+            <td><?= htmlspecialchars($goal->goal_date) ?></td>
+
+            <td>
+                <a href="?mode=edit&goal_id=<?= $goal->goal_id ?>" class="btn btn-warning btn-sm">編集</a>
+                <form method="post" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
+                    <input type="hidden" name="delete_goal_id" value="<?= $goal->goal_id ?>">
+                    <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                </form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
                 </table>
                 <a href="?mode=add" class="btn btn-primary mt-3">
                     <i class="bi bi-plus-circle"></i> 新規追加
@@ -186,10 +219,34 @@ $theme = $_COOKIE['theme'] ?? 'light';
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">マイルストーン</label>
+                        <label class="form-label">マイルストーン１</label>
                         <input type="text" name="mile_stone" id="mile_stone" class="form-control"
                                value="<?= htmlspecialchars($_POST['mile_stone'] ?? ($goal->mile_stone ?? '')) ?>">
                         <div class="text-end small"><span id="mile-stone-count">0</span> / 100 文字</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">マイルストーン２</label>
+                        <input type="text" name="mile_stone2" id="mile_stone2" class="form-control"
+                               value="<?= htmlspecialchars($_POST['mile_stone2'] ?? ($goal->mile_stone2 ?? '')) ?>">
+                        <div class="text-end small"><span id="mile-stone2-count">0</span> / 100 文字</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">マイルストーン３</label>
+                        <input type="text" name="mile_stone3" id="mile_stone3" class="form-control"
+                               value="<?= htmlspecialchars($_POST['mile_stone3'] ?? ($goal->mile_stone3 ?? '')) ?>">
+                        <div class="text-end small"><span id="mile-stone3-count">0</span> / 100 文字</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">マイルストーン４</label>
+                        <input type="text" name="mile_stone4" id="mile_stone4" class="form-control"
+                               value="<?= htmlspecialchars($_POST['mile_stone4'] ?? ($goal->mile_stone4 ?? '')) ?>">
+                        <div class="text-end small"><span id="mile-stone4-count">0</span> / 100 文字</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">マイルストーン５</label>
+                        <input type="text" name="mile_stone5" id="mile_stone5" class="form-control"
+                               value="<?= htmlspecialchars($_POST['mile_stone5'] ?? ($goal->mile_stone5 ?? '')) ?>">
+                        <div class="text-end small"><span id="mile-stone5-count">0</span> / 100 文字</div>
                     </div>
 
                     <div class="mb-3">
@@ -229,7 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const goalInput = document.getElementById('goal');
     const goalCount = document.getElementById('goal-count');
     const mileStoneInput = document.getElementById('mile_stone');
+    const mileStoneInput2 = document.getElementById('mile_stone2');
+    const mileStoneInput3 = document.getElementById('mile_stone3');
+    const mileStoneInput4 = document.getElementById('mile_stone4');
+    const mileStoneInput5 = document.getElementById('mile_stone5');
     const mileStoneCount = document.getElementById('mile-stone-count');
+    const mileStoneCount2 = document.getElementById('mile-stone2-count');
+    const mileStoneCount3 = document.getElementById('mile-stone3-count');
+    const mileStoneCount4 = document.getElementById('mile-stone4-count');
+    const mileStoneCount5 = document.getElementById('mile-stone5-count');
     const submitBtn = document.querySelector('button[type="submit"]');
 
     const updateCount = (input, counter) => {
@@ -239,11 +304,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const checkForm = () => {
-        submitBtn.disabled = !(updateCount(goalInput, goalCount) && updateCount(mileStoneInput, mileStoneCount));
+        submitBtn.disabled = !(updateCount(goalInput, goalCount) 
+                                && updateCount(mileStoneInput, mileStoneCount) 
+                                && updateCount(mileStoneInput2, mileStoneCount2) 
+                                && updateCount(mileStoneInput3, mileStoneCount3) 
+                                && updateCount(mileStoneInput4, mileStoneCount4) 
+                                && updateCount(mileStoneInput5, mileStoneCount5));
     };
 
     goalInput.addEventListener('input', checkForm);
     mileStoneInput.addEventListener('input', checkForm);
+    mileStoneInput2.addEventListener('input', checkForm);
+    mileStoneInput3.addEventListener('input', checkForm);
+    mileStoneInput4.addEventListener('input', checkForm);
+    mileStoneInput5.addEventListener('input', checkForm);
     checkForm();
 });
 
