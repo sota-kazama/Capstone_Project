@@ -109,4 +109,35 @@ class CategoryDAO
         $stmt->execute([$q_number]);
         return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
     }
+
+    // 分野を検索（分野名・資格名）
+public function search(string $keyword): array
+{
+    $dbh = DAO::get_db_connect();
+
+    $sql = "
+        SELECT 
+            c.area_number,
+            c.area_name,
+            c.s_number,
+            s.s_name,
+            c.created_ad AS created_at,
+            c.update_at AS update_at
+        FROM q_categories c
+        LEFT JOIN shikaku s ON c.s_number = s.s_number
+        WHERE c.area_name LIKE ?
+           OR s.s_name LIKE ?
+        ORDER BY c.area_number
+    ";
+
+    $stmt = $dbh->prepare($sql);
+    $kw = '%' . $keyword . '%';
+    $stmt->bindValue(1, $kw, PDO::PARAM_STR);
+    $stmt->bindValue(2, $kw, PDO::PARAM_STR);
+    $stmt->execute();
+
+    $stmt->setFetchMode(PDO::FETCH_CLASS, 'Category');
+    return $stmt->fetchAll();
+}
+
 }

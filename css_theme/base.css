@@ -1,17 +1,26 @@
-/* ========== 基本レイアウトとタイポグラフィ ========== */
+/* =================================================
+   全体背景と文字色をページ全体に適用
+================================================= */
+html,
 body {
-    font-family: PlemolJP;
+    height: 100%;
     margin: 0;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    background-color: #ffffff;
-    color: #000;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: PlemolJP, "Noto Sans JP", sans-serif;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
 }
 
-html {
-    height: -webkit-fill-available;
+/* includeしたヘッダー・サイドバー・フッターも含む全体 */
+body > * {
+    background-color: var(--bg-color);
 }
 
+/* =================================================
+   メインレイアウト
+================================================= */
 .main {
     display: flex;
     min-height: 100vh;
@@ -22,76 +31,62 @@ html {
     padding: 20px;
 }
 
-/* ========== ナビゲーション ========== */
-nav {
-    position: fixed;
-    top: 24px;
-    width: 100%;
-    z-index: 10;
+/* =================================================
+   カード・リスト・テーブル
+================================================= */
+.card {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-default);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-li a {
-    display: block;
-    padding: 8px;
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;
+.list-group-item {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-default);
 }
 
-/* ========== 右上アイコン ========== */
-#link,
-#login,
-#logout {
-    position: absolute;
-    top: 20px;
-    text-align: right;
+table.table {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-default);
 }
 
-#link {
-    right: 125px;
-    width: 38px;
-    height: 50px;
-    cursor: pointer;
+table.table th,
+table.table td {
+    border-color: var(--border-default);
 }
 
-#login {
-    right: 125px;
-    width: 20px;
-    height: 20px;
+/* =================================================
+   フォーム・ボタン
+================================================= */
+input.form-control,
+select.form-select {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+    border-radius: 0.5rem;
 }
 
-#logout {
-    right: 65px;
-    height: 17px;
+input.form-control::placeholder {
+    color: #999;
 }
 
-/* ========== フッター ========== */
-.footerlinks {
-    display: flex;
-    justify-content: center;
-    gap: 80px;
-    margin-bottom: 10px;
+.btn-primary {
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    border-color: var(--btn-bg);
+    transition:
+        background-color 0.3s,
+        color 0.3s;
 }
 
-.footerlinks a {
-    font-size: 10px;
-    text-decoration: none;
-}
-
-/* ========== ログアウトボタン ========== */
-.logout-btn {
-    padding: 6px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-    margin-left: 5px;
-    transition: background-color 0.3s;
-}
-
-.logout-btn:hover {
-    background-color: #787575;
-}
-
-/* ========== テーマ切替ボタン（右下） ========== */
+/* =================================================
+   テーマ切替ボタン
+================================================= */
 #theme-toggle-btn {
     position: fixed;
     bottom: 20px;
@@ -104,33 +99,34 @@ li a {
     font-size: 22px;
     border-radius: 50%;
     border: none;
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     z-index: 9999;
-    transition: 0.3s;
 }
 
-#theme-toggle-btn:hover {
-    filter: brightness(0.9);
+/* =================================================
+   テーマ変数
+================================================= */
+body.light-mode {
+    --bg-color: #ffffff;
+    --card-bg: #ffffff;
+    --text-color: #212529;
+    --input-bg: #ffffff;
+    --input-border: #ced4da;
+    --btn-bg: #0d6efd;
+    --btn-color: #ffffff;
+    --border-default: #dee2e6;
 }
 
-body.dark-mode #theme-toggle-btn {
-    background-color: #333;
-    color: #f0f0f0;
-}
-
-/* ========== 日付と本文の間のスペース調整 ========== */
-.update-info .d-flex {
-    margin-bottom: 0; /* 日付と本文の間の余白をなくす */
-}
-
-.update-info small {
-    margin-bottom: 0; /* 小さい日付部分のマージンを消す */
-}
-
-.update-info p {
-    margin-top: 0; /* 本文の上の余白をなくす */
-    margin-bottom: 0; /* 本文の下の余白もなくす */
+body.dark-mode {
+    --bg-color: #2f3136;
+    --card-bg: #36393f;
+    --text-color: #daddda;
+    --input-bg: #2a2a2a;
+    --input-border: #555;
+    --btn-bg: #4a90e2;
+    --btn-color: #ffffff;
+    --border-default: #444;
 }
