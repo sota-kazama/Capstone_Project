@@ -12,20 +12,16 @@ $area_number = $_SESSION['area_number'];
 
 $dao = new ProblemDAO();
 $dao2 = new MemberDAO();
-$dao3 = new QuestionDAO();
 
-if (!isset($_SESSION['problem_ids'])) {
-    $_SESSION['problem_ids'] = $dao->getProblemIdsByArea($area_number);
-    $index = 0;
-}
-$index = $_SESSION['current_index'];
-$problemIds = $_SESSION['problem_ids'];
+$questions = $dao->getQuestionsByArea($area_number);
 
-$question = null;
+$i = isset($_GET['i']) ? intval($_GET['i']) : 0;
 
-if (isset($problemIds[$index+1])) {
-    $question = $dao->findQuestionById((int)$problemIds[$index]);
-    $_SESSION['current_index']++;
+// 問題が存在するかチェック
+if (!empty($questions) && isset($questions[$i])) {
+    $question = $questions[$i];
+} else {
+    $question = null;
 }
 
 // 初回：問題ID文字列を作成
@@ -42,6 +38,21 @@ if (!isset($_SESSION['problem_string'])) {
 if (isset($member)) {
     $dao2->updateUserProblem($member->user_id, $_SESSION['problem_string']);
 }
+
+// if (!isset($_SESSION['problem_ids'])) {
+//     $_SESSION['problem_ids'] = $dao->getProblemIdsByArea($area_number);
+//     $index = 0;
+// }
+// $index = $_SESSION['current_index'];
+// $problemIds = $_SESSION['problem_ids'];
+
+// $question = null;
+
+// if (isset($problemIds[$index+1])) {
+//     $question = $dao->findQuestionById((int)$problemIds[$index]);
+//     $_SESSION['current_index']++;
+// }
+
 
 ?>
 
@@ -85,41 +96,39 @@ if (isset($member)) {
                     <?php endif; ?>
                 </div>
 
-            <?php if ($question !== null): ?>
-                <h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>
-                <h3><?= htmlspecialchars($question->q_content) ?></h3>
-            <?php else: ?>
-                <h2>この分野の問題は終了しました</h2>
-            <?php endif; ?>
-
-
+                    <h3>第<?= $question->q_number ?>問</h3>
+                    <h4><?= htmlspecialchars($question->q_content) ?></h4>
+                
                 <table class="table">
                     <thead>
                         <tr>
                             <th style="width: 10%">選択肢</th>
-                            <th></th>
+                            <th>問題文</th>
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">A</a></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">B</a></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">C</a></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><a class="btn btn-outline-primary" href="problem_answer.php?i=<?php echo $i; ?>" role="button">D</a></td>
-                            <td></td>
-                        </tr>
+                    <form action="problem_answer.php" method="post">
+                        <tbody>
+                            <tr>
+                                <td><input type="submit" value="A" name="answer" class="btn btn-outline-primary"></td>
+                                <td><?= $question->answer_content?></td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" value="B" name="answer" class="btn btn-outline-primary"></td>
+                                <td><?= $question->wrong_answer1?></td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" value="C" name="answer" class="btn btn-outline-primary"></td>
+                                <td><?= $question->wrong_answer2?></td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" value="D" name="answer" class="btn btn-outline-primary"></td>
+                                <td><?= $question->wrong_answer3?></td>
+                            </tr>
+                        </tbody>
+                    </form>
 
-                    </tbody>
+
 
                 </table>
                 <!--ラベリング -->        

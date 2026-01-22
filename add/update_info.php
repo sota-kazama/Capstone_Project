@@ -57,15 +57,16 @@ $updateList = $updateDAO->getAll();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-    <link href="../css/BaseDesignData.css" rel="stylesheet">
-    <link href="../css/side.css" rel="stylesheet">
-    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css">
+    <link href="../css_theme/base.css" rel="stylesheet">
+    <link href="../css_theme/side.css" rel="stylesheet">
+    <link
+        id="theme-css"
+        href="../css_theme/<?= htmlspecialchars($theme) ?>.css"
+        rel="stylesheet"
+    >
     <link href="../css_theme/toggle-button.css" rel="stylesheet">
-
     <title>更新情報管理</title>
 </head>
 
@@ -127,31 +128,17 @@ $updateList = $updateDAO->getAll();
 
                             <!-- 編集 -->
                             <td>
-    <form method="post" class="d-flex flex-column gap-2">
-        <input type="hidden" name="action" value="edit">
-        <input type="hidden" name="update_id" value="<?= $update->update_id ?>">
+                                <form method="post" class="d-flex gap-2">
+                                    <input type="hidden" name="action" value="edit">
+                                    <input type="hidden" name="update_id" value="<?= $update->update_id ?>">
+                                    <textarea name="up_info" class="form-control" rows="2"><?= htmlspecialchars($update->up_info) ?></textarea>
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                </form>
+                            </td>
 
-        <!-- 現在の画像 -->
-        <?php
-            $imagePath = '../uploads/' . $update->image_path;
-        ?>
-
-        <?php if (!empty($update->image_path) && file_exists($imagePath)): ?>
-            <img src="<?= htmlspecialchars($imagePath) ?>"
-                 alt="現在の画像"
-                 style="max-width:150px; height:auto; border:1px solid #ccc;">
-        <?php else: ?>
-            <p class="text-muted mb-0">画像が登録されていません</p>
-        <?php endif; ?>
-
-        <!-- 更新内容 -->
-        <textarea name="up_info" class="form-control" rows="2"><?= htmlspecialchars($update->up_info) ?></textarea>
-
-        <button class="btn btn-success btn-sm align-self-start">
-            <i class="bi bi-check-lg"></i>
-        </button>
-    </form>
-</td>
+                            <td><?= htmlspecialchars($update->created_ad) ?></td>
 
                             <!-- 削除 -->
                             <td>
