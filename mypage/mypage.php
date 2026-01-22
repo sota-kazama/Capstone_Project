@@ -54,6 +54,17 @@ if ($goal_data && !empty($goal_data->goal_date)) {
     $daysInMonth  = (int)$firstDay->format('t');
 }
 
+// 目標データがある場合、マイルストーンを配列にまとめる
+$milestones = [];
+if ($goal_data) {
+    for ($i = 1; $i <= 5; $i++) {
+        $prop = ($i === 1) ? 'mile_stone' : "mile_stone$i";
+        if (!empty($goal_data->$prop)) {
+            $milestones[] = $goal_data->$prop;
+        }
+    }
+}
+
 // テーマ
 $theme = $_COOKIE['theme'] ?? 'light';
 ?>
@@ -146,6 +157,40 @@ $theme = $_COOKIE['theme'] ?? 'light';
         </div>
 
         <!-- ===== 中段 ===== -->
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header fw-bold">
+                        マイルストーン達成状況
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <?php if (!empty($milestones)): ?>
+                                <?php foreach ($milestones as $index => $stone): ?>
+                                    <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center" 
+                                        style="width: 100%; max-width: 80px; aspect-ratio: 1/1; background-color: #f8f9fa; cursor: default;"
+                                        title="<?= htmlspecialchars($stone) ?>">
+                                        
+                                        <span style="font-size: 0.7rem; 
+                                                    line-height: 1.2; 
+                                                    overflow: hidden; 
+                                                    display: -webkit-box; 
+                                                    -webkit-box-orient: vertical; 
+                                                    -webkit-line-clamp: 3;"> <?= htmlspecialchars($stone) ?>
+                                        </span>
+                                        
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p class="text-muted mb-0">設定されたマイルストーンはありません。</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 下段 ===== -->
         <div class="row g-4">
 
             <!-- 左：成績 -->
