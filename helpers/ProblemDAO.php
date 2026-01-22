@@ -124,7 +124,7 @@ class ProblemDAO
     public function getProblemName(): array
     {
         $dbh = DAO::get_db_connect();
-        $sql = "SELECT area_number FROM q_categories";
+        $sql = "SELECT area_number, area_name FROM q_categories";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -146,5 +146,54 @@ class ProblemDAO
 
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
+
+    /**
+     * 指定分野の問題情報をすべて取得
+     */
+    public function getQuestionsByArea(string $area_number): array
+    {
+        $dbh = DAO::get_db_connect();
+
+        $sql = "
+            SELECT q.*
+            FROM question_data q
+            INNER JOIN q_middle m
+                ON q.q_number = m.q_number
+            WHERE m.area_number = :area_number
+            ORDER BY q.q_number
+        ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function moveFirstElementOnce(string $alpha, string $beta): void
+{
+    // αが空なら何もしない
+    if ($alpha === '') {
+        return;
+    }
+
+    // "_" で分割（最大2要素）
+    $parts = explode('_', $alpha, 2);
+
+    // 先頭要素
+    $first = $parts[0];
+
+    // βに追加
+    if ($beta === '') {
+        $beta = $first;
+    } else {
+        $beta .= '_' . $first;
+    }
+
+    // αを更新
+    $alpha = $parts[1] ?? '';
+}
+
+
 }
 

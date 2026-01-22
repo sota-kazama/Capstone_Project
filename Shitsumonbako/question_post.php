@@ -29,17 +29,16 @@ $theme = $_COOKIE['theme'] ?? 'light';
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
-    <!-- Bootstrap & アイコン -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    
-    <!-- CSS -->
-    <link href="../css_theme/base.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <link id="theme-css" rel="stylesheet" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" />
-    <link href="../css_theme/toggle-button.css" rel="stylesheet" />
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css_theme/base.css" rel="stylesheet">
+    <link href="../css_theme/side.css" rel="stylesheet">
+    <link
+        id="theme-css"
+        href="../css_theme/<?= htmlspecialchars($theme) ?>.css"
+        rel="stylesheet"
+    >
+    <link href="../css_theme/toggle-button.css" rel="stylesheet">
     <title>質問投稿</title>
 </head>
 
