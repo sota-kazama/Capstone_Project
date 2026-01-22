@@ -13,6 +13,7 @@ $area_number = $_SESSION['area_number'];
 $dao = new ProblemDAO();
 $dao2 = new MemberDAO();
 
+$string = $dao->getProblemIdString($area_number);
 $questions = $dao->getQuestionsByArea($area_number);
 
 $i = isset($_GET['i']) ? intval($_GET['i']) : 0;
@@ -24,36 +25,9 @@ if (!empty($questions) && isset($questions[$i])) {
     $question = null;
 }
 
-// 初回：問題ID文字列を作成
-if (!isset($_SESSION['problem_string'])) {
-    $_SESSION['problem_string'] = $dao->getProblemIdString($area_number);
-} else {
-// 次の問題を取得
-    $shifted = $dao->shiftProblem($_SESSION['problem_string']);
-
-    $currentProblemId = $shifted['current'];
-    $_SESSION['problem_string'] = $shifted['remaining'];
-}
-
 if (isset($member)) {
-    $dao2->updateUserProblem($member->user_id, $_SESSION['problem_string']);
+    $dao2->updateUserProblem($member->user_id, $string);
 }
-
-// if (!isset($_SESSION['problem_ids'])) {
-//     $_SESSION['problem_ids'] = $dao->getProblemIdsByArea($area_number);
-//     $index = 0;
-// }
-// $index = $_SESSION['current_index'];
-// $problemIds = $_SESSION['problem_ids'];
-
-// $question = null;
-
-// if (isset($problemIds[$index+1])) {
-//     $question = $dao->findQuestionById((int)$problemIds[$index]);
-//     $_SESSION['current_index']++;
-// }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -96,9 +70,11 @@ if (isset($member)) {
                     <?php endif; ?>
                 </div>
 
-                    <h3>第<?= $question->q_number ?>問</h3>
-                    <h4><?= htmlspecialchars($question->q_content) ?></h4>
-                
+                    <h2>第<?= $question->q_number ?>問</h2>
+                    <h3><?= htmlspecialchars($question->q_content) ?></h3>
+                    <?php if($question->image_path !== null) : ?>
+                        <?php echo $question->image_path?>
+                    <?php endif;?>
                 <table class="table">
                     <thead>
                         <tr>
@@ -107,22 +83,27 @@ if (isset($member)) {
                         </tr>
                     </thead>
 
-                    <form action="problem_answer.php" method="post">
+                    <form action="problem_answer.php?i=<?php echo $i;?>" method="post"> 
                         <tbody>
+                            <input type="hidden" name="answer_content" value="<?= $question->answer_content?>">
                             <tr>
-                                <td><input type="submit" value="A" name="answer" class="btn btn-outline-primary"></td>
+                                <td><input type="submit" value="A" class="btn btn-outline-primary"></td>
+                                <input type="hidden" name="A" value="<?= $question->answer_content?>">
                                 <td><?= $question->answer_content?></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" value="B" name="answer" class="btn btn-outline-primary"></td>
+                                <td><input type="submit" value="B" class="btn btn-outline-primary"></td>
+                                <input type="hidden" name="B" value="<?= $question->answer_wrong_answer1?>">
                                 <td><?= $question->wrong_answer1?></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" value="C" name="answer" class="btn btn-outline-primary"></td>
+                                <td><input type="submit" value="C" class="btn btn-outline-primary"></td>
+                                <input type="hidden" name="C" value="<?= $question->answer_wrong_answer2?>">
                                 <td><?= $question->wrong_answer2?></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" value="D" name="answer" class="btn btn-outline-primary"></td>
+                                <td><input type="submit" value="D" class="btn btn-outline-primary"></td>
+                                <input type="hidden" name="D" value="<?= $question->answer_wrong_answer3?>">
                                 <td><?= $question->wrong_answer3?></td>
                             </tr>
                         </tbody>
