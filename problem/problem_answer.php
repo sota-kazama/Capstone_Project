@@ -7,8 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $answer = $_POST['answer'] ?? '';
-    $wrong = $_POST['wrong'] ?? '';
+    $answer_content = $_POST['answer_content'] ?? '';
+    $A = $_POST['A'] ?? '';
+    $B = $_POST['B'] ?? '';
+    $C = $_POST['C'] ?? '';
+    $D = $_POST['D'] ?? '';
 }
 $member = $_SESSION['member'] ?? null;
 $area_number = $_SESSION['area_number'];
@@ -16,6 +19,45 @@ $area_number = $_SESSION['area_number'];
 $dao = new ProblemDAO();
 $dao2 = new MemberDAO();
 $dao3 = new QuestionDAO();
+$beta = "";
+$find   = "_";
+$i = 0;
+$_SESSION['beta'] = "";
+$_SESSION['problemString'] = "";
+$problemString = $dao->getProblemIdString($area_number);
+
+if(empty($_SESSION['beta']) || empty($_SESSION['problemString'])) {
+    $string = $dao->searchString($beta, $find, $problemString);
+    echo "$string\n";
+    $_SESSION['beta'] = $string;
+    $deleteString = $dao->deleteString($find,$problemString);
+    echo "$deleteString\n";
+    $_SESSION['problemString'] = $deleteString;
+} else {
+    $string = $dao->searchString($_SESSION['beta'], $find, $_SESSION['problemString']);
+    echo "$string\n";
+    $_SESSION['beta'] = $string;
+    $deleteString = $dao->deleteString($find,$_SESSION['problemString']);
+    echo "$deleteString\n";
+    $_SESSION['problemString'] = $deleteString;
+}
+    // $string = $dao->searchString($beta, $find, $problemString);
+    // echo $string;
+// $alpha = $problemString;
+// $beta  = "";
+
+// $parts = explode("_", $alpha);
+// if(empty($beta)) {
+// // 1回目
+// $beta = $parts[$i];
+// echo $beta; // 1
+// $i++;
+// } else {
+// // 2回目
+// $beta .= "_" . $parts[$i];
+// echo $beta; // 1_2
+// $i++;
+// }
 
 $questions = $dao->getQuestionsByArea($area_number);
 
@@ -80,7 +122,7 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                     </thead>
                     <tbody>
                         <tr>
-                            <?php if($answer==='A') : ?>
+                            <?php if($A === $answer_content) : ?>
                                 <td><a class="btn btn-success" role="button">A</a></td>
                                 <td><?= $question->answer_content?></td>
                             <?php else :?>
@@ -89,7 +131,7 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                             <?php endif;?>
                         </tr>
                         <tr>
-                            <?php if($answer==='B') : ?>
+                            <?php if($B === $answer_content) : ?>
                                 <td><a class="btn btn-success" role="button">B</a></td>
                                 <td><?= $question->answer_content?></td>
                             <?php else :?>
@@ -98,7 +140,7 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                             <?php endif;?>
                         </tr>
                         <tr>
-                            <?php if($answer==='C') : ?>
+                            <?php if($C === $answer_content) : ?>
                                 <td><a class="btn btn-success" role="button">C</a></td>
                                 <td><?= $question->answer_content?></td>
                             <?php else :?>
@@ -107,7 +149,7 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                             <?php endif;?>
                         </tr>
                         <tr>
-                            <?php if($answer==='D') : ?>
+                            <?php if($D === $answer_content) : ?>
                                 <td><a class="btn btn-success" role="button">D</a></td>
                                 <td><?= $question->answer_content?></td>
                             <?php else :?>
@@ -116,44 +158,6 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                             <?php endif;?>
                         </tr>
                     </tbody>
-                                        <!-- <tbody>
-                        <tr>
-                            <?php if($question->answer_content == "a") : ?>
-                                <td><a class="btn btn-success" role="button">A</a></td>
-                                <td><?php $question->answer_content?></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">A</a></td>
-                                <td></td>                                
-                            <?php endif;?>
-                        </tr>
-                        <tr>
-                            <?php if($question->answer_content == "b") : ?>
-                                <td><a class="btn btn-success" role="button">B</a></td>
-                                <td></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">B</a></td>
-                                <td></td>
-                            <?php endif;?>
-                        </tr>
-                        <tr>
-                            <?php if($question->answer_content == "c") : ?>
-                                <td><a class="btn btn-success" role="button">C</a></td>
-                                <td></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">C</a></td>
-                                <td></td>                                
-                            <?php endif;?>
-                        </tr>
-                        <tr>
-                            <?php if($question->answer_content == "d") : ?>
-                                <td><a class="btn btn-success" role="button">D</a></td>
-                                <td></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">D</a></td>
-                                <td></td>
-                            <?php endif;?>
-                        </tr>
-                    </tbody> -->
                 </table>
                 <div class="d-flex flex-wrap justify-content-center">
                     <div style="width: 13rem">

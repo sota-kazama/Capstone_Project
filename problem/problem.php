@@ -6,10 +6,19 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+$beta = '';
+$find   = '_';
 $member = $_SESSION['member'] ?? null;
-
+$area_number = $_SESSION['area_number'];
 $dao = new MemberDAO();
 $dao2 = new ProblemDAO();
+
+$problemString = $dao2->getProblemIdString($area_number);
+$questions = $dao2->getQuestionsByArea($area_number);
+$string = $dao2->searchString($beta, $find, $problemString);
+echo "$string\n";
+$deleteString = $dao2->deleteString($find,$problemString);
+echo "$deleteString\n";
 
 // ブックマーク保存
 if (isset($_POST['bookmark_q_number'])) {
@@ -26,9 +35,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['area_number'] = $_POST['area_number'] ?? '';
 }
 
-$problemString = $dao2->getProblemIdString($_SESSION['area_number']);
+$_SESSION['problemString'] = $dao2->getProblemIdString($_SESSION['area_number']);
 
-echo $problemString;
+echo $_SESSION['problemString'];
 
 ?>
 
