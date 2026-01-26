@@ -192,5 +192,16 @@ class MemberDAO
         $stmt->bindValue(':question_hold', $question_hold, PDO::PARAM_STR);
         return $stmt->execute();
     }
+
+    //文字列α存在確認
+    public function getUserProblem(int $user_id) {
+        $dbh = DAO::get_db_connect();
+        $sql = "select question_hold from master_user where user_id = :user_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row['question_hold'] : null;
+    }
 }
 ?>

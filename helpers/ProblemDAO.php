@@ -189,6 +189,30 @@ class ProblemDAO
 
     }
 
+    function removeHeadFromAlpha(string $alpha): string
+    {
+        if ($alpha === '') {
+            return '';
+        }
+
+        $arr = explode('_', $alpha);
+        $head = array_shift($arr); // 先頭の数字
+
+        $newAlpha = implode('_', $arr);
+
+        return $newAlpha;
+    }
+    function addToBeta(string $beta, string $num): string
+    {
+        if ($beta === '') {
+            return $num;
+        }
+
+        return $beta . '_' . $num;
+    }
+
+
+
 
 }
 

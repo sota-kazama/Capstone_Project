@@ -19,50 +19,10 @@ $area_number = $_SESSION['area_number'];
 $dao = new ProblemDAO();
 $dao2 = new MemberDAO();
 $dao3 = new QuestionDAO();
-$beta = "";
-$find   = "_";
 $i = 0;
-$_SESSION['beta'] = "";
-$_SESSION['problemString'] = "";
-$problemString = $dao->getProblemIdString($area_number);
-
-if(empty($_SESSION['beta']) || empty($_SESSION['problemString'])) {
-    $string = $dao->searchString($beta, $find, $problemString);
-    echo "$string\n";
-    $_SESSION['beta'] = $string;
-    $deleteString = $dao->deleteString($find,$problemString);
-    echo "$deleteString\n";
-    $_SESSION['problemString'] = $deleteString;
-} else {
-    $string = $dao->searchString($_SESSION['beta'], $find, $_SESSION['problemString']);
-    echo "$string\n";
-    $_SESSION['beta'] = $string;
-    $deleteString = $dao->deleteString($find,$_SESSION['problemString']);
-    echo "$deleteString\n";
-    $_SESSION['problemString'] = $deleteString;
-}
-    // $string = $dao->searchString($beta, $find, $problemString);
-    // echo $string;
-// $alpha = $problemString;
-// $beta  = "";
-
-// $parts = explode("_", $alpha);
-// if(empty($beta)) {
-// // 1回目
-// $beta = $parts[$i];
-// echo $beta; // 1
-// $i++;
-// } else {
-// // 2回目
-// $beta .= "_" . $parts[$i];
-// echo $beta; // 1_2
-// $i++;
-// }
 
 $questions = $dao->getQuestionsByArea($area_number);
-
 $i = isset($_GET['i']) ? intval($_GET['i']) : 0;
-
 // 問題が存在するかチェック
 if (!empty($questions) && isset($questions[$i])) {
     $question = $questions[$i];
@@ -70,6 +30,38 @@ if (!empty($questions) && isset($questions[$i])) {
     $question = null;
 }
 $referer = $_SERVER['HTTP_REFERER'] ?? '';
+
+// 初回アクセス時だけ初期化
+if (!isset($_SESSION['alpha']) || !isset($_SESSION['beta'])) {
+    $problemString = $dao->getProblemIdString($area_number);
+    $_SESSION['alpha'] = $problemString;
+    $beta = '';
+    $_SESSION['beta'] = $beta;
+}
+
+// 現在のalphaを取得
+$alpha = $_SESSION['alpha'];
+
+// 先頭を削除
+$a = $dao->removeHeadFromAlpha($alpha);
+
+// 表示
+echo $a;
+
+// セッションを更新
+$_SESSION['alpha'] = $a;
+
+$beta = $_SESSION['beta'];
+
+$b = $dao->addToBeta($beta, $question->q_number);
+
+echo $b;
+
+$_SESSION['beta'] = $b;
+
+if (isset($member)) {
+    $dao2->updateUserProblem($member->user_id, $a);
+}
 ?>
 
 <!DOCTYPE html>
@@ -112,6 +104,9 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                 </div>
                 <h2>第<?php echo $question->q_number; ?>問</h2>
                 <h3><?= htmlspecialchars($question->q_content) ?></h3>
+                <?php if($question->image_path !== null) : ?>
+                    <img src="../uploads/<?= $question->image_path?>" alt="">
+                <?php endif;?>
 
                 <table class="table">
                     <thead>

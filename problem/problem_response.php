@@ -24,10 +24,6 @@ if (!empty($questions) && isset($questions[$i])) {
 } else {
     $question = null;
 }
-
-if (isset($member)) {
-    $dao2->updateUserProblem($member->user_id, $string);
-}
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +69,7 @@ if (isset($member)) {
                     <h2>第<?= $question->q_number ?>問</h2>
                     <h3><?= htmlspecialchars($question->q_content) ?></h3>
                     <?php if($question->image_path !== null) : ?>
-                        <?php echo $question->image_path?>
+                        <img src="../uploads/<?= $question->image_path?>" alt="">
                     <?php endif;?>
                 <table class="table">
                     <thead>
