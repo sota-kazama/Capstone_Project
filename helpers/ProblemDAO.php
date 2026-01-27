@@ -98,27 +98,6 @@ class ProblemDAO
 
         return implode('_', $result);
     }
-
-    /**
-     * 次の問題を取得し、残り問題文字列を返す
-     */
-    public function shiftProblem(string $problemString): array
-    {
-        if ($problemString === '') {
-            return [
-                'current'   => null,
-                'remaining' => ''
-            ];
-        }
-
-        $problems = explode('_', $problemString);
-        $current  = array_shift($problems);
-
-        return [
-            'current'   => $current,
-            'remaining' => implode('_', $problems)
-        ];
-    }
     
     //分野名取得
     public function getProblemName(): array
@@ -170,29 +149,69 @@ class ProblemDAO
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function moveFirstElementOnce(string $alpha, string $beta): void
-{
-    // αが空なら何もしない
-    if ($alpha === '') {
-        return;
+    public function searchString(string $beta, string $find, string $string)
+    {
+
+        // 1. _の位置を探す
+        $pos = strpos($string, $find);
+
+        if ($pos !== false) {
+            // 2. 0文字目から、$pos分だけ（_の直前まで）切り出す
+            $beta = substr($string, 0, $pos);
+            echo $beta;
+        } else {
+            echo "文字が見つかりませんでした。";
+        }
+        // $i = 0;
+        // $parts = explode($find, $string);
+        // if($beta = '') {
+        // // 1回目
+        // $beta = $parts[$i];
+        // echo $beta; // 1
+        // $i++;
+        // } else {
+        // // 2回目
+        // $beta .= $find . $parts[$i];
+        // echo $beta; // 1_2
+        // $i++;
+        // }
     }
 
-    // "_" で分割（最大2要素）
-    $parts = explode('_', $alpha, 2);
 
-    // 先頭要素
-    $first = $parts[0];
+    public function deleteString(string $find, string $string)
+    {
+        // "_" を含めて、それより後ろを取得
+        $result = strstr($string, $find); 
+        // 最初の文字"_"も削除したい場合は substr で1文字飛ばす
+        $result = substr(strstr($string, $find), 1);
 
-    // βに追加
-    if ($beta === '') {
-        $beta = $first;
-    } else {
-        $beta .= '_' . $first;
+        echo $result; // 結果: 山田太郎.pdf
+
     }
 
-    // αを更新
-    $alpha = $parts[1] ?? '';
-}
+    function removeHeadFromAlpha(string $alpha): string
+    {
+        if ($alpha === '') {
+            return '';
+        }
+
+        $arr = explode('_', $alpha);
+        $head = array_shift($arr); // 先頭の数字
+
+        $newAlpha = implode('_', $arr);
+
+        return $newAlpha;
+    }
+    function addToBeta(string $beta, string $num): string
+    {
+        if ($beta === '') {
+            return $num;
+        }
+
+        return $beta . '_' . $num;
+    }
+
+
 
 
 }

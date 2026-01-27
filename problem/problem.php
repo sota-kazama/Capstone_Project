@@ -7,28 +7,30 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $member = $_SESSION['member'] ?? null;
-
-$dao = new MemberDAO();
-$dao2 = new ProblemDAO();
-
-// ブックマーク保存
-if (isset($_POST['bookmark_q_number'])) {
-    $_SESSION['bookmark_q_number'] = (int)$_POST['bookmark_q_number'];
-}
-
-// ブックマークされた問題を取得
-$bookmarkQuestion = null;
-if (isset($_SESSION['bookmark_q_number'])) {
-    $bookmarkQuestion = $dao->findById($_SESSION['bookmark_q_number']);
-}
-
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['area_number'] = $_POST['area_number'] ?? '';
 }
+$area_number = $_SESSION['area_number'];
+$dao = new MemberDAO();
+$dao2 = new ProblemDAO();
 
-$problemString = $dao2->getProblemIdString($_SESSION['area_number']);
+// // ブックマーク保存
+// if (isset($_POST['bookmark_q_number'])) {
+//     $_SESSION['bookmark_q_number'] = (int)$_POST['bookmark_q_number'];
+// }
 
-echo $problemString;
+// // ブックマークされた問題を取得
+// $bookmarkQuestion = null;
+// if (isset($_SESSION['bookmark_q_number'])) {
+//     $bookmarkQuestion = $dao->findById($_SESSION['bookmark_q_number']);
+// }
+
+$_SESSION['problemString'] = $dao2->getProblemIdString($_SESSION['area_number']);
+if(isset($member)) {
+$problem = $dao->getUserProblem($member->user_id);
+}
+
+echo $_SESSION['problemString'];
 
 ?>
 
@@ -64,13 +66,15 @@ echo $problemString;
                         <div style="width: 20rem;">
                             <a href="problem_response.php" class="btn btn-outline-primary w-100">問題開始(<?php echo $_SESSION['area_number']?>)</a>
                         </div>
-                        <?php if ($bookmarkQuestion !== null) : ?>
+                        <?php if (isset($member)) : ?>
+                            <?php if($problem !== NULL) : ?>
                             <div style="width: 20rem;">
                                 <a href="problem_response.php?i=<?= $bookmarkQuestion->q_number - 1 ?>"
                                 class="btn btn-outline-primary w-100">
                                     続きから（<?= $bookmarkQuestion->q_number ?>問目）
                                 </a>
                             </div>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </div>
                     <?php if(isset($member)) : ?>

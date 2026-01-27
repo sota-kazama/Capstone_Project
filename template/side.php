@@ -42,7 +42,7 @@ $current = basename($_SERVER['PHP_SELF']);
         <?php if(isset($member)) : ?>
             <li>
                 <a
-                    href="<?= BASE_URL ?>/board.php"
+                    href="<?= BASE_URL ?>/thread_list.php"
                     class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>"
                 >
                     <i class="bi bi-person-fill"></i>
