@@ -284,6 +284,9 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                 <tbody>
                                     <tr>
                                         <?php
+                                        // 1. 今日の日付を取得（フォーマットを合わせる）
+                                        $todayStr = (new DateTime())->format('Y-m-d');
+
                                         for ($i = 0; $i < $startWeekDay; $i++) {
                                             echo '<td></td>';
                                         }
@@ -291,11 +294,17 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                         for ($day = 1; $day <= $daysInMonth; $day++) {
                                             $currentDate = sprintf('%04d-%02d-%02d', $year, $month, $day);
 
+                                            // クラスの判定
+                                            $class = '';
                                             if ($currentDate === $goal_data->goal_date) {
-                                                echo '<td class="bg-danger text-white fw-bold">' . $day . '</td>';
-                                            } else {
-                                                echo '<td>' . $day . '</td>';
+                                                // 目標日の場合（赤）
+                                                $class = 'bg-danger text-white fw-bold';
+                                            } elseif ($currentDate === $todayStr) {
+                                                // 今日の場合（青：Bootstrapのbg-infoやbg-primaryを使用）
+                                                $class = 'bg-primary text-white fw-bold';
                                             }
+
+                                            echo '<td class="' . $class . '">' . $day . '</td>';
 
                                             if (($day + $startWeekDay) % 7 === 0) {
                                                 echo '</tr><tr>';
@@ -305,6 +314,8 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                     </tr>
                                 </tbody>
                             </table>
+                            青マス：今日の日付<br>
+                            赤マス：目標日
 
                         </div>
                     </div>
