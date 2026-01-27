@@ -148,47 +148,7 @@ class ProblemDAO
 
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-
-    public function searchString(string $beta, string $find, string $string)
-    {
-
-        // 1. _の位置を探す
-        $pos = strpos($string, $find);
-
-        if ($pos !== false) {
-            // 2. 0文字目から、$pos分だけ（_の直前まで）切り出す
-            $beta = substr($string, 0, $pos);
-            echo $beta;
-        } else {
-            echo "文字が見つかりませんでした。";
-        }
-        // $i = 0;
-        // $parts = explode($find, $string);
-        // if($beta = '') {
-        // // 1回目
-        // $beta = $parts[$i];
-        // echo $beta; // 1
-        // $i++;
-        // } else {
-        // // 2回目
-        // $beta .= $find . $parts[$i];
-        // echo $beta; // 1_2
-        // $i++;
-        // }
-    }
-
-
-    public function deleteString(string $find, string $string)
-    {
-        // "_" を含めて、それより後ろを取得
-        $result = strstr($string, $find); 
-        // 最初の文字"_"も削除したい場合は substr で1文字飛ばす
-        $result = substr(strstr($string, $find), 1);
-
-        echo $result; // 結果: 山田太郎.pdf
-
-    }
-
+    //文字列αから削除
     function removeHeadFromAlpha(string $alpha): string
     {
         if ($alpha === '') {
@@ -202,6 +162,7 @@ class ProblemDAO
 
         return $newAlpha;
     }
+    //文字列βに追加
     function addToBeta(string $beta, string $num): string
     {
         if ($beta === '') {
@@ -211,7 +172,45 @@ class ProblemDAO
         return $beta . '_' . $num;
     }
 
+    // public function searchString(string $beta, string $find, string $string)
+    // {
 
+    //     // 1. _の位置を探す
+    //     $pos = strpos($string, $find);
+
+    //     if ($pos !== false) {
+    //         // 2. 0文字目から、$pos分だけ（_の直前まで）切り出す
+    //         $beta = substr($string, 0, $pos);
+    //         echo $beta;
+    //     } else {
+    //         echo "文字が見つかりませんでした。";
+    //     }
+    //     // $i = 0;
+    //     // $parts = explode($find, $string);
+    //     // if($beta = '') {
+    //     // // 1回目
+    //     // $beta = $parts[$i];
+    //     // echo $beta; // 1
+    //     // $i++;
+    //     // } else {
+    //     // // 2回目
+    //     // $beta .= $find . $parts[$i];
+    //     // echo $beta; // 1_2
+    //     // $i++;
+    //     // }
+    // }
+
+
+    // public function deleteString(string $find, string $string)
+    // {
+    //     // "_" を含めて、それより後ろを取得
+    //     $result = strstr($string, $find); 
+    //     // 最初の文字"_"も削除したい場合は substr で1文字飛ばす
+    //     $result = substr(strstr($string, $find), 1);
+
+    //     echo $result; // 結果: 山田太郎.pdf
+
+    // }
 
 
 }
