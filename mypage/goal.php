@@ -4,9 +4,9 @@ require_once '../helpers/u_goalsDAO.php';
 
 session_start();
 
-// 未ログインチェック
+// 未ログインの場合
 if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 
