@@ -97,6 +97,8 @@ if (isset($member)) {
                     <?php if (isset($member) && strpos($referer, 'problem_response.php') !== false) : ?>
                         <form action="problem.php" method="post" class="ms-auto">
                             <input type="hidden" name="bookmark_q_number" value="<?= $question->q_number ?>">
+                            <input type="hidden" name="area_number" value="<?= $area_number?>">
+                            <input type="hidden" name="i" value="<?= $i?>">
                             <input type="submit" class="btn btn-outline-primary" value="ブックマーク">
                         </form>
                     <?php endif; ?>

@@ -11,6 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $member = $_SESSION['member'] ?? null;
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['area_number'] = $_POST['area_number'] ?? '';
+    $i = $_POST['i'] ?? '';
 }
 $area_number = $_SESSION['area_number'];
 $dao = new MemberDAO();
@@ -35,6 +36,7 @@ if(isset($member)) {
         if($dao4->getUserLabel($member->user_id, $_SESSION['bookmark_q_number']) === true) {
             $a = new BookMark();
             $a->user_id = $member->user_id;
+            $a->label_id = $_SESSION['area_number'];
             $a->q_number = $_SESSION['bookmark_q_number'];
             $dao4->insertBookmark($a);
         }
@@ -80,7 +82,7 @@ if(isset($member)) {
                         <?php if (isset($member)) : ?>
                             <?php if($problem !== NULL && $bookmarkQuestion !== NULL) : ?>
                             <div style="width: 20rem;">
-                                <a href="problem_response.php?i=<?= $bookmarkQuestion->q_number?>"
+                                <a href="problem_response.php?i=<?= $i?>"
                                 class="btn btn-outline-primary w-100">
                                     続きから（<?= $bookmarkQuestion->q_number ?>問目）
                                 </a>

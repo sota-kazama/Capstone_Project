@@ -12,21 +12,8 @@ class BookMark
 }
 class BookMarkDAO
 {
-    public function insertBookmark(Bookmark $bookmark): void
-    {
-        $dbh = DAO::get_db_connect();
-        // INSERT時に access_date も設定する場合は、SQLに追加が必要です
-        $sql = "INSERT INTO u_labels (user_id, label_id, label, create_ad, update_at)
-                VALUES (:user_id, '', :label, GETDATE(), GETDATE())";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':user_id', $bookmark->user_id, PDO::PARAM_INT);
-        $stmt->bindValue(':label', $bookmark->q_number, PDO::PARAM_INT);
-
-        $stmt->execute();
-    }
-
     //しおり存在確認
-    public function getUserLabel(int $user_id , int $label) {
+    public function getUserLabel(int $user_id, $label_id) {
         $dbh = DAO::get_db_connect();
         $sql = "select * from u_labels where user_id = :user_id and label = :label";
         $stmt = $dbh->prepare($sql);
@@ -39,4 +26,26 @@ class BookMarkDAO
             return false;
         }
     }
+
+    //ブックマーク登録または更新
+    public function insertBookmark(Bookmark $bookmark): void
+    {
+        $dbh = DAO::get_db_connect();
+        if(!$this->getUserLabel($user_id,$label_id)){
+            $sql = "INSERT INTO u_labels (user_id, label_id, label, create_ad, update_at)
+                    VALUES (:user_id, :label_id, :label, GETDATE(), GETDATE())";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':user_id', $bookmark->user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':label_id', $bookmark->label_id, PDO::PARAM_INT);
+            $stmt->bindValue(':label', $bookmark->q_number, PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            $sql = "UPDATE u_labels
+                    SET area_name = :area_name,
+                    s_number = :s_number,
+                    update_at = GETDATE()
+                    WHERE area_number = :area_number";
+        }
+    }
+
 }

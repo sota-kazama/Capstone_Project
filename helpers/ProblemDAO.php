@@ -132,7 +132,6 @@ class ProblemDAO
     public function getQuestionsByArea(string $area_number): array
     {
         $dbh = DAO::get_db_connect();
-
         $sql = "
             SELECT q.*
             FROM question_data q
