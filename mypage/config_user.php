@@ -3,7 +3,7 @@ require_once '../helpers/MemberDAO.php';
 
 session_start();
 
-// 未ログインチェック
+// 未ログインの場合
 if (!isset($_SESSION['member'])) {
     header('Location: ../auth/login.php');
     exit;

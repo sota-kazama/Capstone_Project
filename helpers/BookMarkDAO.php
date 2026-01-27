@@ -3,10 +3,10 @@ require_once 'DAO.php';
 class BookMark
 {
     public int $user_id; //ユーザーID
-    public int $label_id;  
-    public int $q_number;  //問題番号  
-    public int $label;  //しおり    
-    public bool $bookmark;  //ラベル    
+    public int $label_id;
+    public int $q_number;  //問題番号
+    public int $label;  //しおり
+    public bool $bookmark;  //ラベル
     public string $created_ad; //登録日
     public string $update_at;  //更新日
 }

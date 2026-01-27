@@ -325,11 +325,9 @@ SQL;
 public function getFirstQuestion(?string $area_number = null, string $order = 'DESC'): ?Shitumon
 {
     $dbh = DAO::get_db_connect();
-    
     $sql = "SELECT s.*, c.area_name
             FROM shitumon s
             LEFT JOIN q_categories c ON s.area_number = c.area_number";
-    
     $params = [];
     if (!empty($area_number)) {
         $sql .= " WHERE s.area_number = :area_number";
@@ -338,8 +336,8 @@ public function getFirstQuestion(?string $area_number = null, string $order = 'D
 
     $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
     $sql .= " ORDER BY s.asked_date $order
-              OFFSET 0 ROWS
-              FETCH NEXT 1 ROWS ONLY";
+            OFFSET 0 ROWS
+            FETCH NEXT 1 ROWS ONLY";
 
     $stmt = $dbh->prepare($sql);
 

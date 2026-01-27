@@ -6,6 +6,12 @@ require_once '../helpers/u_goalsDAO.php';
 //セッションを開始する
 session_start();
 
+// 未ログインの場合
+if (!isset($_SESSION['member'])) {
+    header('Location: ../auth/login.php');
+    exit;
+}
+
 //ログイン中の会員データを取得
 $member = $_SESSION['member'];
 
