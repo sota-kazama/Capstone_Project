@@ -39,7 +39,7 @@ class GoalsDAO
                 update_at AS updated_at
             FROM u_goals
             WHERE user_id = ?
-            ORDER BY created_ad DESC
+            ORDER BY created_ad desc
         ";
         $stmt = $dbh->prepare($sql);
         $stmt->execute([$user_id]);
@@ -95,7 +95,7 @@ class GoalsDAO
                 update_at AS updated_at
             FROM u_goals
             WHERE user_id = ?
-            ORDER BY created_ad ASC
+            ORDER BY created_ad DESC
         ";
         $stmt = $dbh->prepare($sql);
         $stmt->execute([$user_id]);
