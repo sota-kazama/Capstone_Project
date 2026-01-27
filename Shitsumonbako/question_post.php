@@ -6,10 +6,9 @@ require_once '../helpers/MemberDAO.php';
 session_start();
 $member = $_SESSION['member'] ?? null;
 
-// ログインチェック
-if (!$member || !isset($member->user_id)) {
-    $_SESSION['error'] = 'ログインが必要です。';
-    header('Location: login.php');
+// 未ログインの場合
+if (!isset($_SESSION['member'])) {
+    header('Location: ../auth/login.php');
     exit;
 }
 
