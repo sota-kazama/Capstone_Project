@@ -37,22 +37,23 @@ class MemberDAO
         return false;
     }
 
-    // 新規メンバー登録
-    public function insert(Member $member): void
-    {
-        $dbh = DAO::get_db_connect();
-        $sql = "INSERT INTO master_user (mail_address, user_name, pass_word)
-                VALUES (:mail_address, :user_name, :pass_word)";
-        $stmt = $dbh->prepare($sql);
+    // 新規メンバー登録（作成日時・更新日時付き）
+public function insert(Member $member): void
+{
+    $dbh = DAO::get_db_connect();
+    $sql = "INSERT INTO master_user (mail_address, user_name, pass_word, created_ad, update_at, access_date)
+            VALUES (:mail_address, :user_name, :pass_word, GETDATE(), GETDATE(), GETDATE())";
+    $stmt = $dbh->prepare($sql);
 
-        $password = password_hash($member->pass_word, PASSWORD_DEFAULT);
+    $password = password_hash($member->pass_word, PASSWORD_DEFAULT);
 
-        $stmt->bindValue(':mail_address', $member->mail_address, PDO::PARAM_STR);
-        $stmt->bindValue(':user_name', $member->user_name, PDO::PARAM_STR);
-        $stmt->bindValue(':pass_word', $password, PDO::PARAM_STR);
+    $stmt->bindValue(':mail_address', $member->mail_address, PDO::PARAM_STR);
+    $stmt->bindValue(':user_name', $member->user_name, PDO::PARAM_STR);
+    $stmt->bindValue(':pass_word', $password, PDO::PARAM_STR);
 
-        $stmt->execute();
-    }
+    $stmt->execute();
+}
+
 
     // メールアドレス存在チェック
     public function email_exists(string $mail_address): bool

@@ -7,17 +7,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $shitu_number = $_POST['shitu_number'] ?? null;
+$return_to    = $_POST['return_to'] ?? 'question_list.php';
 
 if (!$shitu_number) {
-    die("削除対象の質問番号が指定されていません。");
+    die('削除対象の質問番号が指定されていません。');
 }
 
 // DAO生成
 $dao = new ShitumonDAO();
 
-// 質問と回答をまとめて削除
+// 質問＋回答を削除
 $dao->deleteWithAnswers((int)$shitu_number);
 
-// 削除後は一覧ページにリダイレクト
-header('Location: question_list.php');
+// 🔐 念のため外部URLを防ぐ（超重要）
+if (!preg_match('/^\/[a-zA-Z0-9_\/\-\.]+$/', $return_to)) {
+    $return_to = 'question_list.php';
+}
+
+// 削除元へ戻る
+header('Location: ' . $return_to);
 exit();

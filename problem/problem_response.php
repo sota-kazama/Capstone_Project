@@ -8,51 +8,51 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $member = $_SESSION['member'] ?? null;
-$area_number = $_SESSION['area_number'];
+$area_number = $_SESSION['area_number'] ?? null;
+
+if ($area_number === null) {
+    header('Location: category_select.php');
+    exit;
+}
 
 $dao = new ProblemDAO();
-$dao2 = new MemberDAO();
 
-$string = $dao->getProblemIdString($area_number);
 $questions = $dao->getQuestionsByArea($area_number);
-
 $i = isset($_GET['i']) ? intval($_GET['i']) : 0;
 
-// 問題が存在するかチェック
-if (!empty($questions) && isset($questions[$i])) {
-    $question = $questions[$i];
-} else {
-    $question = null;
+// 問題存在チェック
+if (empty($questions) || !isset($questions[$i])) {
+    echo '問題が存在しません。';
+    exit;
 }
-?>
 
+$question = $questions[$i];
+?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <!--こっちのheadは変更しない-->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <!--こっちのheadは変更しない-->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-        />
-        <link href="css/BaseDesignData.css" rel="stylesheet" />
-        <link href="../css/side.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="../css/BaseDesignData.css" rel="stylesheet" />
+    <link href="../css/side.css" rel="stylesheet" />
 
-        <?php include '../template/header.php'; ?>
-    </head>
+    <?php include '../template/header.php'; ?>
+    <title>問題回答</title>
+</head>
 
-    <head>
-        <!--こっちのheadを変更しない-->
-        <title>メインページ</title>
-    </head>
+<body>
+<div class="d-flex w-100 min-vh-100">
+<?php include '../template/side.php'; ?>
 
-    <body>
-        <div class="d-flex w-100 min-vh-100">
-            <?php include '../template/side.php'; ?>
+<main class="main-content">
+    <div class="d-flex align-items-center">
+        <h1>問題回答</h1>
 
+<<<<<<< HEAD
             <main class="main-content">
                 <!--ここに記載する-->
                 <div class="d-flex flex-wrap">
@@ -61,72 +61,90 @@ if (!empty($questions) && isset($questions[$i])) {
                     <?php if (isset($member)) : ?>
                         <form action="problem.php" method="post" class="ms-auto">
                             <input type="hidden" name="bookmark_q_number" value="<?= $question->q_number ?>">
+                            <input type="hidden" name="area_number" value="<?= $area_number?>">
+                            <input type="hidden" name="i" value="<?= $i?>">
                             <input type="submit" class="btn btn-outline-primary" value="ブックマーク">
                         </form>
                     <?php endif; ?>
                 </div>
+=======
+        <!-- ブックマーク -->
+        <?php if ($member): ?>
+        <form action="problem.php" method="post" class="ms-auto">
+            <input type="hidden" name="bookmark_q_number" value="<?= htmlspecialchars($question->q_number) ?>">
+            <input type="hidden" name="area_number" value="<?= htmlspecialchars($area_number) ?>">
+            <button type="submit" class="btn btn-outline-primary">ブックマーク</button>
+        </form>
+        <?php endif; ?>
+    </div>
+>>>>>>> 9bc8a4614ed9bf0d2c2328486b194e0ed79b8a27
 
-                    <h2>第<?= $question->q_number ?>問</h2>
-                    <h3><?= htmlspecialchars($question->q_content) ?></h3>
-                    <?php if($question->image_path !== null) : ?>
-                        <img src="../uploads/<?= $question->image_path?>" alt="">
-                    <?php endif;?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%">選択肢</th>
-                            <th>問題文</th>
-                        </tr>
-                    </thead>
+    <h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>
+    <h3><?= htmlspecialchars($question->q_content) ?></h3>
 
-                    <form action="problem_answer.php?i=<?php echo $i;?>" method="post"> 
-                        <tbody>
-                            <input type="hidden" name="answer_content" value="<?= $question->answer_content?>">
-                            <tr>
-                                <td><input type="submit" value="A" class="btn btn-outline-primary"></td>
-                                <input type="hidden" name="A" value="<?= $question->answer_content?>">
-                                <td><?= $question->answer_content?></td>
-                            </tr>
-                            <tr>
-                                <td><input type="submit" value="B" class="btn btn-outline-primary"></td>
-                                <input type="hidden" name="B" value="<?= $question->answer_wrong_answer1?>">
-                                <td><?= $question->wrong_answer1?></td>
-                            </tr>
-                            <tr>
-                                <td><input type="submit" value="C" class="btn btn-outline-primary"></td>
-                                <input type="hidden" name="C" value="<?= $question->answer_wrong_answer2?>">
-                                <td><?= $question->wrong_answer2?></td>
-                            </tr>
-                            <tr>
-                                <td><input type="submit" value="D" class="btn btn-outline-primary"></td>
-                                <input type="hidden" name="D" value="<?= $question->answer_wrong_answer3?>">
-                                <td><?= $question->wrong_answer3?></td>
-                            </tr>
-                        </tbody>
-                    </form>
+    <?php if (!empty($question->image_path)): ?>
+        <img src="../uploads/<?= htmlspecialchars($question->image_path) ?>" class="img-fluid mb-3">
+    <?php endif; ?>
 
+    <!-- 回答フォーム -->
+    <form action="problem_answer.php?i=<?= $i ?>" method="post">
+        <input type="hidden" name="correct_answer" value="<?= htmlspecialchars($question->answer_content) ?>">
 
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 10%">選択</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <button name="answer" value="<?= htmlspecialchars($question->answer_content) ?>"
+                                class="btn btn-outline-primary">A</button>
+                    </td>
+                    <td><?= htmlspecialchars($question->answer_content) ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button name="answer" value="<?= htmlspecialchars($question->wrong_answer1) ?>"
+                                class="btn btn-outline-primary">B</button>
+                    </td>
+                    <td><?= htmlspecialchars($question->wrong_answer1) ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button name="answer" value="<?= htmlspecialchars($question->wrong_answer2) ?>"
+                                class="btn btn-outline-primary">C</button>
+                    </td>
+                    <td><?= htmlspecialchars($question->wrong_answer2) ?></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button name="answer" value="<?= htmlspecialchars($question->wrong_answer3) ?>"
+                                class="btn btn-outline-primary">D</button>
+                    </td>
+                    <td><?= htmlspecialchars($question->wrong_answer3) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
 
-                </table>
-                <!--ラベリング -->        
-                <?php if (isset($member)) : ?>
-                <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-outline-success ms-auto" disabled>1</button>
-                    <button type="button" class="btn btn-outline-warning" disabled>2</button>
-                    <button type="button" class="btn btn-outline-danger" disabled>3</button>
-                </div>
-                <?php endif; ?>
-            </main>
-        </div>
+    <!-- ラベリング -->
+    <?php if ($member): ?>
+    <div class="d-flex gap-2 justify-content-end">
+        <button class="btn btn-outline-success" disabled>1</button>
+        <button class="btn btn-outline-warning" disabled>2</button>
+        <button class="btn btn-outline-danger" disabled>3</button>
+    </div>
+    <?php endif; ?>
+</main>
+</div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            
-        </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
-    </body>
-
-    <footer>
-        <?php include '../template/footer.php'; ?>
-    </footer>
+<footer>
+<?php include '../template/footer.php'; ?>
+</footer>
 </html>
