@@ -18,7 +18,7 @@ class CategoryDAO
     {
         $dbh = DAO::get_db_connect();
         $sql = "
-            SELECT 
+            SELECT
                 c.area_number,
                 c.area_name,
                 c.s_number,

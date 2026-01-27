@@ -6,15 +6,15 @@ session_start();
 
 // 未ログインの場合
 if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 
 $member = $_SESSION['member'];
 
 // DBからログインユーザーの目標を取得
-$goalsDAO      = new GoalsDAO();
-$goal_data = (new GoalsDAO())->getLatestGoalByUserId($member->user_id);
+$goalsDAO  = new GoalsDAO();
+$goal_data = $goalsDAO->getLatestGoalByUserId($member->user_id);
 $answers_count = $member->u_answers_count;
 $correct_count = $member->u_correct_count;
 
@@ -158,37 +158,56 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
         <!-- ===== 中段 ===== -->
         <div class="row g-4">
-            <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-header fw-bold">
-                        マイルストーン達成状況
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-wrap gap-2">
-                            <?php if (!empty($milestones)): ?>
-                                <?php foreach ($milestones as $index => $stone): ?>
-                                    <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center" 
-                                        style="width: 100%; max-width: 80px; aspect-ratio: 1/1; background-color: #f8f9fa; cursor: default;"
-                                        title="<?= htmlspecialchars($stone) ?>">
-                                        
-                                        <span style="font-size: 0.7rem; 
-                                                    line-height: 1.2; 
-                                                    overflow: hidden; 
-                                                    display: -webkit-box; 
-                                                    -webkit-box-orient: vertical; 
-                                                    -webkit-line-clamp: 3;"> <?= htmlspecialchars($stone) ?>
-                                        </span>
-                                        
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <p class="text-muted mb-0">設定されたマイルストーンはありません。</p>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header fw-bold">
+                マイルストーン達成状況
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <?php if (!empty($milestones)): ?>
+                        <?php foreach ($milestones as $index => $stone): 
+                            // --- 達成判定ロジック（ここを環境に合わせて調整してください） ---
+                            // 例：1つ目のマスは回答10以上、2つ目は20以上...で達成とする場合
+                            $threshold = ($index + 1) * 10; 
+                            $is_achieved = ($answers_count >= $threshold);
+                            
+                            // もしDBに「どこまで達成したか」の数値（1〜5）があるなら：
+                            // $is_achieved = ($goal_data->achieved_level > $index);
+                            // -------------------------------------------------------
+                            
+                            // 背景スタイルの決定
+                            $bg_style = $is_achieved 
+                                ? "background-image: url('../images/sakura.png'); background-size: cover; background-position: center; border: none;" 
+                                : "background-color: #f8f9fa;";
+                            
+                            // 達成時のテキスト色調整（画像で見えにくい場合）
+                            $text_color = $is_achieved ? "color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);" : "";
+                        ?>
+                            <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center milestone-box" 
+                                style="width: 100%; max-width: 80px; aspect-ratio: 1/1; cursor: default; <?= $bg_style ?>"
+                                title="<?= htmlspecialchars($stone) ?>">
+                                
+                                <span style="font-size: 0.7rem; 
+                                            line-height: 1.2; 
+                                            overflow: hidden; 
+                                            display: -webkit-box; 
+                                            -webkit-box-orient: vertical; 
+                                            -webkit-line-clamp: 3;
+                                            <?= $text_color ?>"> 
+                                    <?= htmlspecialchars($stone) ?>
+                                </span>
+                                
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-muted mb-0">設定されたマイルストーンはありません。</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
         <!-- ===== 下段 ===== -->
         <div class="row g-4">
@@ -265,6 +284,9 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                 <tbody>
                                     <tr>
                                         <?php
+                                        // 1. 今日の日付を取得（フォーマットを合わせる）
+                                        $todayStr = (new DateTime())->format('Y-m-d');
+
                                         for ($i = 0; $i < $startWeekDay; $i++) {
                                             echo '<td></td>';
                                         }
@@ -272,11 +294,17 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                         for ($day = 1; $day <= $daysInMonth; $day++) {
                                             $currentDate = sprintf('%04d-%02d-%02d', $year, $month, $day);
 
+                                            // クラスの判定
+                                            $class = '';
                                             if ($currentDate === $goal_data->goal_date) {
-                                                echo '<td class="bg-danger text-white fw-bold">' . $day . '</td>';
-                                            } else {
-                                                echo '<td>' . $day . '</td>';
+                                                // 目標日の場合（赤）
+                                                $class = 'bg-danger text-white fw-bold';
+                                            } elseif ($currentDate === $todayStr) {
+                                                // 今日の場合（青：Bootstrapのbg-infoやbg-primaryを使用）
+                                                $class = 'bg-primary text-white fw-bold';
                                             }
+
+                                            echo '<td class="' . $class . '">' . $day . '</td>';
 
                                             if (($day + $startWeekDay) % 7 === 0) {
                                                 echo '</tr><tr>';
@@ -286,6 +314,8 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                     </tr>
                                 </tbody>
                             </table>
+                            青マス：今日の日付<br>
+                            赤マス：目標日
 
                         </div>
                     </div>

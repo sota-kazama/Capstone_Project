@@ -5,17 +5,9 @@ session_start();
 
 // 未ログインの場合
 if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
-
-// 管理者チェック（必要なら有効化）
-/*
-if ($_SESSION['member']->u_admin != 1) {
-    header('Location: ../index.php');
-    exit;
-}
-*/
 
 $member = $_SESSION['member'];
 // ★ テーマ CSS 読み込みのため、Cookieからテーマ設定を読み込む

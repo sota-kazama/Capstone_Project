@@ -39,7 +39,7 @@ class GoalsDAO
                 update_at AS updated_at
             FROM u_goals
             WHERE user_id = ?
-            ORDER BY created_ad DESC
+            ORDER BY created_ad desc
         ";
         $stmt = $dbh->prepare($sql);
         $stmt->execute([$user_id]);
@@ -95,7 +95,7 @@ class GoalsDAO
                 update_at AS updated_at
             FROM u_goals
             WHERE user_id = ?
-            ORDER BY created_ad ASC
+            ORDER BY created_ad DESC
         ";
         $stmt = $dbh->prepare($sql);
         $stmt->execute([$user_id]);
@@ -132,16 +132,16 @@ class GoalsDAO
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())
         ";
         $stmt = $dbh->prepare($sql);
-        
+
         // プレースホルダ (?) は合計 8個 なので、配列の中身も 8個 に合わせます
         return $stmt->execute([
-            $user_id, 
-            $goal, 
-            $mile_stone, 
-            $mile_stone2, 
-            $mile_stone3, 
-            $mile_stone4, 
-            $mile_stone5, 
+            $user_id,
+            $goal,
+            $mile_stone,
+            $mile_stone2,
+            $mile_stone3,
+            $mile_stone4,
+            $mile_stone5,
             $goal_date
         ]);
     }

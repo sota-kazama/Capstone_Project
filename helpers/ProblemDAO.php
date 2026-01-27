@@ -98,7 +98,7 @@ class ProblemDAO
 
         return implode('_', $result);
     }
-    
+
     //分野名取得
     public function getProblemName(): array
     {

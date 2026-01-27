@@ -1,72 +1,39 @@
 <?php
-// BASE_URL の定義と読み込み
-require_once __DIR__ . '/../helpers/config.php'; // BASE_URL 読み込み
+require_once __DIR__ . '/../helpers/config.php';
 
-// 現在のページファイル名
-$current = basename($_SERVER['PHP_SELF']);
+$current = basename($_SERVER['SCRIPT_NAME']); // 現在のページファイル名
+
+$menus = [
+    ['file' => '/problem/category_select.php', 'label' => '問題', 'icon' => 'bi-check2-square'],
+    ['file' => '/book.php',                     'label' => '書籍検索', 'icon' => 'bi-book'],
+    ['file' => '/testpage.php',                 'label' => 'test', 'icon' => 'bi-check2-square'],
+];
+
+// ログイン時メニュー
+if (isset($member)) {
+    $menus = array_merge($menus, [
+        ['file' => '/thread_list.php',               'label' => '掲示板',   'icon' => 'bi-person-fill'],
+        ['file' => '/mypage/mypage.php',            'label' => 'マイページ', 'icon' => 'bi-card-list'],
+        ['file' => '/Shitsumonbako/question_list.php', 'label' => '質問箱', 'icon' => 'bi-chat-left'],
+    ]);
+}
 ?>
 
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; height: 1617px;">
-    <a href="<?= BASE_URL ?>/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        </a>
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px; min-height:100vh;">
+    <a href="<?= BASE_URL ?>/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"></a>
+
     <ul class="nav nav-pills flex-column mb-auto">
-        <li>
-            <a
-                href="<?= BASE_URL ?>/problem/category_select.php"
-                class="nav-link <?= $current === 'category_select.php' ? 'active' : 'link-body-emphasis' ?>"
-            >
-                <i class="bi bi-check2-square"></i>
-                問題
-            </a>
-        </li>
-
-        <li>
-            <a
-                href="<?= BASE_URL ?>/book.php"
-                class="nav-link <?= $current === 'book.php' ? 'active' : 'link-body-emphasis' ?>"
-            >
-                <i class="bi bi-book"></i>
-                書籍検索
-            </a>
-        </li>
-               <li>
-            <a
-                href="<?= BASE_URL ?>/testpage.php"
-                class="nav-link <?= $current === 'testpage.php' ? 'active' : 'link-body-emphasis' ?>"
-            >
-                <i class="bi bi-check2-square"></i>
-                test
-            </a>
-        </li>
-
-        <?php if(isset($member)) : ?>
+        <?php foreach ($menus as $menu): 
+            $isActive = basename($menu['file']) === $current;
+        ?>
             <li>
-                <a
-                    href="<?= BASE_URL ?>/thread_list.php"
-                    class="nav-link <?= $current === 'board.php' ? 'active' : 'link-body-emphasis' ?>"
-                >
-                    <i class="bi bi-person-fill"></i>
-                    掲示板
+                <a href="<?= BASE_URL . $menu['file'] ?>" 
+                   class="nav-link <?= $isActive ? 'active' : 'link-body-emphasis' ?>" 
+                   <?= $isActive ? 'aria-current="page"' : '' ?>>
+                    <i class="bi <?= htmlspecialchars($menu['icon'], ENT_QUOTES, 'UTF-8') ?>"></i>
+                    <?= htmlspecialchars($menu['label'], ENT_QUOTES, 'UTF-8') ?>
                 </a>
             </li>
-            <li>
-                <a
-                    href="<?= BASE_URL ?>/mypage/mypage.php"
-                    class="nav-link <?= $current === 'mypage.php' ? 'active' : 'link-body-emphasis' ?>"
-                >
-                    <i class="bi bi-card-list"></i>
-                    マイページ
-                </a>
-            </li>
-            <li>
-                <a
-                    href="<?= BASE_URL ?>/Shitsumonbako/question_list.php"
-                    class="nav-link <?= $current === 'question_list.php' ? 'active' : 'link-body-emphasis' ?>"
-                >
-                    <i class="bi bi-chat-left"></i>
-                    質問箱
-                </a>
-            </li>
-        <?php endif; ?>
+        <?php endforeach; ?>
     </ul>
 </div>

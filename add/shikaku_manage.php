@@ -4,8 +4,9 @@ require_once '../helpers/ShikakuDAO.php';
 
 session_start();
 
+// 未ログインの場合
 if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 

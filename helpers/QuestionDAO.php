@@ -163,7 +163,7 @@ public function search(string $keyword): array
         SELECT *
         FROM question_data
         WHERE q_content LIKE ?
-           OR q_source LIKE ?
+        OR q_source LIKE ?
         ORDER BY q_number DESC
     ";
 

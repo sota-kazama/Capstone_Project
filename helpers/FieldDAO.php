@@ -24,7 +24,7 @@ class FieldDAO
     public function getAll(): array
     {
         $sql = "SELECT f.area_number, f.area_name, f.s_number,
-                       s.s_name, f.created_ad, f.update_at
+                    s.s_name, f.created_ad, f.update_at
                 FROM q_categories f
                 JOIN shikaku s ON f.s_number = s.s_number
                 ORDER BY f.area_number";

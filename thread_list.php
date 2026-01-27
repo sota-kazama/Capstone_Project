@@ -16,9 +16,9 @@ if (!class_exists('Member')) {
     }
 }
 
-// ===== ログインチェック =====
+// 未ログインならリダイレクト
 if (!isset($_SESSION['member'])) {
-    header('Location: login.php');
+    header('Location: auth/login.php');
     exit;
 }
 
