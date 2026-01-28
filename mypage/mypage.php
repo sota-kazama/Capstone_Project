@@ -180,9 +180,6 @@ $theme = $_COOKIE['theme'] ?? 'light';
                             $bg_style = $is_achieved 
                                 ? "background-image: url('../images/sakura.png'); background-size: cover; background-position: center; border: none;" 
                                 : "background-color: #f8f9fa;";
-                            
-                            // 達成時のテキスト色調整（画像で見えにくい場合）
-                            $text_color = $is_achieved ? "color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);" : "";
                         ?>
                             <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center milestone-box" 
                                 style="width: 100%; max-width: 80px; aspect-ratio: 1/1; cursor: default; <?= $bg_style ?>"
