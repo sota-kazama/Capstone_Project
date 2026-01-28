@@ -12,13 +12,13 @@ class BookMark
 }
 class BookMarkDAO
 {
-    //しおり存在確認
+    //ブックマーク存在確認
     public function getUserLabel(int $user_id, $label_id) {
         $dbh = DAO::get_db_connect();
         $sql = "select * from u_labels where user_id = :user_id and label = :label";
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->bindValue(':label', $label, PDO::PARAM_INT);
+        $stmt->bindValue(':label_id', $label_id, PDO::PARAM_INT);
         $stmt->execute();
         if($stmt -> fetch() !== false){
             return true;
@@ -28,7 +28,7 @@ class BookMarkDAO
     }
 
     //ブックマーク登録または更新
-    public function insertBookmark(Bookmark $bookmark): void
+    public function insertBookmark(Bookmark $bookmark)
     {
         $dbh = DAO::get_db_connect();
         if(!$this->getUserLabel($user_id,$label_id)){
@@ -45,6 +45,7 @@ class BookMarkDAO
                     s_number = :s_number,
                     update_at = GETDATE()
                     WHERE area_number = :area_number";
+                    
         }
     }
 

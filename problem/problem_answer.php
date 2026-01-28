@@ -76,110 +76,6 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
 <div class="d-flex w-100 min-vh-100">
     <?php include '../template/side.php'; ?>
 
-<<<<<<< HEAD
-    <body>
-        <div class="d-flex w-100 min-vh-100">
-            <?php include '../template/side.php';?>
-
-            <main class="main-content">
-                <!--ここに記載する-->
-                <div class="d-flex flex-wrap">
-                    <h1>問題解説</h1>
-
-                    <?php if (isset($member) && strpos($referer, 'problem_response.php') !== false) : ?>
-                        <form action="problem.php" method="post" class="ms-auto">
-                            <input type="hidden" name="bookmark_q_number" value="<?= $question->q_number ?>">
-                            <input type="hidden" name="area_number" value="<?= $area_number?>">
-                            <input type="hidden" name="i" value="<?= $i?>">
-                            <input type="submit" class="btn btn-outline-primary" value="ブックマーク">
-                        </form>
-                    <?php endif; ?>
-                    
-                </div>
-                <h2>第<?php echo $question->q_number; ?>問</h2>
-                <h3><?= htmlspecialchars($question->q_content) ?></h3>
-                <?php if($question->image_path !== null) : ?>
-                    <img src="../uploads/<?= $question->image_path?>" alt="">
-                <?php endif;?>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th style="width: 10%">選択肢</th>
-                            <th>問題文</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <?php if($A === $answer_content) : ?>
-                                <td><a class="btn btn-success" role="button">A</a></td>
-                                <td><?= $question->answer_content?></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">A</a></td>
-                                <td></td>                                
-                            <?php endif;?>
-                        </tr>
-                        <tr>
-                            <?php if($B === $answer_content) : ?>
-                                <td><a class="btn btn-success" role="button">B</a></td>
-                                <td><?= $question->answer_content?></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">B</a></td>
-                                <td><?= $question->wrong_answer1?></td>
-                            <?php endif;?>
-                        </tr>
-                        <tr>
-                            <?php if($C === $answer_content) : ?>
-                                <td><a class="btn btn-success" role="button">C</a></td>
-                                <td><?= $question->answer_content?></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">C</a></td>
-                                <td><?= $question->wrong_answer2?></td>                                
-                            <?php endif;?>
-                        </tr>
-                        <tr>
-                            <?php if($D === $answer_content) : ?>
-                                <td><a class="btn btn-success" role="button">D</a></td>
-                                <td><?= $question->answer_content?></td>
-                            <?php else :?>
-                                <td><a class="btn btn-danger" role="button">D</a></td>
-                                <td><?= $question->wrong_answer3?></td>
-                            <?php endif;?>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="d-flex flex-wrap justify-content-center">
-                    <div style="width: 13rem">
-                        <?php if(strpos($referer, 'problem_response.php') !== false) : ?>
-                            <?php if(!empty($questions) && isset($questions[$i+1])) : ?>
-                                <a href="problem_response.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
-                                    次の問題
-                                </a>
-                            <?php else : ?>
-                                <a href="problem_result.php" class="btn btn-outline-primary w-100">結果を見る</a>
-                            <?php endif;?>
-                        <?php else :?>
-                            <?php if(!empty($questions) && isset($questions[$i+1])) : ?>
-                                <a href="problem_review.php?i=<?php echo $i + 1; ?>" class="btn btn-outline-primary w-100">
-                                    次の問題
-                                </a>
-                            <?php else : ?>
-                                <a href="problem_result.php" class="btn btn-outline-primary w-100">結果を見る</a>
-                            <?php endif;?>
-                        <?php endif;?>
-                    </div>
-                </div>
-                <?php if (isset($member)) : ?>
-                <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-outline-success ms-auto" disabled>1</button>
-                    <button type="button" class="btn btn-outline-warning" disabled>2</button>
-                    <button type="button" class="btn btn-outline-danger" disabled>3</button>
-                </div>
-                <?php endif; ?>
-                <div class="container">        <!-- 全体を囲むコンテナ -->
-  
-            </main>
-=======
     <main class="main-content">
         <div class="d-flex align-items-center mb-3">
             <h1>問題解説</h1>
@@ -189,7 +85,6 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
                 <button type="submit" class="btn btn-outline-primary">ブックマーク</button>
             </form>
             <?php endif; ?>
->>>>>>> 9bc8a4614ed9bf0d2c2328486b194e0ed79b8a27
         </div>
 
         <h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>

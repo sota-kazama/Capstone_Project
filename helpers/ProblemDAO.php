@@ -124,19 +124,6 @@ class ProblemDAO
     // 指定分野の問題情報をすべて取得
     public function getQuestionsByArea(string $area_number): array
     {
-<<<<<<< HEAD
-        $dbh = DAO::get_db_connect();
-        $sql = "
-            SELECT q.*
-            FROM question_data q
-            INNER JOIN q_middle m
-                ON q.q_number = m.q_number
-            WHERE m.area_number = :area_number
-            ORDER BY q.q_number
-        ";
-
-        $stmt = $dbh->prepare($sql);
-=======
         $sql = "SELECT q.* 
                 FROM question_data q
                 INNER JOIN q_middle m ON q.q_number = m.q_number
@@ -144,7 +131,6 @@ class ProblemDAO
                 ORDER BY q.q_number";
 
         $stmt = $this->pdo->prepare($sql);
->>>>>>> 9bc8a4614ed9bf0d2c2328486b194e0ed79b8a27
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
         $stmt->execute();
 

@@ -52,22 +52,6 @@ $question = $questions[$i];
     <div class="d-flex align-items-center">
         <h1>問題回答</h1>
 
-<<<<<<< HEAD
-            <main class="main-content">
-                <!--ここに記載する-->
-                <div class="d-flex flex-wrap">
-                    <h1>問題回答</h1>
-                    <!--しおり--> 
-                    <?php if (isset($member)) : ?>
-                        <form action="problem.php" method="post" class="ms-auto">
-                            <input type="hidden" name="bookmark_q_number" value="<?= $question->q_number ?>">
-                            <input type="hidden" name="area_number" value="<?= $area_number?>">
-                            <input type="hidden" name="i" value="<?= $i?>">
-                            <input type="submit" class="btn btn-outline-primary" value="ブックマーク">
-                        </form>
-                    <?php endif; ?>
-                </div>
-=======
         <!-- ブックマーク -->
         <?php if ($member): ?>
         <form action="problem.php" method="post" class="ms-auto">
@@ -77,7 +61,6 @@ $question = $questions[$i];
         </form>
         <?php endif; ?>
     </div>
->>>>>>> 9bc8a4614ed9bf0d2c2328486b194e0ed79b8a27
 
     <h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>
     <h3><?= htmlspecialchars($question->q_content) ?></h3>
