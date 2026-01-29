@@ -10,7 +10,7 @@
 <!-- メニュー -->
 <nav class="menu" id="menu">
     <ul>
-        <li><a href="<?= BASE_URL ?>/problem/problem.php">問題</a></li>
+        <li><a href="<?= BASE_URL ?>/problem/category_select.php">問題</a></li>
         <li><a href="<?= BASE_URL ?>/book.php">書籍検索</a></li>
         <?php if (isset($member)) : ?>
             <li><a href="<?= BASE_URL ?>/board.php">掲示板</a></li>
