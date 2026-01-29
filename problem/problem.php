@@ -27,19 +27,17 @@ if (isset($_POST['bookmark_q_number'])) {
 // ブックマークされた問題を取得
 $bookmarkQuestion = null;
 
-$_SESSION['problemString'] = $dao2->getProblemIdString($_SESSION['area_number']);
+$_SESSION['problemString'] = $dao2->getProblemIdString($area_number);
 echo $_SESSION['problemString'];
 
 if(isset($member)) {
     if (isset($_SESSION['bookmark_q_number'])) {
         $bookmarkQuestion = $dao3->findById($_SESSION['bookmark_q_number']);
-        if($dao4->getUserLabel($member->user_id, $_SESSION['bookmark_q_number']) === true) {
             $a = new BookMark();
-            $a->user_id = $member->user_id;
-            $a->label_id = $_SESSION['area_number'];
-            $a->q_number = $_SESSION['bookmark_q_number'];
-            $dao4->insertBookmark($a);
-        }
+            $user_id = $member->user_id;
+            $label_id = 1;
+            $q_number = $_SESSION['bookmark_q_number'];
+            $dao4->insertOrUpdateBookmark($user_id, $label_id, $q_number);
     }
     $problem = $dao->getUserProblem($member->user_id);
 }

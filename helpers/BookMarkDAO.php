@@ -13,9 +13,9 @@ class BookMark
 class BookMarkDAO
 {
     //ブックマーク存在確認
-    public function getUserLabel(int $user_id, $label_id) {
+    public function getUserLabel(int $user_id, int $label_id) {
         $dbh = DAO::get_db_connect();
-        $sql = "select * from u_labels where user_id = :user_id and label = :label";
+        $sql = "select * from u_labels where user_id = :user_id and label_id = :label_id";
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindValue(':label_id', $label_id, PDO::PARAM_INT);
@@ -28,24 +28,26 @@ class BookMarkDAO
     }
 
     //ブックマーク登録または更新
-    public function insertBookmark(Bookmark $bookmark)
+    public function insertOrUpdateBookmark(int $user_id, int $label_id, int $q_number)
     {
         $dbh = DAO::get_db_connect();
         if(!$this->getUserLabel($user_id,$label_id)){
-            $sql = "INSERT INTO u_labels (user_id, label_id, label, create_ad, update_at)
-                    VALUES (:user_id, :label_id, :label, GETDATE(), GETDATE())";
+            $sql = "INSERT INTO u_labels (user_id, label_id, q_number, create_ad, update_at)
+                    VALUES (:user_id, :label_id, :q_number, GETDATE(), GETDATE())";
             $stmt = $dbh->prepare($sql);
-            $stmt->bindValue(':user_id', $bookmark->user_id, PDO::PARAM_INT);
-            $stmt->bindValue(':label_id', $bookmark->label_id, PDO::PARAM_INT);
-            $stmt->bindValue(':label', $bookmark->q_number, PDO::PARAM_INT);
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':label_id', $label_id, PDO::PARAM_INT);
+            $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
             $stmt->execute();
         } else {
             $sql = "UPDATE u_labels
-                    SET area_name = :area_name,
-                    s_number = :s_number,
-                    update_at = GETDATE()
-                    WHERE area_number = :area_number";
-                    
+                    SET q_number = :q_number, update_at = GETDATE()
+                    WHERE user_id = :user_id and label_id = :label_id";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':label_id', $label_id, PDO::PARAM_INT);
+            $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
+            $stmt->execute();
         }
     }
 
