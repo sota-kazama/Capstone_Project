@@ -39,6 +39,9 @@ $theme = $_COOKIE['theme'] ?? 'light';
         <main class="main-content flex-grow-1 p-4">
             <div class="mb-4">
                 <h1 class="mb-2">トップページ</h1>
+                <h2>概要</h2>
+                <p>このWebシステムは資格取得など目標に向けた学習マイルストーンです。</p>
+                <p>日記のように成果を記録してモチベーションを上げたり、先生に質問して疑問を解消したりすることができます。</p>
                 <p>左のサイドバー、もしくは右上のハンバーガーメニューから機能を選択してください。</p>
             </div>
 
@@ -67,6 +70,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
                         echo '<div class="alert alert-info">更新情報はありません。</div>';
                     }
                 ?>
+                
             </div>
 
             <!-- 不具合報告セクション -->
@@ -95,7 +99,32 @@ $theme = $_COOKIE['theme'] ?? 'light';
                     }
                 ?>
             </div>
-
+            <div class="d-flex flex-wrap justify-content-center p-2 g-col-6 gap-4">
+                <div class="card shadow-sm" style="width: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold">
+                            <a href="problem/category_select.php" class="btn btn-outline-primary w-100">問題演習</a>
+                        </h5>
+                        <p>基本情報技術者試験やITパスポートなどの問題を解くことができます</p>
+                    </div>
+                </div>
+                <div class="card shadow-sm" style="width: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold">
+                            <a href="book.php" class="btn btn-outline-primary w-100">書籍検索</a>
+                        </h5>
+                        <p>参考書の検索ができます</p>
+                        <p>Amazonへ遷移して購入することも可能です</p> 
+                    </div>
+                </div>
+                <div class="card shadow-sm" style="width: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold">レベル3(復習必要)</h5>
+                        <h5 class="card-title fw-semibold">〇問</h5>
+                        <a href="problem_review.php" class="btn btn-outline-danger w-100">復習</a>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
