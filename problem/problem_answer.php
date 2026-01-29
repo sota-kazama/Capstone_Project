@@ -26,137 +26,95 @@ if (empty($questions) || !isset($questions[$i])) {
 
 $question = $questions[$i];
 
-// 初回アクセス時の alpha/beta 初期化
-if (!isset($_SESSION['alpha']) || !isset($_SESSION['beta'])) {
-    $_SESSION['alpha'] = $dao->getProblemIdString($area_number);
-    $_SESSION['beta'] = '';
-}
+// 選択肢を配列にまとめる
+$choices = [
+    1 => $question->choices1,
+    2 => $question->choices2,
+    3 => $question->choices3,
+    4 => $question->choices4,
+];
 
-// POST送信があれば alpha/beta 更新
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $selectedAnswer = $_POST['answer'] ?? '';
-    
-    // alphaの先頭削除
-    $_SESSION['alpha'] = $dao->removeHeadFromAlpha($_SESSION['alpha']);
-    
-    // betaに追加
-    $_SESSION['beta'] = $dao->addToBeta($_SESSION['beta'], $question->q_number);
+// 正解番号（JSON -> 配列）
+$correctAnswers = json_decode($question->correct_answers, true) ?? [];
 
-    // ユーザーデータ更新（ログイン中のみ）
-    if ($member) {
-        $daoMember = new MemberDAO();
-        $daoMember->updateUserProblem($member->user_id, $_SESSION['alpha']);
-    }
+// ユーザーの選択（番号）
+$selectedAnswer = isset($_POST['answer']) ? (int)$_POST['answer'] : null;
 
-    // 正解判定
-    $isCorrect = ($selectedAnswer === $question->answer_content);
-} else {
-    $selectedAnswer = null;
-    $isCorrect = null;
-}
-
-// リファラー判定（前ページ）
-$referer = $_SERVER['HTTP_REFERER'] ?? '';
+// 正誤判定
+$isCorrect = $selectedAnswer !== null
+    && in_array($selectedAnswer, $correctAnswers, true);
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
-    <?php include '../template/header.php'; ?>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css/BaseDesignData.css" rel="stylesheet">
+    <link href="../css/side.css" rel="stylesheet">
     <title>問題解説</title>
 </head>
 
 <body>
 <div class="d-flex w-100 min-vh-100">
-    <?php include '../template/side.php'; ?>
+<?php include '../template/side.php'; ?>
 
-    <main class="main-content">
-        <div class="d-flex align-items-center mb-3">
-            <h1>問題解説</h1>
-            <!-- しおり -->
-            <?php if ($member && strpos($referer, 'problem_response.php') !== false): ?>
-            <form action="problem.php" method="post" class="ms-auto">
-                <input type="hidden" name="bookmark_q_number" value="<?= htmlspecialchars($question->q_number) ?>">
-                <input type="hidden" name="area_number" value="<?= htmlspecialchars($area_number) ?>">
-                <input type="hidden" name="i" value="<?= htmlspecialchars($i) ?>">
-                <button type="submit" class="btn btn-outline-primary">ブックマーク</button>
-            </form>
-            <?php endif; ?>
-        </div>
+<main class="main-content p-4">
 
-        <h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>
-        <h3><?= htmlspecialchars($question->q_content) ?></h3>
-        <?php if (!empty($question->image_path)): ?>
-            <img src="../uploads/<?= htmlspecialchars($question->image_path) ?>" class="img-fluid mb-3">
-        <?php endif; ?>
+<h1>問題解説</h1>
+<h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>
+<h3><?= htmlspecialchars($question->q_content) ?></h3>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th style="width: 10%">選択</th>
-                    <th>内容</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $options = [
-                    'A' => $question->answer_content,
-                    'B' => $question->wrong_answer1,
-                    'C' => $question->wrong_answer2,
-                    'D' => $question->wrong_answer3
-                ];
-                foreach ($options as $label => $text):
-                    $btnClass = '';
-                    $displayText = htmlspecialchars($text);
+<?php if (!empty($question->image_path)): ?>
+    <img src="../uploads/<?= htmlspecialchars($question->image_path) ?>"
+         class="img-fluid mb-3">
+<?php endif; ?>
 
-                    if ($selectedAnswer !== null) {
-                        $btnClass = ($selectedAnswer === $text) ? 'btn-success' : 'btn-danger';
-                        if ($selectedAnswer !== $text && $text === $question->answer_content) {
-                            $displayText = htmlspecialchars($text) . " (正解)";
-                        }
-                    }
-                ?>
-                <tr>
-                    <td>
-                        <button class="btn <?= $btnClass ?>" disabled><?= $label ?></button>
-                    </td>
-                    <td><?= $displayText ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+<hr>
 
-        <!-- 次の問題リンク -->
-        <div class="d-flex justify-content-center mb-3">
-            <div style="width: 13rem">
-                <?php if (!empty($questions) && isset($questions[$i+1])): ?>
-                    <a href="problem_response.php?i=<?= $i + 1 ?>" class="btn btn-outline-primary w-100">次の問題</a>
-                <?php else: ?>
-                    <a href="problem_result.php" class="btn btn-outline-primary w-100">結果を見る</a>
-                <?php endif; ?>
-            </div>
-        </div>
+<p>
+<strong>あなたの選択：</strong>
+<?= $selectedAnswer ? htmlspecialchars($choices[$selectedAnswer]) : '未回答' ?>
+</p>
 
-        <?php if ($member): ?>
-        <div class="d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-outline-success ms-auto" disabled>1</button>
-            <button type="button" class="btn btn-outline-warning" disabled>2</button>
-            <button type="button" class="btn btn-outline-danger" disabled>3</button>
-        </div>
-        <?php endif; ?>
-    </main>
+<p>
+<strong>正解：</strong>
+<?php
+$correctTexts = array_map(
+    fn($n) => $choices[$n] ?? '',
+    $correctAnswers
+);
+echo htmlspecialchars(implode(' / ', $correctTexts));
+?>
+</p>
+
+<p class="<?= $isCorrect ? 'text-success' : 'text-danger' ?>">
+    <?= $isCorrect ? '正解です！' : '不正解です。' ?>
+</p>
+
+<p><strong>解説：</strong><?= htmlspecialchars($question->q_source) ?></p>
+
+<!-- 次へ -->
+<div class="d-flex justify-content-center mb-3">
+<div style="width: 13rem">
+<?php if (isset($questions[$i + 1])): ?>
+    <a href="problem_response.php?i=<?= $i + 1 ?>"
+       class="btn btn-outline-primary w-100">
+        次の問題
+    </a>
+<?php else: ?>
+    <a href="problem_result.php"
+       class="btn btn-outline-primary w-100">
+        結果を見る
+    </a>
+<?php endif; ?>
+</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+</main>
+</div>
 </body>
-
-<footer>
-<?php include '../template/footer.php'; ?>
-</footer>
 </html>

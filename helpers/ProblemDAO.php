@@ -1,6 +1,9 @@
 <?php
 require_once 'DAO.php';
 
+/**
+ * 分野エンティティ
+ */
 class Category
 {
     public string $area_number;   // 分野番号
@@ -11,9 +14,11 @@ class Category
     public ?string $update_at;    // 更新日時
 }
 
+/**
+ * 分野・問題管理DAO
+ */
 class ProblemDAO
 {
-    // ===================== DB接続 =====================
     private PDO $pdo;
 
     public function __construct()
@@ -23,12 +28,17 @@ class ProblemDAO
 
     // ===================== 分野管理 =====================
 
-    // 分野を登録
-    public function insertCategory(string $area_name, string $s_number, string $area_number): bool
-    {
-        $sql = "INSERT INTO q_categories 
-                (area_number, area_name, s_number, created_ad, update_at)
-                VALUES (:area_number, :area_name, :s_number, GETDATE(), GETDATE())";
+    /** 分野登録 */
+    public function insertCategory(
+        string $area_name,
+        string $s_number,
+        string $area_number
+    ): bool {
+        $sql = "
+            INSERT INTO q_categories
+            (area_number, area_name, s_number, created_ad, update_at)
+            VALUES (:area_number, :area_name, :s_number, GETDATE(), GETDATE())
+        ";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
@@ -38,30 +48,40 @@ class ProblemDAO
         return $stmt->execute();
     }
 
-    // 全分野取得（資格名付き）
+    /** 全分野取得（資格名付き） */
     public function getAllCategories(): array
     {
-        $sql = "SELECT c.area_number, c.area_name, c.s_number, s.s_name, c.created_ad, c.update_at
-                FROM q_categories c
-                LEFT JOIN Shikaku s ON c.s_number = s.s_number
-                ORDER BY c.area_number";
+        $sql = "
+            SELECT
+                c.area_number,
+                c.area_name,
+                c.s_number,
+                s.s_name,
+                c.created_ad,
+                c.update_at
+            FROM q_categories c
+            LEFT JOIN Shikaku s ON c.s_number = s.s_number
+            ORDER BY c.area_number
+        ";
 
         $stmt = $this->pdo->query($sql);
-        $categories = [];
-        while ($row = $stmt->fetchObject('Category')) {
-            $categories[] = $row;
-        }
-        return $categories;
+        return $stmt->fetchAll(PDO::FETCH_CLASS, 'Category');
     }
 
-    // 分野情報更新
-    public function updateCategory(string $area_number, string $area_name, string $s_number): bool
-    {
-        $sql = "UPDATE q_categories
-                SET area_name = :area_name,
-                    s_number = :s_number,
-                    update_at = GETDATE()
-                WHERE area_number = :area_number";
+    /** 分野更新 */
+    public function updateCategory(
+        string $area_number,
+        string $area_name,
+        string $s_number
+    ): bool {
+        $sql = "
+            UPDATE q_categories
+            SET
+                area_name = :area_name,
+                s_number = :s_number,
+                update_at = GETDATE()
+            WHERE area_number = :area_number
+        ";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':area_name', $area_name, PDO::PARAM_STR);
@@ -71,7 +91,7 @@ class ProblemDAO
         return $stmt->execute();
     }
 
-    // 分野削除
+    /** 分野削除 */
     public function deleteCategory(string $area_number): bool
     {
         $sql = "DELETE FROM q_categories WHERE area_number = :area_number";
@@ -80,25 +100,40 @@ class ProblemDAO
         return $stmt->execute();
     }
 
-    // 分野番号・分野名取得（セレクトボックス用）
+    /** セレクトボックス用 */
     public function getProblemName(): array
     {
         $sql = "SELECT area_number, area_name FROM q_categories ORDER BY area_number";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // ===================== 問題取得 =====================
 
-    // 全問題取得
+    /** 全問題取得（DB新構成対応） */
     public function getAllQuestions(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM questions ORDER BY question_id ASC");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "
+            SELECT
+                q_number,
+                q_content,
+                q_source,
+                answers,
+                correct_answers,
+                image_path,
+                choices1,
+                choices2,
+                choices3,
+                choices4,
+                created_ad,
+                update_ad
+            FROM question_data
+            ORDER BY q_number
+        ";
+
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 指定分野の問題IDを _ 区切り文字列で取得
+    /** 指定分野の問題IDを _ 区切り文字列で取得 */
     public function getProblemIdString(string $area_number): string
     {
         $sql = "SELECT q_number FROM q_middle WHERE area_number = :area_number";
@@ -106,14 +141,19 @@ class ProblemDAO
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
         $stmt->execute();
 
-        $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        return implode('_', $result);
+        return implode('_', $stmt->fetchAll(PDO::FETCH_COLUMN));
     }
 
-    // 指定分野の問題ID一覧取得
+    /** 指定分野の問題ID配列 */
     public function getProblemIdsByArea(string $area_number): array
     {
-        $sql = "SELECT q_number FROM q_middle WHERE area_number = :area_number ORDER BY q_number";
+        $sql = "
+            SELECT q_number
+            FROM q_middle
+            WHERE area_number = :area_number
+            ORDER BY q_number
+        ";
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
         $stmt->execute();
@@ -121,14 +161,29 @@ class ProblemDAO
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    // 指定分野の問題情報をすべて取得
+    /** 指定分野の問題情報取得（新question_data構造対応） */
     public function getQuestionsByArea(string $area_number): array
     {
-        $sql = "SELECT q.* 
-                FROM question_data q
-                INNER JOIN q_middle m ON q.q_number = m.q_number
-                WHERE m.area_number = :area_number
-                ORDER BY q.q_number";
+        $sql = "
+            SELECT
+                q.q_number,
+                q.q_content,
+                q.q_source,
+                q.answers,
+                q.correct_answers,
+                q.image_path,
+                q.choices1,
+                q.choices2,
+                q.choices3,
+                q.choices4,
+                q.created_ad,
+                q.update_ad
+            FROM question_data q
+            INNER JOIN q_middle m
+                ON q.q_number = m.q_number
+            WHERE m.area_number = :area_number
+            ORDER BY q.q_number
+        ";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':area_number', $area_number, PDO::PARAM_STR);
@@ -139,7 +194,7 @@ class ProblemDAO
 
     // ===================== 文字列操作 =====================
 
-    // 文字列αから先頭を削除
+    /** α文字列の先頭削除 */
     public function removeHeadFromAlpha(string $alpha): string
     {
         if ($alpha === '') return '';
@@ -148,11 +203,10 @@ class ProblemDAO
         return implode('_', $arr);
     }
 
-    // 文字列βに値を追加
+    /** β文字列に値追加 */
     public function addToBeta(string $beta, string $num): string
     {
-        if ($beta === '') return $num;
-        return $beta . '_' . $num;
+        return $beta === '' ? $num : $beta . '_' . $num;
     }
 }
 ?>
