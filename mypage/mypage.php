@@ -158,53 +158,61 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
         <!-- ===== 中段 ===== -->
         <div class="row g-4">
-    <div class="col-12">
-        <div class="card shadow-sm">
-            <div class="card-header fw-bold">
-                マイルストーン達成状況
-            </div>
-            <div class="card-body">
-                <div class="d-flex flex-wrap gap-2">
-                    <?php if (!empty($milestones)): ?>
-                        <?php foreach ($milestones as $index => $stone): 
-                            // --- 達成判定ロジック（ここを環境に合わせて調整してください） ---
-                            // 例：1つ目のマスは回答10以上、2つ目は20以上...で達成とする場合
-                            $threshold = ($index + 1) * 10; 
-                            $is_achieved = ($answers_count >= $threshold);
-                            
-                            // もしDBに「どこまで達成したか」の数値（1〜5）があるなら：
-                            // $is_achieved = ($goal_data->achieved_level > $index);
-                            // -------------------------------------------------------
-                            
-                            // 背景スタイルの決定
-                            $bg_style = $is_achieved 
-                                ? "background-image: url('../images/sakura.png'); background-size: cover; background-position: center; border: none;" 
-                                : "background-color: #f8f9fa;";
-                        ?>
-                            <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center milestone-box" 
-                                style="width: 100%; max-width: 80px; aspect-ratio: 1/1; cursor: default; <?= $bg_style ?>"
-                                title="<?= htmlspecialchars($stone) ?>">
-                                
-                                <span style="font-size: 0.7rem; 
-                                            line-height: 1.2; 
-                                            overflow: hidden; 
-                                            display: -webkit-box; 
-                                            -webkit-box-orient: vertical; 
-                                            -webkit-line-clamp: 3;
-                                            <?= $text_color ?>"> 
-                                    <?= htmlspecialchars($stone) ?>
-                                </span>
-                                
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p class="text-muted mb-0">設定されたマイルストーンはありません。</p>
-                    <?php endif; ?>
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header fw-bold">
+                        マイルストーン達成状況
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <?php if (!empty($milestones)): ?>
+                                <?php foreach ($milestones as $index => $stone): 
+                                    // 1. DBの達成フラグ用プロパティ名を生成
+                                    // テーブル設計が ms1_status, ms2_status... の場合を想定
+                                    $num = $index + 1;
+                                    $flag_prop = "ms{$num}_status";
+                                    
+                                    // 2. 達成判定 (1なら達成)
+                                    $is_achieved = (isset($goal_data->$flag_prop) && $goal_data->$flag_prop == 1);
+                                    
+                                    // 3. 背景スタイルの決定
+                                    if ($is_achieved) {
+                                        // 達成済み：サクラ背景
+                                        $bg_style = "background-image: url('../images/sakura.png'); 
+                                                    background-size: cover; 
+                                                    background-position: center; 
+                                                    border: none; 
+                                                    color: #d63384; 
+                                                    font-weight: bold; 
+                                                    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);";
+                                    } else {
+                                        // 未達成：デフォルト（薄いグレー）
+                                        $bg_style = "background-color: #f8f9fa; color: #6c757d;";
+                                    }
+                                ?>
+                                    <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center milestone-box" 
+                                        style="width: 100%; max-width: 80px; aspect-ratio: 1/1; cursor: default; <?= $bg_style ?>"
+                                        title="<?= htmlspecialchars($stone) ?>">
+                                        
+                                        <span style="font-size: 0.7rem; 
+                                                    line-height: 1.2; 
+                                                    overflow: hidden; 
+                                                    display: -webkit-box; 
+                                                    -webkit-box-orient: vertical; 
+                                                    -webkit-line-clamp: 3;"> 
+                                            <?= htmlspecialchars($stone) ?>
+                                        </span>
+                                        
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p class="text-muted mb-0">設定されたマイルストーンはありません。</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
         <!-- ===== 下段 ===== -->
         <div class="row g-4">
