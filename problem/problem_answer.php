@@ -79,9 +79,12 @@ $referer = $_SERVER['HTTP_REFERER'] ?? '';
     <main class="main-content">
         <div class="d-flex align-items-center mb-3">
             <h1>問題解説</h1>
+            <!-- しおり -->
             <?php if ($member && strpos($referer, 'problem_response.php') !== false): ?>
             <form action="problem.php" method="post" class="ms-auto">
                 <input type="hidden" name="bookmark_q_number" value="<?= htmlspecialchars($question->q_number) ?>">
+                <input type="hidden" name="area_number" value="<?= htmlspecialchars($area_number) ?>">
+                <input type="hidden" name="i" value="<?= htmlspecialchars($i) ?>">
                 <button type="submit" class="btn btn-outline-primary">ブックマーク</button>
             </form>
             <?php endif; ?>

@@ -33,11 +33,11 @@ echo $_SESSION['problemString'];
 if(isset($member)) {
     if (isset($_SESSION['bookmark_q_number'])) {
         $bookmarkQuestion = $dao3->findById($_SESSION['bookmark_q_number']);
-            $a = new BookMark();
-            $user_id = $member->user_id;
-            $label_id = 1;
-            $q_number = $_SESSION['bookmark_q_number'];
-            $dao4->insertOrUpdateBookmark($user_id, $label_id, $q_number);
+        $a = new BookMark();
+        $user_id = $member->user_id;
+        $label_id = 1;
+        $q_number = $_SESSION['bookmark_q_number'];
+        $dao4->insertOrUpdateBookmark($user_id, $label_id, $q_number);
     }
     $problem = $dao->getUserProblem($member->user_id);
 }
