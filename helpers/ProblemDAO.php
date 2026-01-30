@@ -208,5 +208,37 @@ class ProblemDAO
     {
         return $beta === '' ? $num : $beta . '_' . $num;
     }
+
+    /**
+ * 指定の問題番号から 1 問取得
+ */
+public function getQuestionByNumber(int $q_number): ?object
+{
+    $sql = "
+        SELECT
+            q_number,
+            q_content,
+            q_source,
+            answers,
+            correct_answers,
+            image_path,
+            choices1,
+            choices2,
+            choices3,
+            choices4,
+            created_ad,
+            update_ad
+        FROM question_data
+        WHERE q_number = :q_number
+    ";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindValue(':q_number', $q_number, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $question = $stmt->fetch(PDO::FETCH_OBJ);
+    return $question ?: null; // 取得できなければ null
+}
+
 }
 ?>

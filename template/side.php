@@ -4,9 +4,8 @@ require_once __DIR__ . '/../helpers/config.php';
 $current = basename($_SERVER['SCRIPT_NAME']); // 現在のページファイル名
 
 $menus = [
-    ['file' => '/problem/category_select.php', 'label' => '問題', 'icon' => 'bi-check2-square'],
+    ['file' => '//problem/problem_top.php', 'label' => '問題', 'icon' => 'bi-check2-square'],
     ['file' => '/book.php',                     'label' => '書籍検索', 'icon' => 'bi-book'],
-    ['file' => '/testpage.php',                 'label' => 'test', 'icon' => 'bi-check2-square'],
 ];
 
 // ログイン時メニュー
