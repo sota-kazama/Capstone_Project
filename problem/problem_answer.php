@@ -25,7 +25,7 @@ $totalCount = count($questions);
 
 // ★ 問題が1問もない場合
 if ($totalCount === 0) {
-    $_SESSION['error_message'] = 'この分野には問題がありません。';
+    $_SESSION['error_message'] = 'この分野の問題は現在登録されていません';
     unset($_SESSION['area_number']);
     unset($_SESSION['problemArray']);
     header('Location: category_select.php');

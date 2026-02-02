@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_number'])) {
     $problemIds = $daoProblem->getProblemIdsByArea($area_number);
 
     if (empty($problemIds)) {
-        $_SESSION['error_message'] = 'この分野には問題がありません。';
+        $_SESSION['error_message'] = 'この分野の問題は現在登録されていません';
         header("Location: problem_top.php");
         exit;
     }
@@ -42,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_number'])) {
 }
 
 $area_number = $_SESSION['area_number'] ?? null;
+
+$theme = $_COOKIE['theme'] ?? 'light';
 ?>
 
 <!DOCTYPE html>
