@@ -65,18 +65,19 @@ $theme = $_COOKIE['theme'] ?? 'light';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>問題回答</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-<!-- Bootstrap & Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- CSS -->
+    <link href="../css/BaseDesignData.css" rel="stylesheet">
+    <link href="../css/side.css" rel="stylesheet">
+    <link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
+    <link href="../css_theme/toggle-button.css" rel="stylesheet">
 
-<!-- カスタムCSS -->
-<link href="../css/BaseDesignData.css" rel="stylesheet">
-<link href="../css/side.css" rel="stylesheet">
-<link href="../css_theme/toggle-button.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- ★ テーマCSS -->
-<link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
 </head>
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
