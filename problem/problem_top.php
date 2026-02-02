@@ -10,38 +10,37 @@ if (session_status() === PHP_SESSION_NONE) {
 $member = $_SESSION['member'] ?? null;
 $daoMember = new MemberDAO();
 $daoProblem = new ProblemDAO();
-$daoQuestion = new QuestionDAO();
 
-// テーマ取得
+// 現在のテーマ
 $theme = $_SESSION['theme'] ?? 'light';
 
-// 分野一覧取得
+// 分野一覧
 $categories = $daoProblem->getProblemName();
 
-// POST処理（新しく解き始める）
+/* 新しく解き始める */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['area_number'])) {
     $area_number = $_POST['area_number'];
+    $problemIds = $daoProblem->getProblemIdsByArea($area_number);
+
+    if (empty($problemIds)) {
+        $_SESSION['error_message'] = 'この分野には問題がありません。';
+        header("Location: problem_top.php");
+        exit;
+    }
+
     $_SESSION['area_number'] = $area_number;
+    $_SESSION['problemArray'] = $problemIds;
 
-    // 選択分野の問題ID配列を取得してセッションに保存
-    $problemString = $daoProblem->getProblemIdString($area_number);
-    $problemArray = array_filter(explode(',', $problemString), fn($v) => $v !== '');
-    $_SESSION['problemArray'] = $problemArray;
-
-    // ログインユーザーの場合は question_hold を最初からに更新
     if ($member) {
-        $daoMember->updateUserProblem($member->user_id, implode('_', $problemArray));
-        $member->question_hold = implode('_', $problemArray);
+        $member->question_hold = implode('_', $problemIds);
+        $daoMember->updateUserProblem($member->user_id, $member->question_hold);
         $_SESSION['member'] = $member;
     }
 
-    // 最初の問題番号でリダイレクト
-    $firstQuestionNumber = intval($problemArray[0] ?? 0);
-    header("Location: problem_response.php?i={$firstQuestionNumber}&area_number=" . urlencode($area_number));
+    header("Location: problem_response.php?i=0&area_number=" . urlencode($area_number));
     exit;
 }
 
-// 現在の分野番号（ページロード時用）
 $area_number = $_SESSION['area_number'] ?? null;
 ?>
 
@@ -52,12 +51,17 @@ $area_number = $_SESSION['area_number'] ?? null;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>問題トップ</title>
 
+<!-- Bootstrap & Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+<!-- 自作CSS -->
 <link href="../css/BaseDesignData.css" rel="stylesheet">
 <link href="../css/side.css" rel="stylesheet">
-<link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
 <link href="../css_theme/toggle-button.css" rel="stylesheet">
+
+<!-- テーマ切替CSS -->
+<link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
 </head>
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
@@ -69,37 +73,45 @@ $area_number = $_SESSION['area_number'] ?? null;
         <?php include '../template/side.php'; ?>
     </div>
 
-    <main class="main-content">
+    <main class="main-content p-4">
         <h1>問題分野選択</h1>
 
-        <!-- 分野選択フォーム（新しく解き始める） -->
-        <form method="post" class="mb-4">
-            <div class="mb-4">
-                <label class="form-label">分野</label>
-                <select class="form-select" name="area_number" required>
-                    <?php foreach ($categories as $row): ?>
-                        <option value="<?= htmlspecialchars($row['area_number']) ?>"
-                            <?= $area_number == $row['area_number'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($row['area_name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+        <!-- エラーメッセージ -->
+        <?php if (!empty($_SESSION['error_message'])): ?>
+            <div class="alert alert-warning text-center">
+                <?= htmlspecialchars($_SESSION['error_message']) ?>
             </div>
+            <?php unset($_SESSION['error_message']); ?>
+        <?php endif; ?>
+
+        <!-- 新しく解き始める -->
+        <form method="post" class="mb-4">
+            <label class="form-label">分野</label>
+            <select class="form-select mb-3" name="area_number" required>
+                <?php foreach ($categories as $row): ?>
+                    <option value="<?= htmlspecialchars($row['area_number']) ?>">
+                        <?= htmlspecialchars($row['area_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
             <div class="text-center">
                 <button type="submit" class="btn btn-outline-primary">
-                    <?= ($member && !empty($member->question_hold)) ? '新しく解き始める' : '問題を解きはじめる' ?>
+                    問題を解きはじめる
                 </button>
             </div>
         </form>
 
-        <!-- 続きから解き始めるボタン -->
+        <!-- 続きから -->
         <?php if ($member && !empty($member->question_hold) && !empty($_SESSION['problemArray'])): ?>
             <?php
-            $nextQuestionNumber = intval(explode('_', $member->question_hold)[0] ?? 0);
+            $problemIds = $_SESSION['problemArray'];
+            $nextQ = intval(explode('_', $member->question_hold)[0]);
+            $nextIndex = array_search($nextQ, $problemIds, true);
+            $nextIndex = ($nextIndex === false) ? 0 : $nextIndex;
             ?>
             <div class="text-center mt-4">
-                <a href="problem_response.php?i=<?= $nextQuestionNumber ?>&area_number=<?= urlencode($area_number) ?>" 
+                <a href="problem_response.php?i=<?= $nextIndex ?>&area_number=<?= urlencode($area_number) ?>"
                    class="btn btn-outline-success">
                     前回の続きから解き始める
                 </a>
@@ -107,6 +119,11 @@ $area_number = $_SESSION['area_number'] ?? null;
         <?php endif; ?>
     </main>
 </div>
+
+<!-- テーマ切替ボタン -->
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+</button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/theme-toggle.js"></script>
