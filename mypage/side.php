@@ -24,6 +24,10 @@ $menus = [
     ['file' => '/mypage/results.php',       'label' => '成果登録',       'icon' => 'bi-graph-up','admin' => false],
     ['file' => '/mypage/shitumon.php',      'label' => '質問箱管理',     'icon' => 'bi-question-circle','admin' => false],
     ['file' => '/add/admin_main.php',       'label' => '管理者ページ',   'icon' => 'bi-tools', 'admin' => true],
+    ['file' => '/problem/problem_top.php', 'label' => '問題', 'icon' => 'bi-check2-square','admin' => false],
+    ['file' => '/book.php',                     'label' => '書籍検索', 'icon' => 'bi-book','admin' => false],
+    ['file' => '/board/thread_list.php',               'label' => '掲示板',   'icon' => 'bi-person-fill','admin' => false],
+    ['file' => '/Shitsumonbako/question_list.php', 'label' => '質問箱', 'icon' => 'bi-chat-left','admin' => false],
 ];
 ?>
 

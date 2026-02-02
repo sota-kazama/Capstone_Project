@@ -4,7 +4,9 @@ require_once '../helpers/u_goalsDAO.php';
 
 session_start();
 
-// 未ログインの場合
+/* =========================
+   認証チェック
+========================= */
 if (!isset($_SESSION['member'])) {
     header('Location: ../auth/login.php');
     exit;
@@ -12,60 +14,63 @@ if (!isset($_SESSION['member'])) {
 
 $member = $_SESSION['member'];
 
-// DBからログインユーザーの目標を取得
-$goalsDAO  = new GoalsDAO();
-$goal_data = $goalsDAO->getLatestGoalByUserId($member->user_id);
-$answers_count = $member->u_answers_count;
-$correct_count = $member->u_correct_count;
+/* =========================
+   データ取得
+========================= */
+$goalsDAO   = new GoalsDAO();
+$goal_data  = $goalsDAO->getLatestGoalByUserId($member->user_id);
 
-// 目標日までの日数計算
-$days_left  = null;
+$answersCnt = (int)$member->u_answers_count;
+$correctCnt = (int)$member->u_correct_count;
+
+/* =========================
+   目標日関連
+========================= */
 $goal_status = '';
+$days_left   = null;
 $is_past     = false;
 
-if ($goal_data && !empty($goal_data->goal_date)) {
-    $today = new DateTime();
-    $today->setTime(0, 0, 0);
+if (!empty($goal_data->goal_date)) {
 
-    $target_date = new DateTime($goal_data->goal_date);
-    $target_date->setTime(0, 0, 0);
+    $today  = (new DateTime())->setTime(0, 0, 0);
+    $target = (new DateTime($goal_data->goal_date))->setTime(0, 0, 0);
 
-    // 比較演算子で条件分岐を整理
-    if ($today > $target_date) {
-        // 今日が目標日より後の場合
+    if ($today > $target) {
         $goal_status = 'お疲れさまでした！';
         $is_past = true;
-    } elseif ($today == $target_date) {
-        // 今日が目標日の場合
+    } elseif ($today == $target) {
         $goal_status = '最終日！';
     } else {
-        // 今日が目標日より前の場合
-        $interval = $today->diff($target_date);
-        $days_left   = $interval->days;
-        $goal_status = 'あと' . $days_left . '日！';
+        $days_left   = $today->diff($target)->days;
+        $goal_status = "あと{$days_left}日！";
     }
 
     // カレンダー用
-    $year  = (int)$target_date->format('Y');
-    $month = (int)$target_date->format('m');
+    $year  = (int)$target->format('Y');
+    $month = (int)$target->format('m');
 
-    $firstDay     = new DateTime("$year-$month-01");
+    $firstDay     = new DateTime("{$year}-{$month}-01");
     $startWeekDay = (int)$firstDay->format('w');
     $daysInMonth  = (int)$firstDay->format('t');
 }
 
-// 目標データがある場合、マイルストーンを配列にまとめる
+/* =========================
+   マイルストーン
+========================= */
 $milestones = [];
+
 if ($goal_data) {
     for ($i = 1; $i <= 5; $i++) {
-        $prop = ($i === 1) ? 'mile_stone' : "mile_stone$i";
+        $prop = ($i === 1) ? 'mile_stone' : "mile_stone{$i}";
         if (!empty($goal_data->$prop)) {
             $milestones[] = $goal_data->$prop;
         }
     }
 }
 
-// テーマ
+/* =========================
+   テーマ
+========================= */
 $theme = $_COOKIE['theme'] ?? 'light';
 ?>
 
@@ -93,7 +98,6 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
-<!-- ヘッダー -->
 <?php include '../template/header.php'; ?>
 
 <div class="d-flex w-100 min-vh-100">
@@ -103,7 +107,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
         <?php include 'side.php'; ?>
     </div>
 
-    <!-- メインコンテンツ -->
+    <!-- メイン -->
     <main class="main-content flex-grow-1 p-4">
 
         <h1 class="mb-4">マイページ</h1>
@@ -112,9 +116,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
         <div class="row mb-4">
             <div class="col-12">
                 <div class="card shadow-sm">
-                    <div class="card-header fw-bold">
-                        あなたの目標
-                    </div>
+                    <div class="card-header fw-bold">あなたの目標</div>
                     <div class="card-body">
 
                         <?php if ($goal_data && !empty($goal_data->goal)): ?>
@@ -143,9 +145,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
                             </div>
 
                         <?php else: ?>
-                            <p class="text-muted mb-3">
-                                まだ目標が設定されていません。
-                            </p>
+                            <p class="text-muted mb-3">まだ目標が設定されていません。</p>
                             <a href="goal.php" class="btn btn-outline-primary btn-sm">
                                 目標を設定する
                             </a>
@@ -156,58 +156,44 @@ $theme = $_COOKIE['theme'] ?? 'light';
             </div>
         </div>
 
-        <!-- ===== 中段 ===== -->
-        <div class="row g-4">
+        <!-- ===== マイルストーン ===== -->
+        <div class="row g-4 mb-4">
             <div class="col-12">
                 <div class="card shadow-sm">
-                    <div class="card-header fw-bold">
-                        マイルストーン達成状況
-                    </div>
+                    <div class="card-header fw-bold">マイルストーン達成状況</div>
                     <div class="card-body">
                         <div class="d-flex flex-wrap gap-2">
-                            <?php if (!empty($milestones)): ?>
-                                <?php foreach ($milestones as $index => $stone): 
-                                    // 1. DBの達成フラグ用プロパティ名を生成
-                                    // テーブル設計が ms1_status, ms2_status... の場合を想定
+
+                            <?php if ($milestones): ?>
+                                <?php foreach ($milestones as $index => $stone): ?>
+                                    <?php
                                     $num = $index + 1;
-                                    $flag_prop = "ms{$num}_status";
-                                    
-                                    // 2. 達成判定 (1なら達成)
-                                    $is_achieved = (isset($goal_data->$flag_prop) && $goal_data->$flag_prop == 1);
-                                    
-                                    // 3. 背景スタイルの決定
-                                    if ($is_achieved) {
-                                        // 達成済み：サクラ背景
-                                        $bg_style = "background-image: url('../images/sakura.png'); 
-                                                    background-size: cover; 
-                                                    background-position: center; 
-                                                    border: none; 
-                                                    color: #d63384; 
-                                                    font-weight: bold; 
-                                                    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);";
-                                    } else {
-                                        // 未達成：デフォルト（薄いグレー）
-                                        $bg_style = "background-color: #f8f9fa; color: #6c757d;";
-                                    }
-                                ?>
-                                    <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center milestone-box" 
-                                        style="width: 100%; max-width: 80px; aspect-ratio: 1/1; cursor: default; <?= $bg_style ?>"
-                                        title="<?= htmlspecialchars($stone) ?>">
-                                        
-                                        <span style="font-size: 0.7rem; 
-                                                    line-height: 1.2; 
-                                                    overflow: hidden; 
-                                                    display: -webkit-box; 
-                                                    -webkit-box-orient: vertical; 
-                                                    -webkit-line-clamp: 3;"> 
+                                    $flag = "ms{$num}_status";
+                                    $achieved = !empty($goal_data->$flag);
+
+                                    $style = $achieved
+                                        ? "background-image:url('../images/sakura.png');
+                                           background-size:cover;
+                                           background-position:center;
+                                           border:none;
+                                           color:#d63384;
+                                           font-weight:bold;
+                                           text-shadow:1px 1px 2px rgba(255,255,255,.8);"
+                                        : "background-color:#f8f9fa;color:#6c757d;";
+                                    ?>
+                                    <div class="border rounded d-flex align-items-center justify-content-center p-2 text-center milestone-box"
+                                         style="width:100%;max-width:80px;aspect-ratio:1/1;<?= $style ?>"
+                                         title="<?= htmlspecialchars($stone) ?>">
+                                        <span style="font-size:.7rem;line-height:1.2;display:-webkit-box;
+                                                     -webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;">
                                             <?= htmlspecialchars($stone) ?>
                                         </span>
-                                        
                                     </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <p class="text-muted mb-0">設定されたマイルストーンはありません。</p>
                             <?php endif; ?>
+
                         </div>
                     </div>
                 </div>
@@ -217,20 +203,17 @@ $theme = $_COOKIE['theme'] ?? 'light';
         <!-- ===== 下段 ===== -->
         <div class="row g-4">
 
-            <!-- 左：成績 -->
+            <!-- 左 -->
             <div class="col-12 col-md-6">
-
                 <div class="card mb-4 shadow-sm">
-                    <div class="card-header fw-bold">
-                        成績表
-                    </div>
+                    <div class="card-header fw-bold">成績表</div>
                     <div class="card-body">
 
-                        <?php if ($answers_count > 0): ?>
-                            <p>回答数：<?= (int)$answers_count ?> 問</p>
-                            <p>正解数：<?= (int)$correct_count ?> 問</p>
+                        <?php if ($answersCnt > 0): ?>
+                            <p>回答数：<?= $answersCnt ?> 問</p>
+                            <p>正解数：<?= $correctCnt ?> 問</p>
 
-                            <div class="position-relative mx-auto" style="max-width: 400px; height: 300px;">
+                            <div class="position-relative mx-auto" style="max-width:400px;height:300px;">
                                 <canvas id="scoreChart"></canvas>
                             </div>
                         <?php else: ?>
@@ -244,30 +227,22 @@ $theme = $_COOKIE['theme'] ?? 'light';
 
                 <?php if (!empty($member->question_hold)): ?>
                     <div class="card shadow-sm border-warning">
-                        <div class="card-header fw-bold text-warning">
-                            途中から再開
-                        </div>
+                        <div class="card-header fw-bold text-warning">途中から再開</div>
                         <div class="card-body">
-                            <p class="mb-3">
-                                未完了の問題があります。
-                            </p>
+                            <p class="mb-3">未完了の問題があります。</p>
                             <a href="../question.php" class="btn btn-outline-warning btn-sm">
                                 問題ページへ
                             </a>
                         </div>
                     </div>
                 <?php endif; ?>
-
             </div>
 
-            <!-- 右：カレンダー -->
+            <!-- 右 -->
             <div class="col-12 col-md-6">
-
                 <?php if (!empty($goal_data->goal_date)): ?>
                     <div class="card shadow-sm h-100">
-                        <div class="card-header fw-bold">
-                            目標日カレンダー
-                        </div>
+                        <div class="card-header fw-bold">目標日カレンダー</div>
                         <div class="card-body">
 
                             <h5 class="text-center mb-3">
@@ -289,7 +264,6 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                 <tbody>
                                     <tr>
                                         <?php
-                                        // 1. 今日の日付を取得（フォーマットを合わせる）
                                         $todayStr = (new DateTime())->format('Y-m-d');
 
                                         for ($i = 0; $i < $startWeekDay; $i++) {
@@ -297,19 +271,16 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                         }
 
                                         for ($day = 1; $day <= $daysInMonth; $day++) {
-                                            $currentDate = sprintf('%04d-%02d-%02d', $year, $month, $day);
-
-                                            // クラスの判定
+                                            $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
                                             $class = '';
-                                            if ($currentDate === $goal_data->goal_date) {
-                                                // 目標日の場合（赤）
+
+                                            if ($date === $goal_data->goal_date) {
                                                 $class = 'bg-danger text-white fw-bold';
-                                            } elseif ($currentDate === $todayStr) {
-                                                // 今日の場合（青：Bootstrapのbg-infoやbg-primaryを使用）
+                                            } elseif ($date === $todayStr) {
                                                 $class = 'bg-primary text-white fw-bold';
                                             }
 
-                                            echo '<td class="' . $class . '">' . $day . '</td>';
+                                            echo "<td class='{$class}'>{$day}</td>";
 
                                             if (($day + $startWeekDay) % 7 === 0) {
                                                 echo '</tr><tr>';
@@ -319,16 +290,15 @@ $theme = $_COOKIE['theme'] ?? 'light';
                                     </tr>
                                 </tbody>
                             </table>
+
                             青マス：今日の日付<br>
                             赤マス：目標日
-
                         </div>
                     </div>
                 <?php endif; ?>
-
             </div>
-        </div>
 
+        </div>
     </main>
 </div>
 
@@ -337,42 +307,36 @@ $theme = $_COOKIE['theme'] ?? 'light';
     <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
 </button>
 
-<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/theme-toggle.js"></script>
 
-<?php if ($answers_count > 0): ?>
+<?php if ($answersCnt > 0): ?>
 <script>
-    const answered  = <?= (int)$answers_count ?>;
-    const correct   = <?= (int)$correct_count ?>;
-    const incorrect = answered - correct;
+const answered  = <?= $answersCnt ?>;
+const correct   = <?= $correctCnt ?>;
+const incorrect = answered - correct;
 
-    const ctx = document.getElementById('scoreChart').getContext('2d');
-
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['正解', '不正解'],
-            datasets: [{
-                data: [correct, incorrect],
-                backgroundColor: ['#dc3545', '#adb5bd']
-            }]
-        },
-        options: {
-            cutout: '65%',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                }
-            }
+new Chart(document.getElementById('scoreChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['正解', '不正解'],
+        datasets: [{
+            data: [correct, incorrect],
+            backgroundColor: ['#dc3545', '#adb5bd']
+        }]
+    },
+    options: {
+        cutout: '65%',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { position: 'bottom' }
         }
-    });
+    }
+});
 </script>
 <?php endif; ?>
 
-<!-- フッター -->
 <footer>
     <?php include '../template/footer.php'; ?>
 </footer>
