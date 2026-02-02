@@ -1,6 +1,6 @@
 <?php
-require_once 'helpers/ThreadBoardDAO.php';
-require_once 'helpers/MemberDAO.php';
+require_once '../helpers/ThreadBoardDAO.php';
+require_once '../helpers/MemberDAO.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // 未ログインならリダイレクト
 if (!isset($_SESSION['member'])) {
-    header('Location: auth/login.php');
+    header('Location: ../auth/login.php');
     exit;
 }
 
@@ -52,59 +52,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['content'])) {
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-<link href="css/BaseDesignData.css" rel="stylesheet">
-<link href="css/side.css" rel="stylesheet">
-<link id="theme-css" rel="stylesheet" href="css_theme/<?= htmlspecialchars($theme) ?>.css">
-<link href="css_theme/toggle-button.css" rel="stylesheet">
+    <!-- CSS -->
+    <link href="../css/BaseDesignData.css" rel="stylesheet">
+    <link href="../css/side.css" rel="stylesheet">
+    <link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
+    <link href="../css_theme/toggle-button.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <title><?= htmlspecialchars($thread->thread_name) ?> - スレッド</title>
 
-<style>
-.post-card {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 0.5rem;
-    background-color: #f8f9fa;
-}
 
-.post-header {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-}
-.post-user {
-    /* 左寄せ部分 */
-}
-.post-date {
-    font-weight: normal;
-    font-size: 0.9rem;
-    color: #666;
-    white-space: nowrap;
-}
-
-.post-content {
-    white-space: pre-wrap;
-}
-</style>
 </head>
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
-<?php include 'template/header.php'; ?>
+<?php include __DIR__ . '/../template/header.php'; ?>
 
 <div class="d-flex w-100 min-vh-100">
     <aside class="d-none d-md-block">
-        <?php include 'template/side.php'; ?>
+        <?php include __DIR__ . '/../template/side.php'; ?>
     </aside>
 
     <main class="main-content flex-grow-1 p-4">
@@ -171,8 +145,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['content'])) {
     </main>
 </div>
 
-<?php include 'template/footer.php'; ?>
+<?php include __DIR__ . '/../template/footer.php'; ?>
+
+<!-- テーマ切替 -->
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+</button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/theme-toggle.js"></script>
 </body>
 </html>
