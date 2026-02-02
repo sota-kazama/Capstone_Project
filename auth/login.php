@@ -92,13 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         value="<?= htmlspecialchars($mail_address, ENT_QUOTES, 'UTF-8') ?>"
                         required
                     >
-                    <div class="text-danger small"><?= $errs['mail_address'] ?? '' ?></div>
+                    <!-- <div class="text-danger small"><= $errs['mail_address'] ?? '' ?></div> -->
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">パスワード</label>
                     <input type="password" name="pass_word" class="form-control" required>
-                    <div class="text-danger small"><?= $errs['pass_word'] ?? '' ?></div>
+                    <!-- <div class="text-danger small"><= $errs['pass_word'] ?? '' ?></div> -->
                 </div>
 
                 <div class="d-grid">
