@@ -10,125 +10,154 @@ if (session_status() === PHP_SESSION_NONE) {
 $member = $_SESSION['member'] ?? null;
 $area_number = $_SESSION['area_number'] ?? null;
 
+/* =========================
+   分野未選択なら戻す
+========================= */
 if ($area_number === null) {
     header('Location: category_select.php');
     exit;
 }
 
-$dao = new ProblemDAO();
+$daoProblem = new ProblemDAO();
+$questions = $daoProblem->getQuestionsByArea($area_number);
 
-$questions = $dao->getQuestionsByArea($area_number);
-$i = isset($_GET['i']) ? intval($_GET['i']) : 0;
-
-// 問題存在チェック
-if (empty($questions) || !isset($questions[$i])) {
-    echo '問題が存在しません。';
+// ★ 問題が1問もない場合
+if (empty($questions)) {
+    $_SESSION['error_message'] = 'この分野の問題は現在登録されていません';
+    unset($_SESSION['area_number']);
+    unset($_SESSION['problemArray']);
+    header('Location: category_select.php');
     exit;
 }
 
+// URLパラメータから「何問目か」を取得
+$i = isset($_GET['i']) ? intval($_GET['i']) : 0;
+
+// ★ 指定された問題番号が不正な場合
+if (!isset($questions[$i])) {
+    $_SESSION['error_message'] = '指定された問題が存在しません。';
+    header('Location: category_select.php');
+    exit;
+}
+
+// 今回の問題
 $question = $questions[$i];
+
+// 選択肢配列
+$choices = [
+    1 => $question->choices1,
+    2 => $question->choices2,
+    3 => $question->choices3,
+    4 => $question->choices4,
+];
+
+// ラベル
+$labels = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D'];
+
+// =========================
+// テーマ（Cookie優先、未設定ならlight）
+$theme = $_COOKIE['theme'] ?? 'light';
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-    <!--こっちのheadは変更しない-->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問題回答</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="../css/BaseDesignData.css" rel="stylesheet" />
-    <link href="../css/side.css" rel="stylesheet" />
+    <!-- CSS -->
+    <link href="../css/BaseDesignData.css" rel="stylesheet">
+    <link href="../css/side.css" rel="stylesheet">
+    <link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
+    <link href="../css_theme/toggle-button.css" rel="stylesheet">
 
-    <?php include '../template/header.php'; ?>
-    <title>問題回答</title>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
-<body>
-<div class="d-flex w-100 min-vh-100">
-<?php include '../template/side.php'; ?>
+<body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
-<main class="main-content">
-    <div class="d-flex align-items-center">
+<?php include '../template/header.php'; ?>
+
+<!-- ★ テーマ切替ボタン -->
+<button id="theme-toggle-btn" class="btn btn-primary theme-toggle-btn">
+    <i id="theme-icon" class="bi <?= $theme === 'dark' ? 'bi-sun' : 'bi-moon' ?>"></i>
+</button>
+
+<div class="d-flex w-100 min-vh-100">
+    <!-- サイドバー -->
+    <div class="d-none d-md-block">
+        <?php include '../template/side.php'; ?>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content p-4 flex-grow-1">
         <h1>問題回答</h1>
 
-        <!-- ブックマーク -->
-        <?php if ($member): ?>
-        <form action="problem.php" method="post" class="ms-auto">
-            <input type="hidden" name="bookmark_q_number" value="<?= htmlspecialchars($question->q_number) ?>">
-            <input type="hidden" name="area_number" value="<?= htmlspecialchars($area_number) ?>">
-            <input type="hidden" name="i" value="<?= htmlspecialchars($i) ?>">
-            <button type="submit" class="btn btn-outline-primary">ブックマーク</button>
-        </form>
+        <!-- 配列順で表示 -->
+        <h2>第<?= $i + 1 ?>問（全<?= count($questions) ?>問）</h2>
+        <h3><?= htmlspecialchars($question->q_content) ?></h3>
+
+        <?php if (!empty($question->image_path)): ?>
+            <img src="../uploads/<?= htmlspecialchars($question->image_path) ?>" class="img-fluid mb-3">
         <?php endif; ?>
-    </div>
 
-    <h2>第<?= htmlspecialchars($question->q_number) ?>問</h2>
-    <h3><?= htmlspecialchars($question->q_content) ?></h3>
+        <form action="problem_answer.php?i=<?= $i ?>" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:10%">選択</th>
+                        <th>内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($choices as $k => $v): ?>
+                    <tr>
+                        <td>
+                            <button type="submit"
+                                    name="answer"
+                                    value="<?= $k ?>"
+                                    class="btn btn-outline-primary btn-sm">
+                                <?= $labels[$k] ?>
+                            </button>
+                        </td>
+                        <td><?= htmlspecialchars($v) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </form>
 
-    <?php if (!empty($question->image_path)): ?>
-        <img src="../uploads/<?= htmlspecialchars($question->image_path) ?>" class="img-fluid mb-3">
-    <?php endif; ?>
-
-    <!-- 回答フォーム -->
-    <form action="problem_answer.php?i=<?= $i ?>" method="post">
-        <input type="hidden" name="correct_answer" value="<?= htmlspecialchars($question->answer_content) ?>">
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th style="width: 10%">選択</th>
-                    <th>内容</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <button name="answer" value="<?= htmlspecialchars($question->answer_content) ?>"
-                                class="btn btn-outline-primary">A</button>
-                    </td>
-                    <td><?= htmlspecialchars($question->answer_content) ?></td>
-                </tr>
-                <tr>
-                    <td>
-                        <button name="answer" value="<?= htmlspecialchars($question->wrong_answer1) ?>"
-                                class="btn btn-outline-primary">B</button>
-                    </td>
-                    <td><?= htmlspecialchars($question->wrong_answer1) ?></td>
-                </tr>
-                <tr>
-                    <td>
-                        <button name="answer" value="<?= htmlspecialchars($question->wrong_answer2) ?>"
-                                class="btn btn-outline-primary">C</button>
-                    </td>
-                    <td><?= htmlspecialchars($question->wrong_answer2) ?></td>
-                </tr>
-                <tr>
-                    <td>
-                        <button name="answer" value="<?= htmlspecialchars($question->wrong_answer3) ?>"
-                                class="btn btn-outline-primary">D</button>
-                    </td>
-                    <td><?= htmlspecialchars($question->wrong_answer3) ?></td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
-
-    <!-- ラベリング -->
-    <?php if ($member): ?>
-    <div class="d-flex gap-2 justify-content-end">
-        <button class="btn btn-outline-success" disabled>1</button>
-        <button class="btn btn-outline-warning" disabled>2</button>
-        <button class="btn btn-outline-danger" disabled>3</button>
-    </div>
-    <?php endif; ?>
-</main>
+        <!-- 次の問題 / 結果 -->
+        <div class="d-flex justify-content-center mt-3">
+            <?php if (isset($questions[$i + 1])): ?>
+                <a href="problem_response.php?i=<?= $i + 1 ?>"
+                   class="btn btn-outline-primary w-25">
+                    次の問題へ
+                </a>
+            <?php else: ?>
+                <a href="problem_result.php"
+                   class="btn btn-outline-success w-25">
+                    結果を見る
+                </a>
+            <?php endif; ?>
+        </div>
+    </main>
 </div>
 
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+<!-- テーマ切替JS -->
+<script src="../js/theme-toggle.js"></script>
 
-<footer>
+<footer class="mt-4">
 <?php include '../template/footer.php'; ?>
 </footer>
+
+</body>
 </html>

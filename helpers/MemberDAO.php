@@ -204,5 +204,28 @@ public function insert(Member $member): void
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? $row['question_hold'] : null;
     }
+
+    public function incrementAnswerCount(int $user_id, bool $isCorrect): bool
+{
+    $dbh = DAO::get_db_connect();
+    if ($isCorrect) {
+        $sql = "UPDATE master_user 
+                SET u_answers_count = u_answers_count + 1,
+                    u_correct_count = u_correct_count + 1,
+                    update_at = GETDATE()
+                WHERE user_id = :user_id";
+    } else {
+        $sql = "UPDATE master_user 
+                SET u_answers_count = u_answers_count + 1,
+                    update_at = GETDATE()
+                WHERE user_id = :user_id";
+    }
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+    return $stmt->execute();
+}
+
 }
 ?>

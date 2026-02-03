@@ -4,15 +4,14 @@ require_once __DIR__ . '/../helpers/config.php';
 $current = basename($_SERVER['SCRIPT_NAME']); // 現在のページファイル名
 
 $menus = [
-    ['file' => '/problem/category_select.php', 'label' => '問題', 'icon' => 'bi-check2-square'],
+    ['file' => '/problem/problem_top.php', 'label' => '問題', 'icon' => 'bi-check2-square'],
     ['file' => '/book.php',                     'label' => '書籍検索', 'icon' => 'bi-book'],
-    ['file' => '/testpage.php',                 'label' => 'test', 'icon' => 'bi-check2-square'],
 ];
 
 // ログイン時メニュー
 if (isset($member)) {
     $menus = array_merge($menus, [
-        ['file' => '/thread_list.php',               'label' => '掲示板',   'icon' => 'bi-person-fill'],
+        ['file' => '/board/thread_list.php',               'label' => '掲示板',   'icon' => 'bi-person-fill'],
         ['file' => '/mypage/mypage.php',            'label' => 'マイページ', 'icon' => 'bi-card-list'],
         ['file' => '/Shitsumonbako/question_list.php', 'label' => '質問箱', 'icon' => 'bi-chat-left'],
     ]);

@@ -1,26 +1,26 @@
 <?php
 require_once 'DAO.php';
 
-
 class Question
 {
-    public int $q_number;             // 問題ID
-    public string $q_content;         // 問題文
-    public string $answer_content;    // 正解
-    public ?string $wrong_answer1;    // 誤答1
-    public ?string $wrong_answer2;    // 誤答2
-    public ?string $wrong_answer3;    // 誤答3
-    public ?string $q_source;         // 出典
-    public ?string $answers;          // JSON文字列
-    public ?string $correct_answers;  // JSON文字列
-    public ?string $image_path;       // 画像パス
-    public ?string $created_ad;       // 登録日
-    public ?string $update_ad;        // 更新日
+    public int $q_number;              // 問題ID
+    public string $q_content;          // 問題文
+    public ?string $q_source;          // 出典
+    public ?string $answers;           // JSON文字列
+    public ?string $correct_answers;   // JSON文字列
+    public ?string $image_path;        // 画像パス
+    public ?string $choices1;          // 選択肢1
+    public ?string $choices2;          // 選択肢2
+    public ?string $choices3;          // 選択肢3
+    public ?string $choices4;          // 選択肢4
+    public ?string $created_ad;        // 登録日
+    public ?string $update_ad;         // 更新日
 }
+
 
 class QuestionDAO
 {
-    /** 全問題を取得 */
+    /** 全問題取得 */
     public function getAll(): array
     {
         $dbh = DAO::get_db_connect();
@@ -29,7 +29,6 @@ class QuestionDAO
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Question');
         return $stmt->fetchAll();
     }
-
     /** インデックス順で取得（getAllと同じ処理） */
     public function changeIndex(): array
     {
@@ -40,42 +39,85 @@ class QuestionDAO
         return $stmt->fetchAll();
     }
 
-    /** 新規問題を追加（登録日・更新日を現在日時で設定） */
+     /** 新規問題追加 */
     public function insert(array $q): int
     {
         $dbh = DAO::get_db_connect();
-        $sql = "INSERT INTO question_data 
-                (q_content, answer_content, wrong_answer1, wrong_answer2, wrong_answer3,
-                 q_source, answers, correct_answers, image_path, created_ad, update_ad)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())";
+        $sql = "
+            INSERT INTO question_data
+            (
+                q_content,
+                q_source,
+                answers,
+                correct_answers,
+                image_path,
+                choices1,
+                choices2,
+                choices3,
+                choices4,
+                created_ad,
+                update_ad
+            )
+            VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), GETDATE())
+        ";
+
         $stmt = $dbh->prepare($sql);
         $result = $stmt->execute([
-            $q['q_content'], $q['answer_content'], $q['wrong_answer1'], $q['wrong_answer2'],
-            $q['wrong_answer3'], $q['q_source'], $q['answers'], $q['correct_answers'],
-            $q['image_path'] ?? null
+            $q['q_content'],
+            $q['q_source'],
+            $q['answers'],
+            $q['correct_answers'],
+            $q['image_path'] ?? null,
+            $q['choices1'],
+            $q['choices2'],
+            $q['choices3'],
+            $q['choices4'],
         ]);
-        if (!$result) return 0;
+
+        if (!$result) {
+            return 0;
+        }
+
         return (int)$dbh->query("SELECT SCOPE_IDENTITY()")->fetchColumn();
     }
 
-    /** 問題を更新（更新日を自動更新） */
+   /** 問題更新 */
     public function update(int $q_number, array $q): bool
     {
         $dbh = DAO::get_db_connect();
-        $sql = "UPDATE question_data
-                SET q_content=?, answer_content=?, wrong_answer1=?, wrong_answer2=?, wrong_answer3=?,
-                    q_source=?, answers=?, correct_answers=?, image_path=?, update_ad=GETDATE()
-                WHERE q_number=?";
+        $sql = "
+            UPDATE question_data
+            SET
+                q_content = ?,
+                q_source = ?,
+                answers = ?,
+                correct_answers = ?,
+                image_path = ?,
+                choices1 = ?,
+                choices2 = ?,
+                choices3 = ?,
+                choices4 = ?,
+                update_ad = GETDATE()
+            WHERE q_number = ?
+        ";
+
         $stmt = $dbh->prepare($sql);
         return $stmt->execute([
-            $q['q_content'], $q['answer_content'], $q['wrong_answer1'], $q['wrong_answer2'],
-            $q['wrong_answer3'], $q['q_source'], $q['answers'], $q['correct_answers'],
+            $q['q_content'],
+            $q['q_source'],
+            $q['answers'],
+            $q['correct_answers'],
             $q['image_path'] ?? null,
+            $q['choices1'],
+            $q['choices2'],
+            $q['choices3'],
+            $q['choices4'],
             $q_number
         ]);
     }
 
-    /** 問題を削除 */
+    /** 問題削除 */
     public function delete(int $q_number): bool
     {
         $dbh = DAO::get_db_connect();
@@ -108,24 +150,14 @@ class QuestionDAO
         return $stmt->fetchAll();
     }
 
-    /** 登録されている問題数を返す */
-    public function countAll(?string $field = null): int
+    /** 登録件数取得 */
+    public function countAll(): int
     {
         $dbh = DAO::get_db_connect();
-        if ($field !== null) {
-            $sql = "SELECT COUNT(*) FROM question_data 
-                    WHERE q_number IN (
-                        SELECT q_number FROM question_fields WHERE field_number = ?
-                    )";
-            $stmt = $dbh->prepare($sql);
-            $stmt->execute([$field]);
-        } else {
-            $stmt = $dbh->query("SELECT COUNT(*) FROM question_data");
-        }
-        return (int)$stmt->fetchColumn();
+        return (int)$dbh->query("SELECT COUNT(*) FROM question_data")->fetchColumn();
     }
 
-    /** IDで1件取得 */
+    /** ID指定で1件取得 */
     public function findById(int $q_number): ?Question
     {
         $dbh = DAO::get_db_connect();
@@ -154,30 +186,24 @@ class QuestionDAO
     return $stmt->fetch(PDO::FETCH_OBJ);
 }
 
-    /** 問題を検索（問題文・出典） */
-public function search(string $keyword): array
-{
-    $dbh = DAO::get_db_connect();
+    /** 検索（問題文・出典） */
+    public function search(string $keyword): array
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            SELECT *
+            FROM question_data
+            WHERE q_content LIKE ?
+               OR q_source LIKE ?
+            ORDER BY q_number DESC
+        ";
 
-    $sql = "
-        SELECT *
-        FROM question_data
-        WHERE q_content LIKE ?
-        OR q_source LIKE ?
-        ORDER BY q_number DESC
-    ";
+        $stmt = $dbh->prepare($sql);
+        $kw = '%' . $keyword . '%';
+        $stmt->execute([$kw, $kw]);
 
-    $stmt = $dbh->prepare($sql);
-    $kw = '%' . $keyword . '%';
-    $stmt->bindValue(1, $kw, PDO::PARAM_STR);
-    $stmt->bindValue(2, $kw, PDO::PARAM_STR);
-    $stmt->execute();
-
-    $stmt->setFetchMode(PDO::FETCH_CLASS, 'Question'); // ここを追加してオブジェクト取得
-    return $stmt->fetchAll();
-}
-
-
-
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Question');
+        return $stmt->fetchAll();
+    }
 }
 ?>
