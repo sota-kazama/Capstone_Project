@@ -1,15 +1,30 @@
+<?php
+require_once './helpers/updateDAO.php';
+require_once './helpers/BugDAO.php';  // BugDAOを読み込む
+
+// PHPでテーマを取得（Cookie が無ければ light）
+$theme = $_COOKIE['theme'] ?? 'light';
+?>
 <!DOCTYPE html>
 <html lang="jp">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="../css/BaseDesignData.css" rel="stylesheet" />
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
 
-
+        <!-- カスタムCSS -->
+        <link href="./css/BaseDesignData.css" rel="stylesheet" />
+        <link href="./css/side.css" rel="stylesheet" />
+        <link id="theme-css" rel="stylesheet" href="./css_theme/<?= htmlspecialchars($theme) ?>.css" />
+        <link href="./css_theme/toggle-button.css" rel="stylesheet" />
         <title>Document</title>
     </head>
 
     <body>
+        <!-- ヘッダー -->
+        <?php include './template/header.php'; ?>
         <h1>プライバシー</h1>
         <p>
             プライバシーポリシー（個人情報保護方針）

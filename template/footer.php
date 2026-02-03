@@ -7,8 +7,8 @@
     <footer>
         <hr />
         <div class="footerlinks">
-            <a href="<?= BASE_URL ?>/footer/termsOfUse.php">利用規約</a>
-            <a href="<?= BASE_URL ?>/footer/policy.php">ポリシー</a>
+            <!-- <a href="<?= BASE_URL ?>/footer/termsOfUse.php">利用規約</a>
+            <a href="<?= BASE_URL ?>/footer/policy.php">ポリシー</a> -->
             <!--<a href="<?= BASE_URL ?>/footer/sitemap.php">サイトマップ</a> -->
         </div>
     </footer>

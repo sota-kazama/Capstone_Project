@@ -103,7 +103,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
                 <div class="card shadow-sm" style="width: 14rem;">
                     <div class="card-body">
                         <h5 class="card-title fw-semibold">
-                            <a href="problem/category_select.php" class="btn btn-outline-primary w-100">問題演習</a>
+                            <a href="problem/problem_top.php" class="btn btn-outline-primary w-100">問題演習</a>
                         </h5>
                         <p>基本情報技術者試験やITパスポートなどの問題を解くことができます。</p>
                     </div>
@@ -119,7 +119,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
                <div class="card shadow-sm" style="width: 14rem;">
                     <div class="card-body">
                         <h5 class="card-title fw-semibold">
-                            <a href="thread_list.php" class="btn btn-outline-primary w-100">掲示板</a>
+                            <a href="board/thread_list.php" class="btn btn-outline-primary w-100">掲示板</a>
                         </h5>
                         <p>掲示板で利用者同士が意見交換や情報共有を行えます。</p>
                         
