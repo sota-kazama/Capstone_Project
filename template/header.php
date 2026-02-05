@@ -28,7 +28,7 @@ $isMypage = str_contains($_SERVER['SCRIPT_NAME'], '/mypage/');
     <?php endif; ?>
 
     <a href="<?= BASE_URL ?>/index.php">
-        <img src="<?= BASE_URL ?>/images/icon2.png" alt="サイトのロゴ" />
+        <img src="<?= BASE_URL ?>/images/icon.png" alt="サイトのロゴ" />
     </a>
 
     <?php if ($userName !== null) : ?>
