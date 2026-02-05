@@ -10,6 +10,7 @@
             <!-- <a href="<?= BASE_URL ?>/footer/termsOfUse.php">利用規約</a>
             <a href="<?= BASE_URL ?>/footer/policy.php">ポリシー</a> -->
             <!--<a href="<?= BASE_URL ?>/footer/sitemap.php">サイトマップ</a> -->
+            <a href="docs/利用者マニュアル.docx" download>利用者マニュアルダウンロード</a>
         </div>
     </footer>
 </html>

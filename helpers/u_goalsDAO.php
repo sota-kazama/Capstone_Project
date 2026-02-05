@@ -49,7 +49,7 @@ class GoalsDAO
         $sql = "SELECT " . self::SELECT_COLUMNS . "
                 FROM u_goals
                 WHERE user_id = ?
-                ORDER BY created_ad DESC";
+                ORDER BY goal_id DESC";
         $stmt = $dbh->prepare($sql);
         $stmt->execute([$user_id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Goals');
@@ -78,7 +78,7 @@ class GoalsDAO
         $sql = "SELECT " . self::SELECT_COLUMNS . "
                 FROM u_goals
                 WHERE user_id = ?
-                ORDER BY created_ad DESC";
+                ORDER BY goal_id DESC";
         
         $stmt = $dbh->prepare($sql);
         $stmt->execute([$user_id]);

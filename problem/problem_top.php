@@ -117,7 +117,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
             <div class="text-center mt-4">
                 <a href="problem_response.php?i=<?= $nextIndex ?>&area_number=<?= urlencode($area_number) ?>"
                    class="btn btn-outline-success">
-                    前回の続きから解き始める
+                    前回と同じ範囲を解く
                 </a>
             </div>
         <?php endif; ?>
