@@ -1,31 +1,54 @@
 <?php
+require_once '../helpers/MemberDAO.php';
 require_once '../helpers/ShitumonDAO.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $dao = new ShitumonDAO();
 
-// PHPでテーマ取得（Cookieが無ければlight）
+// テーマ
 $theme = $_COOKIE['theme'] ?? 'light';
 
-// GETパラメータ取得
+// GET
 $shitu_number = $_GET['shitu_number'] ?? null;
-
 if (!$shitu_number) {
     die("質問番号が指定されていません。");
 }
 
-// DBから質問取得
-$q = $dao->getByNumber($shitu_number);
-
+// 質問取得
+$q = $dao->getByNumber((int)$shitu_number);
 if (!$q) {
     die("指定された質問が見つかりません。");
 }
 
-// 質問の受付状態をチェック
-$is_ended = $q->reception_status == 0; // 受付終了状態かどうか
+// 受付終了判定
+$is_ended = $q->reception_status == 0;
 
-// 回答一覧を取得（ShituAnswer オブジェクトの配列）
-$answers = $dao->getAnswers($shitu_number);
+// 回答一覧
+$answers = $dao->getAnswers((int)$shitu_number);
+
+// --------------------
+// ログインユーザー取得
+// --------------------
+$member = $_SESSION['member'] ?? null;
+$login_user_id = null;
+
+if (is_object($member) && isset($member->user_id)) {
+    $login_user_id = $member->user_id;
+} elseif (is_array($member) && isset($member['user_id'])) {
+    $login_user_id = $member['user_id'];
+}
+
+// 投稿者本人か？
+$is_owner = (
+    $login_user_id !== null &&
+    $q->user_id !== null &&
+    (int)$login_user_id === (int)$q->user_id
+);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -65,13 +88,13 @@ $answers = $dao->getAnswers($shitu_number);
                 <p class="text-muted mt-3">
                     投稿日：
                     <?php
-                        if (!empty($q->update_at)) { 
-                            echo date("Y-m-d H:i:s", strtotime($q->update_at)); 
-                        } elseif (!empty($q->asked_date)) { 
-                            echo date("Y-m-d H:i:s", strtotime($q->asked_date)); 
-                        } else { 
-                            echo '不明'; 
-                        } 
+                        if (!empty($q->update_at)) {
+                            echo date("Y-m-d H:i:s", strtotime($q->update_at));
+                        } elseif (!empty($q->asked_date)) {
+                            echo date("Y-m-d H:i:s", strtotime($q->asked_date));
+                        } else {
+                            echo '不明';
+                        }
                     ?>
                 </p>
             </div>
@@ -109,15 +132,24 @@ $answers = $dao->getAnswers($shitu_number);
                 <div class="alert alert-secondary">この質問は受付終了のため、回答できません。</div>
             <?php endif; ?>
 
+
+            <!-- 一覧表示 -->
             <div class="d-flex gap-2 mt-3">
-                <a href="question_list.php" class="btn btn-secondary">一覧に戻る</a>
-                <?php if (!$is_ended): ?>
-                <form action="question_delete.php" method="post" onsubmit="return confirm('本当に質問を削除しますか？');" class="m-0">
-                    <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>" />
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> 質問を削除</button>
+            <a href="question_list.php" class="btn btn-secondary">一覧に戻る</a>
+
+            <!-- 削除部分 -->
+            <?php if (!$is_ended && $is_owner): ?>
+                <form action="question_delete.php" method="post"
+                    onsubmit="return confirm('本当に質問を削除しますか？');" class="m-0">
+                    <input type="hidden" name="shitu_number" value="<?= htmlspecialchars($shitu_number) ?>">
+                    <input type="hidden" name="return_to" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> 質問を削除
+                    </button>
                 </form>
-                <?php endif; ?>
-            </div>
+            <?php endif; ?>
+</div>
+
         </main>
     </div>
 
