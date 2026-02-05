@@ -149,7 +149,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
                             </div>
 
                             <div class="mt-3">
-                                 <?php if ($goal_data->is_achieved == 0): ?>
+                                <?php if ($goal_data->is_achieved == 0): ?>
                                         <?php if ($is_past): ?>
                                     <a href="results.php" class="btn btn-primary btn-sm">
                                         結果を記録する
@@ -179,7 +179,7 @@ $theme = $_COOKIE['theme'] ?? 'light';
             </div>
         </div>
 
-           <!-- ===== 中段 ===== -->
+        <!-- ===== 中段 ===== -->
         <div class="row g-4">
             <div class="col-12">
                 <div class="card shadow-sm">
