@@ -120,11 +120,27 @@ $theme = $_COOKIE['theme'] ?? 'light';
                     <div class="card-body">
 
                         <?php if ($goal_data && !empty($goal_data->goal)): ?>
+
+                            <?php 
+                                // 結果登録済みかどうかの判定
+                                $is_result_registered = isset($goal_data->is_achieved) && $goal_data->is_achieved !== null;
+                            ?>
                             <div class="d-flex align-items-center gap-3 flex-wrap">
                                 <p class="fs-5 mb-0">
                                     <?= htmlspecialchars($goal_data->goal) ?>
                                 </p>
 
+                                <?php if ($is_result_registered): ?>
+                                    <?php if ($goal_data->is_achieved == 1): ?>
+                                        <span class="badge bg-success fs-6"><i class="bi bi-trophy-fill me-1"></i>達成</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary fs-6">未達成</span>
+                                    <?php endif; ?>
+                                <?php elseif ($goal_status): ?>
+                                    <span class="badge bg-danger fs-6">
+                                        <?= $goal_status ?>
+                                    </span>
+                                <?php endif; ?>
                                 <?php if ($goal_status): ?>
                                     <span class="badge bg-danger fs-6">
                                         <?= $goal_status ?>
@@ -133,13 +149,20 @@ $theme = $_COOKIE['theme'] ?? 'light';
                             </div>
 
                             <div class="mt-3">
-                                <?php if ($is_past): ?>
+                                 <?php if ($goal_data->is_achieved == 0): ?>
+                                        <?php if ($is_past): ?>
                                     <a href="results.php" class="btn btn-primary btn-sm">
                                         結果を記録する
                                     </a>
                                 <?php else: ?>
                                     <a href="goal.php" class="btn btn-outline-primary btn-sm">
                                         目標を修正・変更する
+                                    </a>
+                                <?php endif; ?>
+
+                                <?php else: ?>
+                                    <a href="goal.php" class="btn btn-outline-primary btn-sm">
+                                        新しく目標を設定する
                                     </a>
                                 <?php endif; ?>
                             </div>
@@ -207,9 +230,12 @@ $theme = $_COOKIE['theme'] ?? 'light';
                         </div>
                             <?php if (!empty($milestones)): ?>
                                 <div class="ms-auto">
-                                    <a href="results.php" class="btn btn-success btn-sm d-flex align-items-center gap-1">
-                                        <i class="bi bi-pencil-square"></i> 成果を記録する
-                                    </a>
+
+                                    <?php if ($goal_data->is_achieved == 0): ?>
+                                        <a href="results.php" class="btn btn-success btn-sm d-flex align-items-center gap-1">
+                                            <i class="bi bi-pencil-square"></i> 成果を記録する
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
                     </div>
