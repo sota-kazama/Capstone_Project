@@ -181,11 +181,18 @@ $theme = $_COOKIE['theme'] ?? 'light';
             <td><?= htmlspecialchars($goal->goal_date) ?></td>
 
             <td>
-                <a href="?mode=edit&goal_id=<?= $goal->goal_id ?>" class="btn btn-warning btn-sm">編集</a>
-                <form method="post" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
-                    <input type="hidden" name="delete_goal_id" value="<?= $goal->goal_id ?>">
-                    <button type="submit" class="btn btn-danger btn-sm">削除</button>
-                </form>
+                <?php if ($goal->is_achieved): ?>
+                    <a href="results.php?goal_id=<?= $goal->goal_id ?>&view=true"
+                        class="btn btn-info btn-sm text-white">
+                        振り返る
+                    </a>
+                <?php else: ?>
+                    <a href="?mode=edit&goal_id=<?= $goal->goal_id ?>" class="btn btn-warning btn-sm">編集</a>
+                    <form method="post" style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
+                        <input type="hidden" name="delete_goal_id" value="<?= $goal->goal_id ?>">
+                        <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                    </form>
+                <?php endif; ?>
             </td>
         </tr>
     <?php endforeach; ?>

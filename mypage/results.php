@@ -14,7 +14,7 @@ $goalsDAO = new GoalsDAO();
 
 // --- 閲覧モードと対象目標の判定 ---
 $is_view_mode = isset($_GET['view']) && $_GET['view'] === 'true';
-$target_goal_id = $_GET['goal_id'] ?? null;
+$target_goal_id = isset($_GET['goal_id']) ? (int)$_GET['goal_id'] : null;
 
 if ($target_goal_id) {
     $goal_data = $goalsDAO->getGoalByGoalId($target_goal_id);
@@ -22,24 +22,27 @@ if ($target_goal_id) {
     $goal_data = $goalsDAO->getLatestGoalByUserId($member->user_id);
 }
 
+// --- マイルストーンの整形 ---
 $milestones = [];
 if ($goal_data) {
     for ($i = 1; $i <= 5; $i++) {
-        $prop = ($i === 1) ? 'mile_stone' : "mile_stone$i";
-        $status_prop = "ms{$i}_status"; 
-        
+        $prop = $i === 1 ? 'mile_stone' : "mile_stone$i";
+        $status_prop = "ms{$i}_status";
+
         if (!empty($goal_data->$prop)) {
             $milestones[] = [
-                'id' => $i, 
+                'id' => $i,
                 'text' => $goal_data->$prop,
-                'is_achieved' => ($goal_data->$status_prop == 1)
+                'is_achieved' => !empty($goal_data->$status_prop) && $goal_data->$status_prop == 1
             ];
         }
     }
 }
 
+// --- テーマ設定 ---
 $theme = $_COOKIE['theme'] ?? 'light';
 
+// --- 期限チェック ---
 $is_past_deadline = false;
 if ($goal_data && !empty($goal_data->goal_date)) {
     $today = new DateTime('today');
@@ -49,17 +52,16 @@ if ($goal_data && !empty($goal_data->goal_date)) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="../css/BaseDesignData.css" rel="stylesheet">
-    <link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
-    <title><?= $is_view_mode ? '目標の振り返り' : '成果登録' ?></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="../css/BaseDesignData.css" rel="stylesheet">
+<link id="theme-css" href="../css_theme/<?= htmlspecialchars($theme) ?>.css" rel="stylesheet">
+<title><?= $is_view_mode ? '目標の振り返り' : '成果登録' ?></title>
 </head>
 <body class="<?= $theme === 'dark' ? 'dark-mode' : 'light-mode' ?>">
 
@@ -72,7 +74,8 @@ if ($goal_data && !empty($goal_data->goal_date)) {
 
             <form action="results_post.php" method="POST">
                 <input type="hidden" name="goal_id" value="<?= htmlspecialchars($goal_data->goal_id ?? '') ?>">
-                
+
+                <!-- 目標表示 -->
                 <div class="card shadow-sm mb-4 border-primary">
                     <div class="card-header bg-primary text-white fw-bold">
                         <?= $is_view_mode ? '振り返る目標' : '現在の目標' ?>
@@ -87,6 +90,7 @@ if ($goal_data && !empty($goal_data->goal_date)) {
                     </div>
                 </div>
 
+                <!-- マイルストーン -->
                 <?php if (!empty($milestones)): ?>
                 <div class="card shadow-sm mb-4">
                     <div class="card-header fw-bold">マイルストーン達成状況</div>
@@ -96,22 +100,23 @@ if ($goal_data && !empty($goal_data->goal_date)) {
                         <?php endif; ?>
 
                         <?php foreach ($milestones as $m): ?>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" 
-                                    name="milestones[]" 
-                                    value="<?= $m['id'] ?>" 
-                                    id="ms<?= $m['id'] ?>"
-                                    <?= $m['is_achieved'] ? 'checked' : '' ?>
-                                    <?= $is_view_mode ? 'disabled' : '' ?>> 
-                                <label class="form-check-label" for="ms<?= $m['id'] ?>">
-                                    <?= htmlspecialchars($m['text']) ?>
-                                </label>
-                            </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" 
+                                name="milestones[]" 
+                                value="<?= $m['id'] ?>" 
+                                id="ms<?= $m['id'] ?>"
+                                <?= $m['is_achieved'] ? 'checked' : '' ?>
+                                <?= $is_view_mode ? 'disabled' : '' ?>>
+                            <label class="form-check-label" for="ms<?= $m['id'] ?>">
+                                <?= htmlspecialchars($m['text']) ?>
+                            </label>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
                 <?php endif; ?>
 
+                <!-- 最終結果 -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header fw-bold">
                         目標の最終結果 
@@ -122,73 +127,46 @@ if ($goal_data && !empty($goal_data->goal_date)) {
                         <?php endif; ?>
                     </div>
                     <div class="card-body text-center">
-                        <?php if (!$is_view_mode): ?>
-                            <div class="alert alert-warning small text-start mb-3">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                選択し保存すると編集ができなくなります。誤った結果登録にご注意ください。
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if (!$is_past_deadline && !$is_view_mode): ?>
-                            <p class="small text-muted mb-3">目標日を過ぎると、最終結果の入力が必須になります。</p>
-                        <?php endif; ?>
-                        
                         <div class="btn-group w-100" role="group">
-                            <input type="radio" class="btn-check" name="is_achieved" id="achieved" value="1" autocomplete="off" 
-                                <?= ($is_past_deadline && !$is_view_mode) ? 'required' : '' ?>
-                                <?= (isset($goal_data->is_achieved) && $goal_data->is_achieved === "1") ? 'checked' : '' ?>
-                                <?= $is_view_mode ? 'disabled' : '' ?>> 
+                            <input type="radio" class="btn-check" name="is_achieved" id="achieved" value="1" 
+                                <?= (!empty($goal_data->is_achieved) && $goal_data->is_achieved == 1) ? 'checked' : '' ?>
+                                <?= $is_view_mode ? 'disabled' : '' ?>>
                             <label class="btn btn-outline-success py-3" for="achieved">
                                 <i class="bi bi-trophy-fill me-2"></i>達成！
                             </label>
 
-                            <input type="radio" class="btn-check" name="is_achieved" id="not_achieved" value="0" autocomplete="off"
-                                <?= (isset($goal_data->is_achieved) && $goal_data->is_achieved === "0") ? 'checked' : '' ?>
-                                <?= $is_view_mode ? 'disabled' : '' ?>> 
+                            <input type="radio" class="btn-check" name="is_achieved" id="not_achieved" value="0"
+                                <?= (isset($goal_data->is_achieved) && $goal_data->is_achieved == 0) ? 'checked' : '' ?>
+                                <?= $is_view_mode ? 'disabled' : '' ?>>
                             <label class="btn btn-outline-secondary py-3" for="not_achieved">
                                 <i class="bi bi-flag-fill me-2"></i>未達成
                             </label>
                         </div>
                     </div>
                 </div>
-                <script>
-                // 同一箇所クリックで選択解除するスクリプト
-                document.querySelectorAll('.clickable-radio').forEach(radio => {
-                    radio.addEventListener('click', function(e) {
-                        if (this.previousValue === this.value) {
-                            this.checked = false;
-                            this.previousValue = null;
-                        } else {
-                            this.previousValue = this.value;
-                        }
-                    });
-                });
-                </script>
 
+                <!-- 振り返り -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header fw-bold">振り返り</div>
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label fw-bold text-success">良かった点・継続したいこと</label>
                             <textarea name="good_points" class="form-control" rows="3" 
-                                placeholder="<?= $is_view_mode ? '' : '例：毎日30分机に向かうことができた' ?>"
                                 <?= $is_view_mode ? 'readonly' : '' ?>><?= htmlspecialchars($goal_data->good_points ?? '') ?></textarea>
                         </div>
-
                         <div class="mb-0">
                             <label class="form-label fw-bold text-danger">反省点・改善したいこと</label>
                             <textarea name="bad_points" class="form-control" rows="3" 
-                                placeholder="<?= $is_view_mode ? '' : '例：週末にまとめてやろうとして計画が崩れた' ?>"
                                 <?= $is_view_mode ? 'readonly' : '' ?>><?= htmlspecialchars($goal_data->bad_points ?? '') ?></textarea>
                         </div>
                     </div>
                 </div>
 
+                <!-- メモ -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header fw-bold">メモ（使用教材など）</div>
                     <div class="card-body">
-                        <textarea name="memo" class="form-control" rows="2" 
-                            <?= $is_view_mode ? 'readonly' : '' ?>><?= htmlspecialchars($goal_data->memo ?? '') ?></textarea>
+                        <textarea name="memo" class="form-control" rows="2" <?= $is_view_mode ? 'readonly' : '' ?>><?= htmlspecialchars($goal_data->memo ?? '') ?></textarea>
                     </div>
                 </div>
 
@@ -200,12 +178,10 @@ if ($goal_data && !empty($goal_data->goal_date)) {
                     <?php endif; ?>
                     <a href="../mypage/mypage.php" class="btn btn-link text-secondary">マイページに戻る</a>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
