@@ -1,3 +1,22 @@
+<?php
+require_once __DIR__ . '/../helpers/config.php';
+
+$current = basename($_SERVER['SCRIPT_NAME']);
+
+$menus = [
+    ['file' => '/problem/problem_top.php', 'label' => '問題'],
+    ['file' => '/book.php', 'label' => '書籍検索'],
+];
+
+if (isset($member)) {
+    $menus = array_merge($menus, [
+        ['file' => '/board/thread_list.php', 'label' => '掲示板'],
+        ['file' => '/mypage/mypage.php', 'label' => 'マイページ'],
+        ['file' => '/Shitsumonbako/question_list.php', 'label' => '質問箱'],
+    ]);
+}
+?>
+
 <link href="<?= BASE_URL ?>/css_theme/hamburger.css" rel="stylesheet" />
 
 <!-- ハンバーガー -->
@@ -10,18 +29,18 @@
 <!-- メニュー -->
 <nav class="menu" id="menu">
     <ul>
-        <li><a href="<?= BASE_URL ?>/problem/category_select.php">問題</a></li>
-        <li><a href="<?= BASE_URL ?>/book.php">書籍検索</a></li>
-        <?php if (isset($member)) : ?>
-            <li><a href="<?= BASE_URL ?>/board.php">掲示板</a></li>
-            <li><a href="<?= BASE_URL ?>/mypage.php">マイページ</a></li>
-            <li><a href="<?= BASE_URL ?>/Shitsumonbako/question_list.php">質問箱</a></li>
-        <?php endif; ?>
+        <?php foreach ($menus as $menu): 
+            $isActive = basename($menu['file']) === $current;
+        ?>
+            <li>
+                <a href="<?= BASE_URL . $menu['file'] ?>"
+                   class="<?= $isActive ? 'active' : '' ?>">
+                    <?= htmlspecialchars($menu['label'], ENT_QUOTES, 'UTF-8') ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
     </ul>
 </nav>
-
-<!-- 赤表示用スタイル追加 -->
-
 
 <script>
 const hamburger = document.getElementById("hamburger");

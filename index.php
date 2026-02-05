@@ -100,30 +100,52 @@ $theme = $_COOKIE['theme'] ?? 'light';
                 ?>
             </div>
             <div class="d-flex flex-wrap justify-content-center p-2 g-col-6 gap-4">
-                <div class="card shadow-sm" style="width: 14rem;">
+                <div class="card shadow-sm" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title fw-semibold">
-                            <a href="problem/category_select.php" class="btn btn-outline-primary w-100">問題演習</a>
+                            <a href="problem/problem_top.php" class="btn btn-outline-primary w-100">問題演習</a>
                         </h5>
-                        <p>基本情報技術者試験やITパスポートなどの問題を解くことができます</p>
+                        <p>基本情報技術者試験やITパスポートなどの問題を解くことができます。</p>
                     </div>
                 </div>
-                <div class="card shadow-sm" style="width: 14rem;">
+                <div class="card shadow-sm" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title fw-semibold">
                             <a href="book.php" class="btn btn-outline-primary w-100">書籍検索</a>
                         </h5>
-                        <p>参考書の検索ができます</p>
-                        <p>Amazonへ遷移して購入することも可能です</p> 
+                        <p>参考書などの検索ができます。Amazonへ遷移して購入することも可能です。</p> 
                     </div>
                 </div>
-                <div class="card shadow-sm" style="width: 14rem;">
+               <div class="card shadow-sm" style="width: 18rem;">
                     <div class="card-body">
-                        <h5 class="card-title fw-semibold">レベル3(復習必要)</h5>
-                        <h5 class="card-title fw-semibold">〇問</h5>
-                        <a href="problem_review.php" class="btn btn-outline-danger w-100">復習</a>
+                        <h5 class="card-title fw-semibold">
+                            <a href="board/thread_list.php" class="btn btn-outline-primary w-100">掲示板</a>
+                        </h5>
+                        <p>掲示板で利用者同士が意見交換や情報共有を行えます。</p>
+                        <p>※ログインが必要です。</p>
+                        
                     </div>
                 </div>
+                <div class="card shadow-sm" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold">
+                            <a href="mypage/mypage.php" class="btn btn-outline-primary w-100">マイページ</a>
+                        </h5>
+                        <p>マイルストーンで目標や成果を簡単記録。アカウント設定などもこちらから。</p>
+                        <p>※ログインが必要です。</p> 
+                    </div>
+                    
+                </div>
+                <div class="card shadow-sm" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold">
+                            <a href="Shitsumonbako/question_list.php" class="btn btn-outline-primary w-100">質問箱</a>
+                        </h5>
+                        <p>匿名で気軽に質問や回答ができます。</p>
+                        <p>※ログインが必要です。</p>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
