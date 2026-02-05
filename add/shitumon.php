@@ -10,11 +10,20 @@ if (!isset($_SESSION['member'])) {
     exit;
 }
 
+// 管理者チェック
+$member = $_SESSION['member'];
+$is_admin = false;
+if (is_object($member) && isset($member->u_admin)) {
+    $is_admin = ($member->u_admin == 1);
+} elseif (is_array($member) && isset($member['u_admin'])) {
+    $is_admin = ($member['u_admin'] == 1);
+}
+if (!$is_admin) {
+    die('管理者権限がありません。');
+}
+
 // テーマ設定（cookieがなければlight）
 $theme = $_COOKIE['theme'] ?? 'light';
-
-// ログインユーザー
-$member = $_SESSION['member'];
 
 // DAOインスタンス
 $shitumonDAO = new ShitumonDAO();
